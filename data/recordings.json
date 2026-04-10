@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "id": "rec_1775816498144_4dadeea7",
+    "type": "recording",
+    "uploadedAt": "2026-04-10T10:21:38.144Z",
+    "memo": "",
+    "summary": "즐거운 오후 방송 녹화 일정",
+    "details": {
+      "period": null,
+      "title": "즐거운 오후",
+      "entries": [
+        {
+          "date": "2026-04-14",
+          "time": "14:05-16:00",
+          "person": "PD: 오규익, 가수: 서주경 외",
+          "note": "반주기 사용없음"
+        }
+      ]
+    }
+  }
+]
