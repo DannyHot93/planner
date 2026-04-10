@@ -1,24 +1,5 @@
 [
   {
-    "id": "rec_1775817594726_0ba211db",
-    "type": "recording",
-    "uploadedAt": "2026-04-10T10:39:54.726Z",
-    "memo": "",
-    "summary": "즐거운 오후 프로그램의 라이브 녹화 일정입니다.",
-    "details": {
-      "period": null,
-      "title": "즐거운 오후",
-      "entries": [
-        {
-          "date": "2026-04-14",
-          "time": "14:05-16:00",
-          "person": "PD 오규익, 가수 서주경 외 1팀",
-          "note": "반주기 사용없음"
-        }
-      ]
-    }
-  },
-  {
     "id": "rec_1775816561988_0367259c",
     "type": "recording",
     "uploadedAt": "2026-04-10T10:22:41.989Z",
