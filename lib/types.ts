@@ -5,11 +5,18 @@ export interface ScheduleEntry {
   time?: string;
   person?: string;
   note?: string;
+  /** 제작 근무표: D=오전, N=오후 */
+  shift?: "D" | "N";
   [key: string]: unknown;
 }
 
+/** 사무실 근무표 | 제작 근무표 (제작: 문서의 D/N 구분) */
+export type WorkScheduleKind = "office" | "production";
+
 export interface WorkScheduleDetails {
   period?: string;
+  /** 업로드 시 선택한 근무표 종류 */
+  scheduleKind?: WorkScheduleKind;
   entries?: ScheduleEntry[];
   [key: string]: unknown;
 }

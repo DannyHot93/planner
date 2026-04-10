@@ -11,14 +11,18 @@ const DOCUMENT_TYPES: { value: DocumentType; label: string; description: string 
 
 type UploadState = "idle" | "uploading" | "success" | "error";
 
+type WorkScheduleKind = "office" | "production";
+
 export default function UploadForm() {
   const [documentType, setDocumentType] = useState<DocumentType>("work-schedule");
+  const [workScheduleKind, setWorkScheduleKind] = useState<WorkScheduleKind>("office");
   const [memo, setMemo] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploadState, setUploadState] = useState<UploadState>("idle");
   const [resultSummary, setResultSummary] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [lastSubmitHadImage, setLastSubmitHadImage] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,18 +34,24 @@ export default function UploadForm() {
     setResultSummary(null);
     setErrorMessage(null);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewUrl(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreviewUrl(null);
+    }
   };
+
+  const canSubmit = Boolean(selectedFile) || memo.trim().length > 0;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!selectedFile) {
-      setErrorMessage("이미지 파일을 선택해주세요.");
+    if (!canSubmit) {
+      setErrorMessage("이미지를 선택하거나 메모를 입력해 주세요.");
       return;
     }
 
@@ -51,9 +61,14 @@ export default function UploadForm() {
 
     try {
       const formData = new FormData();
-      formData.append("image", selectedFile);
+      if (selectedFile) {
+        formData.append("image", selectedFile);
+      }
       formData.append("documentType", documentType);
       formData.append("memo", memo);
+      if (documentType === "work-schedule") {
+        formData.append("workScheduleKind", workScheduleKind);
+      }
 
       const response = await fetch("/api/submit", {
         method: "POST",
@@ -63,8 +78,11 @@ export default function UploadForm() {
       const result: SubmitApiResponse = await response.json();
 
       if (result.success) {
+        setLastSubmitHadImage(Boolean(selectedFile));
         setUploadState("success");
-        setResultSummary(result.summary ?? "처리 완료");
+        setResultSummary(
+          result.summary ?? (selectedFile ? "처리 완료" : "메모가 저장되었습니다.")
+        );
         setSelectedFile(null);
         setPreviewUrl(null);
         setMemo("");
@@ -99,7 +117,11 @@ export default function UploadForm() {
             </svg>
           </div>
           <h3 className="text-xl font-semibold text-green-800 mb-2">업로드 완료</h3>
-          <p className="text-green-700 mb-1 text-sm">AI 분석 결과가 GitHub에 저장되었습니다.</p>
+          <p className="text-green-700 mb-1 text-sm">
+            {lastSubmitHadImage
+              ? "AI 분석 결과가 GitHub에 저장되었습니다."
+              : "메모 내용이 GitHub에 저장되었습니다."}
+          </p>
           {resultSummary && (
             <div className="mt-4 bg-white rounded-xl p-4 border border-green-100 text-left">
               <p className="text-xs text-gray-500 mb-1 font-medium uppercase tracking-wide">AI 요약</p>
@@ -139,10 +161,48 @@ export default function UploadForm() {
             </div>
           </div>
 
-          {/* 이미지 업로드 */}
+          {documentType === "work-schedule" && (
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-3">
+                근무표 종류 <span className="text-red-500">*</span>
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setWorkScheduleKind("office")}
+                  className={`p-3 rounded-xl border-2 text-left transition-all ${
+                    workScheduleKind === "office"
+                      ? "border-blue-500 bg-blue-50 text-blue-800"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="font-semibold text-sm">사무실 근무표</div>
+                  <div className="text-xs mt-0.5 opacity-80">일반 사무실 근무</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWorkScheduleKind("production")}
+                  className={`p-3 rounded-xl border-2 text-left transition-all ${
+                    workScheduleKind === "production"
+                      ? "border-indigo-500 bg-indigo-50 text-indigo-800"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="font-semibold text-sm">제작 근무표</div>
+                  <div className="text-xs mt-0.5 opacity-80">D/N 구분 (오전·오후)</div>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 파일 업로드 */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-3">
-              이미지 파일 <span className="text-red-500">*</span>
+              {documentType === "work-schedule" ? "파일" : "이미지"}{" "}
+              <span className="text-gray-400 font-normal">
+                (선택 · 메모만으로도 등록 가능
+                {documentType === "work-schedule" ? " · 근무표는 PDF·Word도 가능" : ""})
+              </span>
             </label>
             <div
               onClick={() => fileInputRef.current?.click()}
@@ -155,7 +215,11 @@ export default function UploadForm() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
+                accept={
+                  documentType === "work-schedule"
+                    ? "image/jpeg,image/png,image/webp,image/gif,application/pdf,.pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    : "image/jpeg,image/png,image/webp,image/gif"
+                }
                 onChange={handleFileChange}
                 className="hidden"
               />
@@ -170,6 +234,16 @@ export default function UploadForm() {
                   <p className="text-sm text-blue-600 font-medium">{selectedFile?.name}</p>
                   <p className="text-xs text-gray-500">클릭하여 다른 파일 선택</p>
                 </div>
+              ) : selectedFile && !selectedFile.type.startsWith("image/") ? (
+                <div className="space-y-2">
+                  <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto">
+                    <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <p className="text-sm font-medium text-gray-800 break-all px-2">{selectedFile.name}</p>
+                  <p className="text-xs text-gray-500">클릭하여 다른 파일 선택</p>
+                </div>
               ) : (
                 <div className="space-y-2">
                   <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto">
@@ -177,8 +251,16 @@ export default function UploadForm() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
-                  <p className="text-sm font-medium text-gray-600">클릭하여 이미지 선택</p>
-                  <p className="text-xs text-gray-400">JPEG, PNG, WEBP, GIF · 최대 10MB</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    {documentType === "work-schedule"
+                      ? "클릭하여 파일 선택"
+                      : "클릭하여 이미지 선택"}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {documentType === "work-schedule"
+                      ? "JPEG, PNG, PDF, Word(docx) · 최대 10MB"
+                      : "JPEG, PNG, WEBP, GIF · 최대 10MB"}
+                  </p>
                 </div>
               )}
             </div>
@@ -187,13 +269,16 @@ export default function UploadForm() {
           {/* 메모 */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              메모 <span className="text-gray-400 font-normal">(선택)</span>
+              메모{" "}
+              <span className="text-gray-400 font-normal">
+                (선택 · 이미지 없이 메모만 입력해도 등록됩니다)
+              </span>
             </label>
             <textarea
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
-              placeholder="예: 4월 2주차 근무표"
-              rows={2}
+              placeholder="예: 4/14 14:05 즐거운 오후 녹화 / 또는 이미지 없이 일정만 적어도 됩니다"
+              rows={4}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
             />
           </div>
@@ -211,7 +296,7 @@ export default function UploadForm() {
           {/* 제출 버튼 */}
           <button
             type="submit"
-            disabled={uploadState === "uploading" || !selectedFile}
+            disabled={uploadState === "uploading" || !canSubmit}
             className="w-full py-3.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {uploadState === "uploading" ? (
@@ -220,10 +305,18 @@ export default function UploadForm() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                AI 분석 중...
+                {selectedFile
+                  ? selectedFile.type.startsWith("image/")
+                    ? "AI 분석 중..."
+                    : "문서 분석 중..."
+                  : "저장 중..."}
               </>
             ) : (
-              "업로드 및 분석"
+              selectedFile
+                ? documentType === "work-schedule" && !selectedFile.type.startsWith("image/")
+                  ? "문서 업로드 및 분석"
+                  : "업로드 및 분석"
+                : "메모만 저장"
             )}
           </button>
         </form>

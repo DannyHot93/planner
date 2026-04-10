@@ -1,5 +1,63 @@
 import { v4 as uuidv4 } from "uuid";
-import { AiAnalysisResult, DocumentType, ScheduleRecord } from "./types";
+import {
+  AiAnalysisResult,
+  DocumentType,
+  ScheduleRecord,
+  WorkScheduleKind,
+} from "./types";
+
+/** AI/메모 결과에 근무표 종류를 서버에서 확정합니다. */
+export function ensureWorkScheduleKindInDetails(
+  aiResult: AiAnalysisResult,
+  kind: WorkScheduleKind
+): void {
+  const d = aiResult.details as Record<string, unknown>;
+  d.scheduleKind = kind;
+}
+
+/** 이미지 없이 메모만 입력했을 때 저장용 구조 (AI 호출 없음) */
+export function buildMemoOnlyAiResult(
+  memo: string,
+  documentType: DocumentType,
+  workScheduleKind: WorkScheduleKind = "office"
+): AiAnalysisResult {
+  const m = memo.trim();
+  const firstLine = m.split("\n")[0].slice(0, 120);
+  const summary = firstLine || m.slice(0, 200);
+
+  if (documentType === "recording") {
+    return {
+      summary,
+      details: {
+        title: firstLine || "메모 등록",
+        entries: [{ note: m }],
+      },
+    };
+  }
+  if (documentType === "vacation") {
+    return {
+      summary,
+      details: {
+        entries: [{ note: m, reason: m }],
+      },
+    };
+  }
+  if (documentType === "work-schedule") {
+    return {
+      summary,
+      details: {
+        scheduleKind: workScheduleKind,
+        entries: [{ note: m }],
+      },
+    };
+  }
+  return {
+    summary,
+    details: {
+      entries: [{ note: m }],
+    },
+  };
+}
 
 const TYPE_PREFIX: Record<DocumentType, string> = {
   "work-schedule": "ws",

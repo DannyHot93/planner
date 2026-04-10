@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ScheduleRecord, DocumentType } from "@/lib/types";
 import ScheduleList from "./ScheduleList";
 import RecordingWeekView from "./RecordingWeekView";
+import WorkScheduleWeekView from "./WorkScheduleWeekView";
 
 type TabValue = DocumentType | "all";
 
@@ -18,6 +19,7 @@ export default function ScheduleListClient({ records }: { records: ScheduleRecor
   const [activeTab, setActiveTab] = useState<TabValue>("all");
 
   const recordingRecords = records.filter((r) => r.type === "recording");
+  const workScheduleRecords = records.filter((r) => r.type === "work-schedule");
 
   return (
     <div>
@@ -40,6 +42,8 @@ export default function ScheduleListClient({ records }: { records: ScheduleRecor
 
       {activeTab === "recording" ? (
         <RecordingWeekView records={recordingRecords} />
+      ) : activeTab === "work-schedule" ? (
+        <WorkScheduleWeekView records={workScheduleRecords} />
       ) : (
         <ScheduleList records={records} activeTab={activeTab} />
       )}
