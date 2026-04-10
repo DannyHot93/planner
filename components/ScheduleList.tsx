@@ -12,15 +12,29 @@ const TYPE_COLOR: Record<DocumentType, string> = {
   recording: "bg-purple-100 text-purple-700",
 };
 
+function pad2(n: number): string {
+  return n < 10 ? `0${n}` : `${n}`;
+}
+
+/** Node/브라우저 ICU 차이로 하이드레이션이 깨지지 않도록 Asia/Seoul 기준 고정 포맷 */
 function formatDate(isoString: string): string {
   const date = new Date(isoString);
-  return date.toLocaleDateString("ko-KR", {
+  const formatted = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Seoul",
     year: "numeric",
-    month: "long",
-    day: "numeric",
+    month: "2-digit",
+    day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
-  });
+    hour12: false,
+  }).format(date);
+  const [datePart, timePart] = formatted.split(" ");
+  if (!datePart || !timePart) return isoString;
+  const [y, mo, da] = datePart.split("-").map(Number);
+  const [hh, mi] = timePart.split(":").map(Number);
+  const isPm = hh >= 12;
+  const h12 = hh % 12 || 12;
+  return `${y}년 ${mo}월 ${da}일 ${isPm ? "오후" : "오전"} ${pad2(h12)}:${pad2(mi)}`;
 }
 
 function RecordCard({ record }: { record: ScheduleRecord }) {

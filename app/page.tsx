@@ -2,8 +2,9 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { ScheduleRecord, DocumentType } from "@/lib/types";
 import ScheduleListClient from "@/components/ScheduleListClient";
+import { readRecordsFromGitHub, overwriteFileOnGitHub } from "@/lib/github";
 
-function loadRecords(filename: string): ScheduleRecord[] {
+function loadRecordsFromDisk(filename: string): ScheduleRecord[] {
   try {
     const filePath = join(process.cwd(), "data", filename);
     const content = readFileSync(filePath, "utf-8");
@@ -13,15 +14,90 @@ function loadRecords(filename: string): ScheduleRecord[] {
   }
 }
 
+function hasGithubEnv(): boolean {
+  return Boolean(
+    process.env.GITHUB_TOKEN &&
+      process.env.GITHUB_OWNER &&
+      process.env.GITHUB_REPO
+  );
+}
+
+async function loadRecords(filename: string): Promise<ScheduleRecord[]> {
+  if (hasGithubEnv()) {
+    try {
+      return await readRecordsFromGitHub(`data/${filename}`);
+    } catch (e) {
+      console.error("GitHub 데이터 로드 실패, 로컬 파일 사용:", e);
+      return loadRecordsFromDisk(filename);
+    }
+  }
+  return loadRecordsFromDisk(filename);
+}
+
+/** Asia/Seoul 기준 이번 주 월요일 시작 시각 */
+function getThisWeekMondaySeoul(): Date {
+  const todayStr = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Seoul",
+  }).format(new Date());
+  const today = new Date(todayStr + "T00:00:00+09:00");
+  const dow = today.getDay();
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - ((dow + 6) % 7));
+  return monday;
+}
+
+/** 녹화일정 중 이번 주 이전 항목 제거 후 GitHub 반영 (변경 있을 때만) */
+async function cleanupOldRecordings(records: ScheduleRecord[]): Promise<ScheduleRecord[]> {
+  if (!hasGithubEnv()) return records;
+  const monday = getThisWeekMondaySeoul();
+
+  const filtered = records.filter((record) => {
+    const details = record.details as { entries?: { date?: string }[]; period?: string };
+    if (Array.isArray(details.entries) && details.entries.length > 0) {
+      return details.entries.some((e) => {
+        if (!e.date) return false;
+        return new Date(e.date.slice(0, 10) + "T00:00:00+09:00") >= monday;
+      });
+    }
+    if (details.period) {
+      const match = details.period.match(/\d{4}-\d{2}-\d{2}/);
+      if (match) return new Date(match[0] + "T00:00:00+09:00") >= monday;
+    }
+    return new Date(record.uploadedAt) >= monday;
+  });
+
+  if (filtered.length < records.length) {
+    const today = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(new Date());
+    try {
+      await overwriteFileOnGitHub(
+        "data/recordings.json",
+        filtered,
+        `[자동] 이전 주 녹화일정 정리 - ${today}`
+      );
+    } catch (e) {
+      console.error("이전 주 정리 실패:", e);
+      return records;
+    }
+  }
+  return filtered;
+}
+
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "일정 플래너",
   description: "근무표, 휴가, 녹화일정을 한눈에 확인하세요.",
 };
 
-export default function HomePage() {
-  const workSchedules = loadRecords("work-schedules.json");
-  const vacations = loadRecords("vacations.json");
-  const recordings = loadRecords("recordings.json");
+export default async function HomePage() {
+  const [workSchedules, vacations, rawRecordings] = await Promise.all([
+    loadRecords("work-schedules.json"),
+    loadRecords("vacations.json"),
+    loadRecords("recordings.json"),
+  ]);
+
+  // 이전 주 녹화일정 자동 정리 (변경 시 GitHub 반영)
+  const recordings = await cleanupOldRecordings(rawRecordings);
 
   const allRecords: ScheduleRecord[] = [
     ...workSchedules,

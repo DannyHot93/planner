@@ -114,3 +114,24 @@ export async function appendRecordToGitHub(
 
   await putFileContent(config, filePath, sha, updatedContent, commitMessage);
 }
+
+/** 홈 화면 등에서 최신 목록을 보기 위해 GitHub에 저장된 JSON을 읽습니다. */
+export async function readRecordsFromGitHub(
+  filePath: string
+): Promise<ScheduleRecord[]> {
+  const config = getConfig();
+  const { data } = await getFileContent(config, filePath);
+  return Array.isArray(data) ? data : [];
+}
+
+/** 파일 전체를 새 배열로 덮어씁니다 (이전 주 정리 등에 사용). */
+export async function overwriteFileOnGitHub(
+  filePath: string,
+  records: ScheduleRecord[],
+  commitMessage: string
+): Promise<void> {
+  const config = getConfig();
+  const { sha } = await getFileContent(config, filePath);
+  const content = JSON.stringify(records, null, 2);
+  await putFileContent(config, filePath, sha, content, commitMessage);
+}
