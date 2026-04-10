@@ -32,6 +32,14 @@ export const DATA_FILE_MAP: Record<DocumentType, string> = {
   recording: "data/recordings.json",
 };
 
+/** record id 접두사(ws_/vac_/rec_)로 JSON 파일 경로 결정 */
+export function getFilePathFromRecordId(id: string): string | null {
+  if (id.startsWith("ws_")) return DATA_FILE_MAP["work-schedule"];
+  if (id.startsWith("vac_")) return DATA_FILE_MAP["vacation"];
+  if (id.startsWith("rec_")) return DATA_FILE_MAP["recording"];
+  return null;
+}
+
 export function getCommitMessage(
   documentType: DocumentType,
   date: string

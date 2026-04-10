@@ -6,6 +6,7 @@ import {
   mondayOfWeekContaining,
   sevenDaysFromMonday,
 } from "@/lib/seoul-week";
+import DeleteRecordButton from "./DeleteRecordButton";
 
 const DAY_LABELS = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -149,11 +150,23 @@ function pickDisplayWeekMonday(
   };
 }
 
-function EntryCard({ entry }: { entry: EntryWithMeta }) {
+function EntryCard({
+  entry,
+  thisWeekMonday,
+}: {
+  entry: EntryWithMeta;
+  thisWeekMonday: string;
+}) {
   const [open, setOpen] = useState(false);
 
   const headline =
     entry.programTitle ?? entry.note ?? entry.recordSummary;
+
+  const entryDate = entry.date?.slice(0, 10) ?? "";
+  const entryWeekMonday = entryDate
+    ? mondayOfWeekContaining(entryDate)
+    : thisWeekMonday;
+  const isThisWeek = entryWeekMonday === thisWeekMonday;
 
   return (
     <div
@@ -162,9 +175,16 @@ function EntryCard({ entry }: { entry: EntryWithMeta }) {
       onMouseLeave={() => setOpen(false)}
     >
       <div className="bg-white border border-gray-200 rounded-xl p-3 cursor-default hover:border-purple-300 hover:shadow-md transition-all">
-        <p className="text-sm font-semibold text-gray-800 leading-snug">
-          {headline}
-        </p>
+        <div className="flex items-start justify-between gap-1 mb-0.5">
+          <p
+            className={`text-sm font-semibold leading-snug flex-1 min-w-0 ${
+              isThisWeek ? "text-red-600" : "text-gray-800"
+            }`}
+          >
+            {headline}
+          </p>
+          <DeleteRecordButton recordId={entry.recordId} className="shrink-0" />
+        </div>
         {entry.time && (
           <p className="text-xs text-blue-600 font-medium mt-1">{entry.time}</p>
         )}
@@ -176,7 +196,13 @@ function EntryCard({ entry }: { entry: EntryWithMeta }) {
       {open && (
         <div className="absolute z-50 left-0 top-full mt-1 w-64 bg-white border border-purple-200 rounded-xl shadow-xl p-4 text-xs text-gray-700 space-y-1.5">
           {entry.programTitle && (
-            <p className="font-semibold text-gray-900 text-sm">{entry.programTitle}</p>
+            <p
+              className={`font-semibold text-sm ${
+                isThisWeek ? "text-red-600" : "text-gray-900"
+              }`}
+            >
+              {entry.programTitle}
+            </p>
           )}
           <p className="text-gray-600">{entry.recordSummary}</p>
           {entry.time && (
@@ -221,6 +247,9 @@ export default function RecordingWeekView({
 
   const hasAny = dayGroups.some((g) => g.entries.length > 0);
 
+  /** 이번 주(오늘이 속한 월~일)의 월요일 — 제목 색상 구분용 */
+  const thisWeekMonday = mondayOfWeekContaining(todayStr);
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
@@ -231,6 +260,19 @@ export default function RecordingWeekView({
           {weekDays[0]} ~ {weekDays[6]}
         </span>
       </div>
+
+      {hasAny && (
+        <p className="text-xs text-gray-500 mb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-red-500" />
+            빨간 제목 = 이번 주(월~일) 방송일
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-gray-700" />
+            검은 제목 = 다음 주 등 다른 주
+          </span>
+        </p>
+      )}
 
       {isAlternateWeek && hasAny && (
         <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 mb-4">
@@ -312,7 +354,11 @@ export default function RecordingWeekView({
                   </p>
                 ) : (
                   group.entries.map((entry, i) => (
-                    <EntryCard key={`${entry.recordId}-${i}`} entry={entry} />
+                    <EntryCard
+                      key={`${entry.recordId}-${i}`}
+                      entry={entry}
+                      thisWeekMonday={thisWeekMonday}
+                    />
                   ))
                 )}
               </div>

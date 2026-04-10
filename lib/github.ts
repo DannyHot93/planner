@@ -135,3 +135,18 @@ export async function overwriteFileOnGitHub(
   const content = JSON.stringify(records, null, 2);
   await putFileContent(config, filePath, sha, content, commitMessage);
 }
+
+/** id에 해당하는 레코드 1건을 제거하고 GitHub에 반영합니다. */
+export async function deleteRecordByIdFromGitHub(
+  filePath: string,
+  recordId: string,
+  commitMessage: string
+): Promise<boolean> {
+  const config = getConfig();
+  const { sha, data } = await getFileContent(config, filePath);
+  const filtered = data.filter((r) => r.id !== recordId);
+  if (filtered.length === data.length) return false;
+  const content = JSON.stringify(filtered, null, 2);
+  await putFileContent(config, filePath, sha, content, commitMessage);
+  return true;
+}

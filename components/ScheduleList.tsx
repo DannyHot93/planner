@@ -1,4 +1,7 @@
+"use client";
+
 import { ScheduleRecord, DocumentType } from "@/lib/types";
+import DeleteRecordButton from "./DeleteRecordButton";
 
 const TYPE_LABEL: Record<DocumentType, string> = {
   "work-schedule": "근무표",
@@ -46,9 +49,12 @@ function RecordCard({ record }: { record: ScheduleRecord }) {
         >
           {TYPE_LABEL[record.type]}
         </span>
-        <span className="text-xs text-gray-400 whitespace-nowrap">
-          {formatDate(record.uploadedAt)}
-        </span>
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <span className="text-xs text-gray-400 whitespace-nowrap">
+            {formatDate(record.uploadedAt)}
+          </span>
+          <DeleteRecordButton recordId={record.id} />
+        </div>
       </div>
 
       <p className="text-gray-800 text-sm font-medium mb-2">{record.summary}</p>
