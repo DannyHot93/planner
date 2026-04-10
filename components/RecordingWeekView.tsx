@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 import { ScheduleRecord, ScheduleEntry } from "@/lib/types";
+import {
+  mondayOfWeekContaining,
+  sevenDaysFromMonday,
+} from "@/lib/seoul-week";
 
-const DAY_LABELS = ["일", "월", "화", "수", "목", "금", "토"];
+const DAY_LABELS = ["월", "화", "수", "목", "금", "토", "일"];
 
 /** Asia/Seoul 기준 오늘 날짜를 YYYY-MM-DD로 반환 */
 function getTodaySeoul(): string {
@@ -12,52 +16,51 @@ function getTodaySeoul(): string {
   );
 }
 
-/** Asia/Seoul 기준 이번 주 월요일 ~ 일요일 날짜 배열 반환 */
-function getThisWeekDays(): string[] {
-  const todayStr = getTodaySeoul();
-  const today = new Date(todayStr + "T00:00:00");
-  const dow = today.getDay(); // 0=일 1=월 ... 6=토
-  const monday = new Date(today);
-  monday.setDate(today.getDate() - ((dow + 6) % 7)); // 월요일로 이동
-
-  return Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    return new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(
-      d
-    );
-  });
-}
-
 interface EntryWithMeta extends ScheduleEntry {
   recordId: string;
   recordSummary: string;
   recordMemo: string;
   uploadedAt: string;
+  programTitle?: string;
 }
 
 interface DayGroup {
-  date: string; // YYYY-MM-DD
+  date: string;
   entries: EntryWithMeta[];
 }
 
-/** entries[].date가 없으면 period 첫 날짜를 파싱해서 사용 */
+/** entries[].date가 없으면 period 첫 날짜, 없으면 업로드일 */
 function extractDate(entry: ScheduleEntry, record: ScheduleRecord): string {
   if (entry.date) return entry.date.slice(0, 10);
-  const details = record.details as { period?: string };
+  const details = record.details as { period?: string | null };
   if (details.period) {
-    const match = details.period.match(/\d{4}-\d{2}-\d{2}/);
+    const match = String(details.period).match(/\d{4}-\d{2}-\d{2}/);
     if (match) return match[0];
   }
   return record.uploadedAt.slice(0, 10);
 }
 
-/** 시간 문자열 "HH:MM" 또는 "HH:MM~HH:MM" 등에서 시작 시간 분 단위로 변환 */
 function parseStartMinutes(time?: string): number {
   if (!time) return 0;
   const m = time.match(/(\d{1,2}):(\d{2})/);
   if (!m) return 0;
-  return parseInt(m[1]) * 60 + parseInt(m[2]);
+  return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+}
+
+function collectEntryDates(records: ScheduleRecord[]): string[] {
+  const dates: string[] = [];
+  for (const record of records) {
+    const details = record.details as { entries?: ScheduleEntry[] };
+    const entries = Array.isArray(details.entries) ? details.entries : [];
+    if (entries.length === 0) {
+      dates.push(extractDate({}, record));
+    } else {
+      for (const e of entries) {
+        dates.push(extractDate(e, record));
+      }
+    }
+  }
+  return [...new Set(dates)].sort();
 }
 
 function buildDayGroups(
@@ -69,11 +72,14 @@ function buildDayGroups(
   weekDays.forEach((d) => map.set(d, []));
 
   for (const record of records) {
-    const details = record.details as { entries?: ScheduleEntry[] };
+    const details = record.details as {
+      entries?: ScheduleEntry[];
+      title?: string;
+    };
+    const programTitle = details.title;
     const entries = Array.isArray(details.entries) ? details.entries : [];
 
     if (entries.length === 0) {
-      // entries가 없으면 record 자체를 하나의 항목으로 취급
       const date = extractDate({}, record);
       if (weekSet.has(date)) {
         map.get(date)!.push({
@@ -82,9 +88,7 @@ function buildDayGroups(
           recordMemo: record.memo,
           uploadedAt: record.uploadedAt,
           date,
-          time: undefined,
-          person: undefined,
-          note: undefined,
+          programTitle,
         });
       }
     } else {
@@ -98,6 +102,7 @@ function buildDayGroups(
             recordSummary: record.summary,
             recordMemo: record.memo,
             uploadedAt: record.uploadedAt,
+            programTitle,
           });
         }
       }
@@ -112,8 +117,43 @@ function buildDayGroups(
   }));
 }
 
+function hasAnyInWeek(records: ScheduleRecord[], weekDays: string[]): boolean {
+  return buildDayGroups(records, weekDays).some((g) => g.entries.length > 0);
+}
+
+/**
+ * 이번 주(월~일)에 일정이 있으면 그 주를 쓰고,
+ * 없으면 가장 가까운 일정이 있는 주(오늘 이후 날짜 우선)를 표시.
+ */
+function pickDisplayWeekMonday(
+  records: ScheduleRecord[],
+  todaySeoul: string
+): { monday: string; isAlternateWeek: boolean } {
+  const mondayThis = mondayOfWeekContaining(todaySeoul);
+  const thisWeekDays = sevenDaysFromMonday(mondayThis);
+  if (hasAnyInWeek(records, thisWeekDays)) {
+    return { monday: mondayThis, isAlternateWeek: false };
+  }
+
+  const allDates = collectEntryDates(records);
+  if (allDates.length === 0) {
+    return { monday: mondayThis, isAlternateWeek: false };
+  }
+
+  const futureOrToday = allDates.find((d) => d >= todaySeoul);
+  const anchor = futureOrToday ?? allDates[allDates.length - 1];
+  const mondayAlt = mondayOfWeekContaining(anchor);
+  return {
+    monday: mondayAlt,
+    isAlternateWeek: mondayAlt !== mondayThis,
+  };
+}
+
 function EntryCard({ entry }: { entry: EntryWithMeta }) {
   const [open, setOpen] = useState(false);
+
+  const headline =
+    entry.programTitle ?? entry.note ?? entry.recordSummary;
 
   return (
     <div
@@ -121,27 +161,28 @@ function EntryCard({ entry }: { entry: EntryWithMeta }) {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      {/* 카드 본체 */}
       <div className="bg-white border border-gray-200 rounded-xl p-3 cursor-default hover:border-purple-300 hover:shadow-md transition-all">
         <p className="text-sm font-semibold text-gray-800 leading-snug">
-          {entry.note ?? entry.recordSummary}
+          {headline}
         </p>
         {entry.time && (
-          <p className="text-xs text-purple-600 font-medium mt-1">{entry.time}</p>
+          <p className="text-xs text-blue-600 font-medium mt-1">{entry.time}</p>
         )}
         {entry.person && (
-          <p className="text-xs text-gray-400 mt-0.5">{entry.person}</p>
+          <p className="text-xs text-gray-400 mt-0.5 line-clamp-2">{entry.person}</p>
         )}
       </div>
 
-      {/* 호버 상세 팝업 */}
       {open && (
         <div className="absolute z-50 left-0 top-full mt-1 w-64 bg-white border border-purple-200 rounded-xl shadow-xl p-4 text-xs text-gray-700 space-y-1.5">
-          <p className="font-semibold text-gray-900 text-sm">{entry.recordSummary}</p>
+          {entry.programTitle && (
+            <p className="font-semibold text-gray-900 text-sm">{entry.programTitle}</p>
+          )}
+          <p className="text-gray-600">{entry.recordSummary}</p>
           {entry.time && (
             <p>
               <span className="text-gray-400">시간</span>{" "}
-              <span className="text-purple-600 font-medium">{entry.time}</span>
+              <span className="text-blue-600 font-medium">{entry.time}</span>
             </p>
           )}
           {entry.person && (
@@ -154,7 +195,7 @@ function EntryCard({ entry }: { entry: EntryWithMeta }) {
               <span className="text-gray-400">메모</span> {entry.note}
             </p>
           )}
-          {entry.recordMemo && entry.recordMemo !== entry.note && (
+          {entry.recordMemo && (
             <p>
               <span className="text-gray-400">비고</span> {entry.recordMemo}
             </p>
@@ -173,20 +214,30 @@ export default function RecordingWeekView({
 }: {
   records: ScheduleRecord[];
 }) {
-  const weekDays = getThisWeekDays();
   const todayStr = getTodaySeoul();
+  const { monday, isAlternateWeek } = pickDisplayWeekMonday(records, todayStr);
+  const weekDays = sevenDaysFromMonday(monday);
   const dayGroups = buildDayGroups(records, weekDays);
 
   const hasAny = dayGroups.some((g) => g.entries.length > 0);
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-gray-700">이번 주 일정</h3>
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+        <h3 className="text-sm font-semibold text-gray-700">
+          {isAlternateWeek ? "일정이 있는 주" : "이번 주 일정"}
+        </h3>
         <span className="text-xs text-gray-400">
           {weekDays[0]} ~ {weekDays[6]}
         </span>
       </div>
+
+      {isAlternateWeek && hasAny && (
+        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 mb-4">
+          이번 주(월~일)에 등록된 일정이 없어, 가장 가까운 일정이 포함된 주를
+          표시했습니다.
+        </p>
+      )}
 
       {!hasAny ? (
         <div className="text-center py-16 text-gray-400">
@@ -205,7 +256,7 @@ export default function RecordingWeekView({
               />
             </svg>
           </div>
-          <p className="text-sm">이번 주 녹화일정이 없습니다.</p>
+          <p className="text-sm">표시할 녹화일정이 없습니다.</p>
           <p className="text-xs mt-1">
             <a href="/submit" className="text-blue-500 hover:underline">
               일정 업로드
@@ -214,11 +265,12 @@ export default function RecordingWeekView({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-7 gap-2 overflow-x-auto min-w-0">
+        <div className="grid grid-cols-7 gap-2 overflow-x-auto min-w-0 pb-1">
           {dayGroups.map((group, idx) => {
             const isToday = group.date === todayStr;
             const [, mo, da] = group.date.split("-").map(Number);
-            const dayLabel = DAY_LABELS[idx === 6 ? 0 : idx + 1]; // 월~일 순서
+            const dayLabel = DAY_LABELS[idx];
+            const isWeekend = idx >= 5;
 
             return (
               <div
@@ -229,25 +281,31 @@ export default function RecordingWeekView({
                     : "border-gray-200 bg-gray-50"
                 }`}
               >
-                {/* 요일 헤더 */}
                 <div className="flex items-center justify-between px-1">
                   <span
                     className={`text-xs font-bold ${
-                      isToday ? "text-blue-600" : "text-gray-500"
+                      isToday
+                        ? "text-blue-600"
+                        : isWeekend
+                          ? "text-red-500"
+                          : "text-gray-700"
                     }`}
                   >
                     {dayLabel}
                   </span>
                   <span
                     className={`text-xs ${
-                      isToday ? "text-blue-500 font-semibold" : "text-gray-400"
+                      isToday
+                        ? "text-blue-500 font-semibold"
+                        : isWeekend
+                          ? "text-red-400"
+                          : "text-gray-400"
                     }`}
                   >
                     {pad2(mo)}/{pad2(da)}
                   </span>
                 </div>
 
-                {/* 항목 목록 */}
                 {group.entries.length === 0 ? (
                   <p className="text-xs text-gray-300 text-center py-3">
                     일정 없음
