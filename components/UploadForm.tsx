@@ -75,7 +75,17 @@ export default function UploadForm() {
         body: formData,
       });
 
-      const result: SubmitApiResponse = await response.json();
+      const raw = await response.text();
+      let result: SubmitApiResponse;
+      try {
+        result = JSON.parse(raw) as SubmitApiResponse;
+      } catch {
+        setUploadState("error");
+        setErrorMessage(
+          `서버 응답을 처리할 수 없습니다 (${response.status}). ${raw.slice(0, 120)}`
+        );
+        return;
+      }
 
       if (result.success) {
         setLastSubmitHadImage(Boolean(selectedFile));
@@ -89,11 +99,19 @@ export default function UploadForm() {
         if (fileInputRef.current) fileInputRef.current.value = "";
       } else {
         setUploadState("error");
-        setErrorMessage(result.error ?? "알 수 없는 오류가 발생했습니다.");
+        setErrorMessage(
+          result.error ?? `요청 실패 (${response.status})`
+        );
       }
-    } catch {
+    } catch (err) {
       setUploadState("error");
-      setErrorMessage("네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      const msg =
+        err instanceof Error ? err.message : String(err);
+      setErrorMessage(
+        msg.includes("fetch") || msg.includes("Load failed") || msg.includes("NetworkError")
+          ? "네트워크 연결을 확인한 뒤 다시 시도해 주세요."
+          : msg
+      );
     }
   };
 

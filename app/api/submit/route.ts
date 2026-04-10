@@ -24,6 +24,9 @@ import type { WorkScheduleKind } from "@/lib/types";
 const MEMO_ONLY_MIN = 1;
 const MEMO_ONLY_MAX = 8000;
 
+/** PDF/AI 처리 시간 여유 (Vercel 등) */
+export const maxDuration = 60;
+
 export async function POST(request: NextRequest): Promise<NextResponse<SubmitApiResponse>> {
   try {
     const formData = await request.formData();

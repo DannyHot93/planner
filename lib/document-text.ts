@@ -1,11 +1,44 @@
-import mammoth from "mammoth";
-import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
+import fs from "fs";
+import path from "path";
+import { pathToFileURL } from "url";
 
 const MAX_CHARS = 120_000;
 
+function configurePdfWorker(GlobalWorkerOptions: { workerSrc: string }): void {
+  const local = path.join(
+    process.cwd(),
+    "node_modules/pdfjs-dist/build/pdf.worker.mjs"
+  );
+  if (fs.existsSync(local)) {
+    GlobalWorkerOptions.workerSrc = pathToFileURL(local).href;
+    return;
+  }
+  try {
+    const pkgPath = path.join(
+      process.cwd(),
+      "node_modules/pdfjs-dist/package.json"
+    );
+    const v = (JSON.parse(fs.readFileSync(pkgPath, "utf8")) as { version: string })
+      .version;
+    GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${v}/build/pdf.worker.mjs`;
+  } catch {
+    GlobalWorkerOptions.workerSrc =
+      "https://unpkg.com/pdfjs-dist@5.6.205/build/pdf.worker.mjs";
+  }
+}
+
 export async function extractTextFromPdfBuffer(buffer: Buffer): Promise<string> {
+  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  const { getDocument, GlobalWorkerOptions } = pdfjs;
+
+  configurePdfWorker(GlobalWorkerOptions);
+
   const uint8Array = new Uint8Array(buffer);
-  const loadingTask = getDocument({ data: uint8Array });
+  const loadingTask = getDocument({
+    data: uint8Array,
+    useSystemFonts: true,
+    verbosity: 0,
+  });
   const pdf = await loadingTask.promise;
   let fullText = "";
   for (let p = 1; p <= pdf.numPages; p++) {
@@ -28,6 +61,7 @@ export async function extractTextFromPdfBuffer(buffer: Buffer): Promise<string> 
 }
 
 export async function extractTextFromDocxBuffer(buffer: Buffer): Promise<string> {
+  const mammoth = (await import("mammoth")).default;
   const result = await mammoth.extractRawText({ buffer });
   const text = (result.value ?? "").trim();
   if (!text) {
