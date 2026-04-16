@@ -1,5 +1,193 @@
 [
   {
+    "id": "ws_1776316470092_3e49ab7e",
+    "type": "work-schedule",
+    "uploadedAt": "2026-04-16T05:14:30.093Z",
+    "memo": "",
+    "summary": "4월의 TV 방송 근무 일정에는 오전 근무(D)와 오후 근무(N)로 나뉘어 있으며, 오승민의 경우 일근 방식을 따릅니다.",
+    "details": {
+      "period": "2026-04-01 ~ 2026-04-30",
+      "entries": [
+        {
+          "date": "2026-04-01",
+          "person": "이상훈",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-01",
+          "person": "안대현",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-01",
+          "person": "김보성",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-01",
+          "person": "양윤길",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-01",
+          "person": "오승민",
+          "time": "일근",
+          "shift": null,
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "이상훈",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "안대현",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "김보성",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "양윤길",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "오승민",
+          "time": "일근",
+          "shift": null,
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "이상훈",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "안대현",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "김보성",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "양윤길",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "오승민",
+          "time": "일근",
+          "shift": null,
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "이상훈",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "안대현",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "김보성",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "양윤길",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "오승민",
+          "time": "HN",
+          "shift": null,
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "이상훈",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "안대현",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "김보성",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "양윤길",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "오승민",
+          "time": "일근",
+          "shift": null,
+          "note": null
+        }
+      ],
+      "scheduleKind": "production"
+    }
+  },
+  {
     "id": "ws_1776314933932_2bc0db8d",
     "type": "work-schedule",
     "uploadedAt": "2026-04-16T04:48:53.932Z",
