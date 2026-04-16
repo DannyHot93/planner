@@ -15,17 +15,6 @@
     }
   },
   {
-    "id": "vac_1776380428617_486913e2",
-    "type": "vacation",
-    "uploadedAt": "2026-04-16T23:00:28.617Z",
-    "memo": "",
-    "summary": "이미지는 휴가 일정이 아니라 '녹화의뢰서'로 보이며, 휴가 정보는 확인할 수 없습니다.",
-    "details": {
-      "period": null,
-      "entries": []
-    }
-  },
-  {
     "id": "vac_1776314194481_5e3e2981",
     "type": "vacation",
     "uploadedAt": "2026-04-16T04:36:34.481Z",
