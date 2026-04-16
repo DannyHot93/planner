@@ -1,5 +1,20 @@
 [
   {
+    "id": "vac_1776380891183_a2d0ebec",
+    "type": "vacation",
+    "uploadedAt": "2026-04-16T23:08:11.183Z",
+    "memo": "4월 18일 안대현 휴가",
+    "summary": "4월 18일 안대현 휴가",
+    "details": {
+      "entries": [
+        {
+          "note": "4월 18일 안대현 휴가",
+          "reason": "4월 18일 안대현 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1776380428617_486913e2",
     "type": "vacation",
     "uploadedAt": "2026-04-16T23:00:28.617Z",
