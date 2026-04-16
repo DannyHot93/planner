@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ws_1776311698751_0aa8a07f",
+    "type": "work-schedule",
+    "uploadedAt": "2026-04-16T03:54:58.752Z",
+    "memo": "",
+    "summary": "이 자료는 4월 중 TV 제작부의 근무표를 나타내며, 담당자별로 오전 및 오후 근무 일정이 표시되어 있습니다.",
+    "details": {
+      "period": "2026-04-01 ~ 2026-04-30",
+      "entries": [
+        {
+          "date": "2026-04-01",
+          "person": "이상훈",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "이상훈",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "이상훈",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "이상훈",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "오승민",
+          "time": "17:00 – 21:00",
+          "shift": null,
+          "note": "휴일 근무"
+        }
+      ],
+      "scheduleKind": "production"
+    }
+  }
+]
