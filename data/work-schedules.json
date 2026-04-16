@@ -1,5 +1,193 @@
 [
   {
+    "id": "ws_1776314933932_2bc0db8d",
+    "type": "work-schedule",
+    "uploadedAt": "2026-04-16T04:48:53.932Z",
+    "memo": "",
+    "summary": "이 근무표는 월요일부터 일요일까지 일정을 포함하는 4월의 근무 계획을 보여줍니다.",
+    "details": {
+      "period": "2026-04-01 ~ 2026-04-30",
+      "entries": [
+        {
+          "date": "2026-04-01",
+          "person": "이 상 훈",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-01",
+          "person": "안 대 현",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-01",
+          "person": "김 보 성",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-01",
+          "person": "양 윤 길",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-01",
+          "person": "오 승 민",
+          "time": null,
+          "shift": null,
+          "note": "일근"
+        },
+        {
+          "date": "2026-04-02",
+          "person": "이 상 훈",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "안 대 현",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "김 보 성",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "양 윤 길",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-02",
+          "person": "오 승 민",
+          "time": null,
+          "shift": null,
+          "note": "일근"
+        },
+        {
+          "date": "2026-04-03",
+          "person": "이 상 훈",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "안 대 현",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "김 보 성",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "양 윤 길",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-03",
+          "person": "오 승 민",
+          "time": null,
+          "shift": null,
+          "note": "일근"
+        },
+        {
+          "date": "2026-04-04",
+          "person": "이 상 훈",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "안 대 현",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "김 보 성",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "양 윤 길",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-04",
+          "person": "오 승 민",
+          "time": "17:00 – 21:00",
+          "shift": "HN",
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "이 상 훈",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "안 대 현",
+          "time": "13:00 – 21:00",
+          "shift": "N",
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "김 보 성",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "양 윤 길",
+          "time": "06:00 – 14:00",
+          "shift": "D",
+          "note": null
+        },
+        {
+          "date": "2026-04-05",
+          "person": "오 승 민",
+          "time": null,
+          "shift": null,
+          "note": "일근"
+        }
+      ],
+      "scheduleKind": "production"
+    }
+  },
+  {
     "id": "ws_1776314162664_5c9ce2d5",
     "type": "work-schedule",
     "uploadedAt": "2026-04-16T04:36:02.664Z",
