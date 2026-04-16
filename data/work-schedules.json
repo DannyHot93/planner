@@ -1,5 +1,218 @@
 [
   {
+    "id": "ws_1776312909526_be6eb61b",
+    "type": "work-schedule",
+    "uploadedAt": "2026-04-16T04:15:09.526Z",
+    "memo": "",
+    "summary": "2026년 4월 MD 근무 및 휴가 일정표입니다.",
+    "details": {
+      "period": "2026-04-01 ~ 2026-04-30",
+      "entries": [
+        {
+          "date": "2026-04-01",
+          "person": "조기완",
+          "time": null,
+          "note": "비"
+        },
+        {
+          "date": "2026-04-01",
+          "person": "김정섭",
+          "time": null,
+          "note": "야"
+        },
+        {
+          "date": "2026-04-01",
+          "person": "박민호",
+          "time": null,
+          "note": "휴"
+        },
+        {
+          "date": "2026-04-01",
+          "person": "임재석",
+          "time": null,
+          "note": "주"
+        },
+        {
+          "date": "2026-04-02",
+          "person": "조기완",
+          "time": null,
+          "note": "비"
+        },
+        {
+          "date": "2026-04-02",
+          "person": "김정섭",
+          "time": null,
+          "note": "주"
+        },
+        {
+          "date": "2026-04-02",
+          "person": "박민호",
+          "time": null,
+          "note": "비"
+        },
+        {
+          "date": "2026-04-02",
+          "person": "임재석",
+          "time": null,
+          "note": "야"
+        },
+        {
+          "date": "2026-04-03",
+          "person": "조기완",
+          "time": null,
+          "note": "휴"
+        },
+        {
+          "date": "2026-04-03",
+          "person": "김정섭",
+          "time": null,
+          "note": "주"
+        },
+        {
+          "date": "2026-04-03",
+          "person": "박민호",
+          "time": null,
+          "note": "비"
+        },
+        {
+          "date": "2026-04-03",
+          "person": "임재석",
+          "time": null,
+          "note": "비"
+        },
+        {
+          "date": "2026-04-04",
+          "person": "조기완",
+          "time": null,
+          "note": "비"
+        },
+        {
+          "date": "2026-04-04",
+          "person": "김정섭",
+          "time": null,
+          "note": "야"
+        },
+        {
+          "date": "2026-04-04",
+          "person": "박민호",
+          "time": null,
+          "note": "휴"
+        },
+        {
+          "date": "2026-04-04",
+          "person": "임재석",
+          "time": null,
+          "note": "주"
+        },
+        {
+          "date": "2026-04-05",
+          "person": "조기완",
+          "time": null,
+          "note": "휴"
+        },
+        {
+          "date": "2026-04-05",
+          "person": "김정섭",
+          "time": null,
+          "note": "주"
+        },
+        {
+          "date": "2026-04-05",
+          "person": "박민호",
+          "time": null,
+          "note": "비"
+        },
+        {
+          "date": "2026-04-05",
+          "person": "임재석",
+          "time": null,
+          "note": "비"
+        },
+        {
+          "date": "2026-04-06",
+          "person": "조기완",
+          "time": null,
+          "note": "휴"
+        },
+        {
+          "date": "2026-04-06",
+          "person": "김정섭",
+          "time": null,
+          "note": "비"
+        },
+        {
+          "date": "2026-04-06",
+          "person": "박민호",
+          "time": null,
+          "note": "주"
+        },
+        {
+          "date": "2026-04-06",
+          "person": "임재석",
+          "time": null,
+          "note": "야"
+        }
+      ],
+      "weekShiftVacationRows": [
+        {
+          "vacationPerson": "조기완",
+          "vacationDate": "2026-04-06",
+          "substituteDay": "김정섭",
+          "substituteNight": "임재석"
+        },
+        {
+          "vacationPerson": "조기완",
+          "vacationDate": "2026-04-10",
+          "substituteDay": "김정섭",
+          "substituteNight": "임재석"
+        },
+        {
+          "vacationPerson": "조기완",
+          "vacationDate": "2026-04-11",
+          "substituteDay": "김정섭",
+          "substituteNight": "임재석"
+        },
+        {
+          "vacationPerson": "김정섭",
+          "vacationDate": "2026-04-24",
+          "substituteDay": "박민호",
+          "substituteNight": "조기완"
+        },
+        {
+          "vacationPerson": "박민호",
+          "vacationDate": "2026-04-01",
+          "substituteDay": "임재석",
+          "substituteNight": "김정섭"
+        },
+        {
+          "vacationPerson": "박민호",
+          "vacationDate": "2026-04-04",
+          "substituteDay": "임재석",
+          "substituteNight": "김정섭"
+        },
+        {
+          "vacationPerson": "박민호",
+          "vacationDate": "2026-04-05",
+          "substituteDay": "임재석",
+          "substituteNight": "김정섭"
+        },
+        {
+          "vacationPerson": "박민호",
+          "vacationDate": "2026-04-08",
+          "substituteDay": "임재석",
+          "substituteNight": "김정섭"
+        },
+        {
+          "vacationPerson": "임재석",
+          "vacationDate": "2026-04-21",
+          "substituteDay": "조기완",
+          "substituteNight": "박민호"
+        }
+      ],
+      "scheduleKind": "week-shift"
+    }
+  },
+  {
     "id": "ws_1776311698751_0aa8a07f",
     "type": "work-schedule",
     "uploadedAt": "2026-04-16T03:54:58.752Z",
