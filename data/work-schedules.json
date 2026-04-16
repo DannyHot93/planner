@@ -246,21 +246,6 @@
     }
   },
   {
-    "id": "ws_1776314162664_5c9ce2d5",
-    "type": "work-schedule",
-    "uploadedAt": "2026-04-16T04:36:02.664Z",
-    "memo": "안대현 4월 15일 휴가",
-    "summary": "안대현 4월 15일 휴가",
-    "details": {
-      "scheduleKind": "office",
-      "entries": [
-        {
-          "note": "안대현 4월 15일 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "ws_1776311698751_0aa8a07f",
     "type": "work-schedule",
     "uploadedAt": "2026-04-16T03:54:58.752Z",
