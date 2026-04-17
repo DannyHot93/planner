@@ -37,10 +37,7 @@ export default function ScheduleListClient({
 
   return (
     <div className="space-y-10">
-      <section aria-labelledby="dashboard-heading" className="space-y-4">
-        <h2 id="dashboard-heading" className="text-base font-bold text-gray-900">
-          이번 주 · 휴가 한눈에
-        </h2>
+      <section className="space-y-4" aria-label="사무실·제작 일정과 휴가 요약">
         <HomeDashboardView
           officeRecords={officeRecords}
           productionRecords={productionRecords}

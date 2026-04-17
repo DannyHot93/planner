@@ -32,7 +32,6 @@ export default function HomeDashboardView({
               <h2 id="dash-this-week-heading" className="text-sm font-bold text-blue-950 tracking-tight">
                 이번 주 일정
               </h2>
-              <p className="text-[11px] text-blue-700/80 mt-0.5">사무실일정 · 제작일정 (월~일 기준)</p>
             </div>
           </div>
           <div className="flex flex-col gap-4">
@@ -71,7 +70,6 @@ export default function HomeDashboardView({
               <h2 id="dash-other-week-heading" className="text-sm font-bold text-slate-900 tracking-tight">
                 이번 주 외 일정
               </h2>
-              <p className="text-[11px] text-slate-600 mt-0.5">사무실일정 · 제작일정</p>
             </div>
           </div>
           <div className="flex flex-col gap-4">
