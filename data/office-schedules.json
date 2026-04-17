@@ -6,13 +6,14 @@
     "memo": "테스트일정2 · 2026-04-14",
     "summary": "테스트2 · 2026-04-14",
     "details": {
-      "title": "테스트일정2",
-      "program": "테스트일정2",
+      "title": "테스트",
+      "program": "테스트",
       "scheduleType": "office",
       "entries": [
         {
           "date": "2026-04-14",
-          "place": "사무실"
+          "place": "사무실",
+          "time": ""
         }
       ]
     }
