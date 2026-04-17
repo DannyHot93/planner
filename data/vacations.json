@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "id": "vac_1776390439422_1cd06aec",
+    "type": "vacation",
+    "uploadedAt": "2026-04-17T01:47:19.422Z",
+    "memo": "오승민 · 2026-04-17",
+    "summary": "오승민 · 2026-04-17",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-04-17 ~ 2026-04-17",
+      "entries": [
+        {
+          "date": "2026-04-17",
+          "person": "오승민"
+        }
+      ]
+    }
+  }
+]
