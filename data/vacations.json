@@ -1,18 +1,1 @@
-[
-  {
-    "id": "vac_1776384702137_b4247d6e",
-    "type": "vacation",
-    "uploadedAt": "2026-04-17T00:11:42.137Z",
-    "memo": "안대현 4월 30일 휴가",
-    "summary": "안대현 4월 30일 휴가",
-    "details": {
-      "vacationKind": "production",
-      "entries": [
-        {
-          "note": "안대현 4월 30일 휴가",
-          "reason": "안대현 4월 30일 휴가"
-        }
-      ]
-    }
-  }
-]
+[]
