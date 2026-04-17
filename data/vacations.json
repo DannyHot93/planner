@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1776413340071_121bafc0",
+    "type": "vacation",
+    "uploadedAt": "2026-04-17T08:09:00.071Z",
+    "memo": "오후 반차",
+    "summary": "박현서 · 2026-04-15",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-04-15 ~ 2026-04-15",
+      "entries": [
+        {
+          "date": "2026-04-15",
+          "person": "박현서",
+          "reason": "구분: 연차휴가 · 비고: 오후 반차",
+          "note": "구분: 연차휴가 · 비고: 오후 반차"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1776413338790_bc3f8694",
     "type": "vacation",
     "uploadedAt": "2026-04-17T08:08:58.791Z",
