@@ -236,8 +236,32 @@ export function normalizeRecord(
   const prefix = TYPE_PREFIX[documentType];
   const id = `${prefix}_${timestamp}_${uuidv4().slice(0, 8)}`;
 
+  const seoulTodayYmd = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Seoul",
+  }).format(new Date());
+
   let details: AiAnalysisResult["details"] = aiResult.details;
-  if (documentType === "office-schedule" || documentType === "production-schedule" || documentType === "vacation") {
+  if (documentType === "office-schedule" || documentType === "production-schedule") {
+    const d = aiResult.details as Record<string, unknown>;
+    if (Array.isArray(d.entries)) {
+      details = {
+        ...d,
+        entries: d.entries.map((e) => {
+          if (!e || typeof e !== "object") return e;
+          const raw = (e as { date?: string | null }).date;
+          const s = raw == null ? "" : String(raw).trim();
+          if (s === "" || s === "null") {
+            return { ...(e as object), date: seoulTodayYmd };
+          }
+          const ymd = toSeoulDateYmd(s) || s.slice(0, 10);
+          if (/^\d{4}-\d{2}-\d{2}$/.test(ymd)) {
+            return { ...(e as object), date: ymd };
+          }
+          return { ...(e as object), date: seoulTodayYmd };
+        }),
+      } as AiAnalysisResult["details"];
+    }
+  } else if (documentType === "vacation") {
     const d = aiResult.details as Record<string, unknown>;
     if (Array.isArray(d.entries)) {
       details = {

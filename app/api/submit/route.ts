@@ -216,22 +216,18 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
       const category = getWorkScheduleFileCategory(imageFile);
 
       if (category === "image") {
-        const imageBase64 = buffer.toString("base64");
         const mimeType = inferImageMimeType(imageFile);
-        const imageDataUrl = `data:${mimeType};base64,${imageBase64}`;
-        const kindLabel = workScheduleKind === "production" ? "제작 근무표" : "사무실 근무표";
-        aiResult = validateAiResult(
-          {
-            summary: `${kindLabel} (이미지)`,
-            details: {
-              scheduleKind: workScheduleKind,
-              imageDataUrl,
-              imagePreviewSource: "uploaded-image" as const,
-              entries: [],
-            },
-          },
-          documentType
-        );
+        const { toOpenAiVisionInput } = await import("@/lib/image-for-openai");
+        const { base64: visionBase64, mimeType: visionMime } =
+          await toOpenAiVisionInput(buffer, mimeType);
+        const raw = await analyzeImage(visionBase64, visionMime, "work-schedule", {
+          workScheduleKind,
+        });
+        aiResult = validateAiResult(raw, documentType);
+        const imageDataUrl = `data:${mimeType};base64,${buffer.toString("base64")}`;
+        const d = aiResult.details as Record<string, unknown>;
+        d.imageDataUrl = imageDataUrl;
+        d.imagePreviewSource = "uploaded-image";
       } else if (category === "pdf") {
         const { extractTextFromPdfBuffer, renderPdfFirstPageDataUrl } =
           await import("@/lib/document-text");

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, ChangeEvent, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { DocumentType, SubmitApiResponse, VacationKind } from "@/lib/types";
 
 /** 휴가·녹화·주조 등 이미지 전용 업로드 */
@@ -19,6 +20,7 @@ type UploadState = "idle" | "uploading" | "success" | "error";
 type WorkScheduleKind = "office" | "production" | "casting";
 
 export default function UploadForm() {
+  const router = useRouter();
   const [documentType, setDocumentType] = useState<DocumentType>("work-schedule");
   const [workScheduleKind, setWorkScheduleKind] = useState<WorkScheduleKind>("office");
   const [vacationKind, setVacationKind] = useState<VacationKind>("office");
@@ -161,6 +163,7 @@ export default function UploadForm() {
       if (result.success) {
         setLastSubmitHadImage(Boolean(selectedFile));
         setLastSubmitDocType(submitDocType as DocumentType);
+        router.refresh();
         if (isOfficeSchedule || isProductionSchedule) {
           setLastRecordingWeek(result.recordingWeek ?? null);
           setLastRecordingEffectiveDate(result.recordingEffectiveDate ?? null);
