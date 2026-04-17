@@ -23,7 +23,6 @@ export default function UploadForm() {
   const [workScheduleKind, setWorkScheduleKind] = useState<WorkScheduleKind>("office");
   const [vacationKind, setVacationKind] = useState<VacationKind>("office");
   const [memo, setMemo] = useState("");
-  const [scheduleType, setScheduleType] = useState<"office" | "production">("production");
   const [recordingProgram, setRecordingProgram] = useState("");
   const [recordingDate, setRecordingDate] = useState("");
   const [recordingTime, setRecordingTime] = useState("");
@@ -130,7 +129,10 @@ export default function UploadForm() {
         formData.append("recordingTime", recordingTime);
         formData.append("recordingPlace", recordingPlace);
         formData.append("recordingNote", recordingNote);
-        formData.append("scheduleType", scheduleType);
+        formData.append(
+          "scheduleType",
+          documentType === "office-schedule" ? "office" : "production"
+        );
       }
       if (documentType === "vacation") {
         formData.append("vacationPerson", vacationPerson);
@@ -565,32 +567,6 @@ export default function UploadForm() {
 
           {!isCasting && (isOfficeSchedule || isProductionSchedule) && (
             <div className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setScheduleType("office")}
-                    className={`flex-1 px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-all ${
-                      scheduleType === "office"
-                        ? "border-blue-500 bg-blue-50 text-blue-800"
-                        : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
-                    }`}
-                  >
-                    사무실
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setScheduleType("production")}
-                    className={`flex-1 px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-all ${
-                      scheduleType === "production"
-                        ? "border-indigo-500 bg-indigo-50 text-indigo-800"
-                        : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
-                    }`}
-                  >
-                    제작
-                  </button>
-                </div>
-              </div>
               <p className="text-xs text-gray-500">
                 이미지 없이 등록할 때는 <strong>프로그램</strong>과 <strong>날짜</strong>가 필요합니다.
                 이미지를 함께 올리면 AI 분석에 더해 아래 내용이 일정에 반영됩니다.

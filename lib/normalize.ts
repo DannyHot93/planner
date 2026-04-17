@@ -243,10 +243,12 @@ export function normalizeRecord(
       details = {
         ...d,
         entries: d.entries.map((e) => {
-          if (!e || typeof e !== "object" || !("date" in e)) return e;
-          const raw = (e as { date?: string }).date;
-          if (typeof raw !== "string" || !raw.trim()) return e;
-          const ymd = toSeoulDateYmd(raw);
+          if (!e || typeof e !== "object") return e;
+          const raw = (e as { date?: string | null }).date;
+          if (raw == null) return e;
+          const s = String(raw).trim();
+          if (s === "" || s === "null") return e;
+          const ymd = toSeoulDateYmd(s);
           return ymd ? { ...(e as object), date: ymd } : e;
         }),
       } as AiAnalysisResult["details"];

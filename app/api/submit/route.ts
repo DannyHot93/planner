@@ -35,6 +35,7 @@ import {
   classifyRecordingWeekScope,
   getEffectiveRecordingYmd,
 } from "@/lib/recording-week";
+import { enrichRecordingScheduleAiResult } from "@/lib/recording-schedule-enrich";
 
 const MEMO_ONLY_MIN = 1;
 const MEMO_ONLY_MAX = 8000;
@@ -114,7 +115,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
             { status: 400 }
           );
         }
-        const scheduleType = (formData.get("scheduleType") as string | null) === "office" ? "office" : "production";
+        const scheduleTypeNoImage =
+          documentType === "office-schedule" ? "office" : "production";
         aiResult = validateAiResult(
           buildRecordingFormAiResult(
             recordingForm.program,
@@ -122,7 +124,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
             recordingForm.time,
             recordingForm.place,
             recordingForm.note,
-            scheduleType
+            scheduleTypeNoImage
           ),
           documentType
         );
@@ -264,6 +266,9 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
         documentType as Exclude<typeof documentType, "casting-schedule">
       );
       aiResult = validateAiResult(aiRawResult, documentType);
+      if (documentType === "office-schedule" || documentType === "production-schedule") {
+        aiResult = enrichRecordingScheduleAiResult(aiResult, documentType);
+      }
       if (documentType === "vacation") {
         const d = aiResult.details as Record<string, unknown>;
         d.vacationKind = vacationKind;
