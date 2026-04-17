@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1776403444447_a89fdcfb",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-17T05:24:04.448Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 4월 월간뉴스분석 녹화 일정으로, 4월 21일 오후 2시 20분부터 3시 30분까지 4층 뉴스룸에서 진행됩니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-04-21",
+          "time": "14:20-15:30",
+          "place": "4층 뉴스룸",
+          "person": "담당PD 설경철",
+          "note": "4월 월간뉴스분석 / 패널 4명 출연 / 좌 2명, 우 2명 / 중계자: 스튜디오"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1776403235113_1d591b07",
     "type": "production-schedule",
     "uploadedAt": "2026-04-17T05:20:35.114Z",
