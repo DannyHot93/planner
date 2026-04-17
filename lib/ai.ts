@@ -1,9 +1,15 @@
 import OpenAI from "openai";
-import { DocumentType, AiAnalysisResult, WorkScheduleKind } from "./types";
+import { DocumentType, AiAnalysisResult, WorkScheduleKind, CastingEntry } from "./types";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+/** Chat Completions 기본 모델. `OPENAI_MODEL`로 변경 가능. */
+const CHAT_MODEL = process.env.OPENAI_MODEL?.trim() || "gpt-5.4";
+
+/** 주조 근무표 이미지 분석. 미지정 시 `CHAT_MODEL`과 동일 (`OPENAI_CASTING_MODEL`로만 분리 지정 가능). */
+const CASTING_MODEL = process.env.OPENAI_CASTING_MODEL?.trim() || CHAT_MODEL;
 
 const OFFICE_WORK_PROMPT = `이 자료는 사무실 근무표입니다. 표에서 근무 일정 정보를 추출하여 아래 JSON 형식으로만 응답하세요.
 
@@ -53,7 +59,7 @@ export function buildWorkSchedulePrompt(kind: WorkScheduleKind): string {
   return kind === "production" ? PRODUCTION_WORK_PROMPT : OFFICE_WORK_PROMPT;
 }
 
-const PROMPTS: Record<DocumentType, string> = {
+const PROMPTS: Record<Exclude<DocumentType, "casting-schedule">, string> = {
   "work-schedule": OFFICE_WORK_PROMPT,
 
   vacation: `이 이미지는 휴가 일정입니다. 이미지에서 휴가 정보를 추출하여 아래 JSON 형식으로 응답하세요.
@@ -86,6 +92,7 @@ const PROMPTS: Record<DocumentType, string> = {
       {
         "date": "날짜 (YYYY-MM-DD)",
         "time": "녹화 시간 (예: 14:00-16:00)",
+        "place": "스튜디오·장소",
         "person": "담당자/출연자",
         "note": "특이사항"
       }
@@ -96,13 +103,88 @@ const PROMPTS: Record<DocumentType, string> = {
 이미지에서 읽을 수 없는 필드는 null로 설정하세요. 반드시 유효한 JSON만 응답하세요.`,
 };
 
+const CASTING_SCHEDULE_PROMPT = `이 이미지는 주조 근무표입니다. 이미지 하단에 있는 휴가 관련 표(휴가자, 휴가일, 대근자(주간), 대근자(야간) 컬럼이 포함된 테이블)만 찾아서 정보를 추출하세요.
+
+추출 규칙:
+- "휴가자" 또는 "성명" 컬럼: person 필드
+- "휴가일" 또는 "날짜" 컬럼: date 필드 (YYYY-MM-DD 형식으로 변환)
+  - 숫자만 있는 경우(예: 7, 14, 21) → 그 달의 '일자'로 해석 (예: 근무표 기간이 4월이면 "2026-04-07")
+  - 연도가 없으면 근무표 상단 기간(period)의 연월을 기준으로 보완
+- "대근자(주간)" 또는 "주간대근" 컬럼: dayReplacer 필드
+- "대근자(야간)" 또는 "야간대근" 컬럼: nightReplacer 필드
+- 해당 셀이 비어있으면 null
+
+아래 JSON 형식으로만 응답하세요:
+
+{
+  "summary": "주조 근무표 요약 (기간 포함, 한 문장)",
+  "details": {
+    "period": "근무표 전체 기간 (예: 2026-04-07 ~ 2026-04-11, 상단에서 찾을 것)",
+    "entries": [
+      {
+        "person": "휴가자 이름",
+        "date": "휴가 날짜 (YYYY-MM-DD)",
+        "dayReplacer": "대근자(주간) 이름 또는 null",
+        "nightReplacer": "대근자(야간) 이름 또는 null",
+        "note": "특이사항 또는 null"
+      }
+    ]
+  }
+}
+
+하단 휴가 테이블이 없거나 비어있으면 entries를 빈 배열로 반환하세요. 반드시 유효한 JSON만 응답하세요.`;
+
+export interface CastingAiResult {
+  summary: string;
+  details: {
+    period?: string;
+    entries: CastingEntry[];
+  };
+}
+
+export async function analyzeCastingScheduleImage(
+  imageBase64: string,
+  mimeType: string
+): Promise<CastingAiResult> {
+  const response = await openai.chat.completions.create({
+    model: CASTING_MODEL,
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "image_url",
+            image_url: {
+              url: `data:${mimeType};base64,${imageBase64}`,
+              detail: "high",
+            },
+          },
+          {
+            type: "text",
+            text: CASTING_SCHEDULE_PROMPT,
+          },
+        ],
+      },
+    ],
+    response_format: { type: "json_object" },
+    max_completion_tokens: 4096,
+  });
+
+  const content = response.choices[0]?.message?.content;
+  if (!content) {
+    throw new Error("AI API에서 응답을 받지 못했습니다.");
+  }
+
+  return JSON.parse(content) as CastingAiResult;
+}
+
 export async function analyzeWorkScheduleFromText(
   rawText: string,
   kind: WorkScheduleKind
 ): Promise<AiAnalysisResult> {
   const prompt = buildWorkSchedulePrompt(kind);
   const response = await openai.chat.completions.create({
-    model: "gpt-4o",
+    model: CHAT_MODEL,
     messages: [
       {
         role: "user",
@@ -110,7 +192,7 @@ export async function analyzeWorkScheduleFromText(
       },
     ],
     response_format: { type: "json_object" },
-    max_tokens: 4000,
+    max_completion_tokens: 4000,
   });
 
   const content = response.choices[0]?.message?.content;
@@ -123,7 +205,7 @@ export async function analyzeWorkScheduleFromText(
 export async function analyzeImage(
   imageBase64: string,
   mimeType: string,
-  documentType: DocumentType,
+  documentType: Exclude<DocumentType, "casting-schedule">,
   options?: { workScheduleKind?: WorkScheduleKind }
 ): Promise<AiAnalysisResult> {
   let prompt = PROMPTS[documentType];
@@ -132,7 +214,7 @@ export async function analyzeImage(
   }
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4o",
+    model: CHAT_MODEL,
     messages: [
       {
         role: "user",
@@ -152,7 +234,7 @@ export async function analyzeImage(
       },
     ],
     response_format: { type: "json_object" },
-    max_tokens: 2000,
+    max_completion_tokens: 4096,
   });
 
   const content = response.choices[0]?.message?.content;

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { deleteRecordByIdFromGitHub } from "@/lib/github";
 import { getFilePathFromRecordId } from "@/lib/normalize";
 
@@ -33,6 +34,7 @@ export async function DELETE(
       );
     }
 
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("DELETE /api/records/[id]:", error);

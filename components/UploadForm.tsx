@@ -3,6 +3,10 @@
 import { useState, useRef, ChangeEvent, FormEvent } from "react";
 import { DocumentType, SubmitApiResponse } from "@/lib/types";
 
+/** 휴가·녹화·주조 등 이미지 전용 업로드 */
+const IMAGE_ACCEPT =
+  "image/jpeg,image/png,image/webp,image/gif,image/bmp,image/x-ms-bmp,.bmp";
+
 const DOCUMENT_TYPES: { value: DocumentType; label: string; description: string }[] = [
   { value: "work-schedule", label: "근무표", description: "직원 근무 일정" },
   { value: "vacation", label: "휴가", description: "휴가 신청 및 일정" },
@@ -11,18 +15,29 @@ const DOCUMENT_TYPES: { value: DocumentType; label: string; description: string 
 
 type UploadState = "idle" | "uploading" | "success" | "error";
 
-type WorkScheduleKind = "office" | "production";
+type WorkScheduleKind = "office" | "production" | "casting";
 
 export default function UploadForm() {
   const [documentType, setDocumentType] = useState<DocumentType>("work-schedule");
   const [workScheduleKind, setWorkScheduleKind] = useState<WorkScheduleKind>("office");
+  const [vacationKind, setVacationKind] = useState<"office" | "production">("office");
   const [memo, setMemo] = useState("");
+  const [recordingProgram, setRecordingProgram] = useState("");
+  const [recordingDate, setRecordingDate] = useState("");
+  const [recordingTime, setRecordingTime] = useState("");
+  const [recordingPlace, setRecordingPlace] = useState("");
+  const [recordingNote, setRecordingNote] = useState("");
+  const [vacationPerson, setVacationPerson] = useState("");
+  const [vacationDateStart, setVacationDateStart] = useState("");
+  const [vacationDateEnd, setVacationDateEnd] = useState("");
+  const [vacationNote, setVacationNote] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploadState, setUploadState] = useState<UploadState>("idle");
   const [resultSummary, setResultSummary] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [lastSubmitHadImage, setLastSubmitHadImage] = useState(false);
+  const [lastSubmitDocType, setLastSubmitDocType] = useState<DocumentType | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +49,9 @@ export default function UploadForm() {
     setResultSummary(null);
     setErrorMessage(null);
 
-    if (file.type.startsWith("image/")) {
+    const looksLikeImage =
+      file.type.startsWith("image/") || /\.bmp$/i.test(file.name);
+    if (looksLikeImage) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);
@@ -45,13 +62,33 @@ export default function UploadForm() {
     }
   };
 
-  const canSubmit = Boolean(selectedFile) || memo.trim().length > 0;
+  const isCasting = documentType === "work-schedule" && workScheduleKind === "casting";
+
+  const recordingFormReady =
+    recordingProgram.trim().length > 0 && recordingDate.trim().length > 0;
+
+  const vacationFormReady =
+    vacationPerson.trim().length > 0 && vacationDateStart.trim().length > 0;
+
+  const canSubmit = isCasting
+    ? Boolean(selectedFile)
+    : documentType === "recording"
+      ? Boolean(selectedFile) || recordingFormReady
+      : documentType === "vacation"
+        ? Boolean(selectedFile) || vacationFormReady
+        : Boolean(selectedFile) || memo.trim().length > 0;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!canSubmit) {
-      setErrorMessage("이미지를 선택하거나 메모를 입력해 주세요.");
+      setErrorMessage(
+        documentType === "recording" && !selectedFile
+          ? "프로그램과 날짜를 입력하거나, 이미지를 선택해 주세요."
+          : documentType === "vacation" && !selectedFile
+            ? "휴가자·시작일을 입력하거나, 이미지를 선택해 주세요."
+            : "이미지를 선택하거나 메모를 입력해 주세요."
+      );
       return;
     }
 
@@ -64,10 +101,28 @@ export default function UploadForm() {
       if (selectedFile) {
         formData.append("image", selectedFile);
       }
-      formData.append("documentType", documentType);
+      // 주조 근무표는 실제 API에 casting-schedule 타입으로 전송
+      const submitDocType = isCasting ? "casting-schedule" : documentType;
+      formData.append("documentType", submitDocType);
       formData.append("memo", memo);
-      if (documentType === "work-schedule") {
+      if (documentType === "work-schedule" && !isCasting) {
         formData.append("workScheduleKind", workScheduleKind);
+      }
+      if (documentType === "vacation") {
+        formData.append("vacationKind", vacationKind);
+      }
+      if (documentType === "recording") {
+        formData.append("recordingProgram", recordingProgram);
+        formData.append("recordingDate", recordingDate);
+        formData.append("recordingTime", recordingTime);
+        formData.append("recordingPlace", recordingPlace);
+        formData.append("recordingNote", recordingNote);
+      }
+      if (documentType === "vacation") {
+        formData.append("vacationPerson", vacationPerson);
+        formData.append("vacationDateStart", vacationDateStart);
+        formData.append("vacationDateEnd", vacationDateEnd);
+        formData.append("vacationNote", vacationNote);
       }
 
       const response = await fetch("/api/submit", {
@@ -89,6 +144,7 @@ export default function UploadForm() {
 
       if (result.success) {
         setLastSubmitHadImage(Boolean(selectedFile));
+        setLastSubmitDocType(submitDocType as DocumentType);
         setUploadState("success");
         setResultSummary(
           result.summary ?? (selectedFile ? "처리 완료" : "메모가 저장되었습니다.")
@@ -96,6 +152,10 @@ export default function UploadForm() {
         setSelectedFile(null);
         setPreviewUrl(null);
         setMemo("");
+        setVacationPerson("");
+        setVacationDateStart("");
+        setVacationDateEnd("");
+        setVacationNote("");
         if (fileInputRef.current) fileInputRef.current.value = "";
       } else {
         setUploadState("error");
@@ -122,6 +182,16 @@ export default function UploadForm() {
     setSelectedFile(null);
     setPreviewUrl(null);
     setMemo("");
+    setRecordingProgram("");
+    setRecordingDate("");
+    setRecordingTime("");
+    setRecordingPlace("");
+    setRecordingNote("");
+    setVacationPerson("");
+    setVacationDateStart("");
+    setVacationDateEnd("");
+    setVacationNote("");
+    setLastSubmitDocType(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -137,12 +207,26 @@ export default function UploadForm() {
           <h3 className="text-xl font-semibold text-green-800 mb-2">업로드 완료</h3>
           <p className="text-green-700 mb-1 text-sm">
             {lastSubmitHadImage
-              ? "AI 분석 결과가 GitHub에 저장되었습니다."
-              : "메모 내용이 GitHub에 저장되었습니다."}
+              ? lastSubmitDocType === "work-schedule"
+                ? "근무표 이미지가 저장되었습니다."
+                : "AI 분석 결과가 GitHub에 저장되었습니다."
+              : lastSubmitDocType === "recording"
+                ? "녹화 일정이 GitHub에 저장되었습니다."
+                : lastSubmitDocType === "vacation"
+                  ? "휴가 일정이 GitHub에 저장되었습니다."
+                  : "메모 내용이 GitHub에 저장되었습니다."}
           </p>
           {resultSummary && (
             <div className="mt-4 bg-white rounded-xl p-4 border border-green-100 text-left">
-              <p className="text-xs text-gray-500 mb-1 font-medium uppercase tracking-wide">AI 요약</p>
+              <p className="text-xs text-gray-500 mb-1 font-medium uppercase tracking-wide">
+                {lastSubmitDocType === "work-schedule" && lastSubmitHadImage
+                  ? "등록 정보"
+                  : lastSubmitDocType === "recording" && !lastSubmitHadImage
+                    ? "등록 요약"
+                    : lastSubmitDocType === "vacation" && !lastSubmitHadImage
+                      ? "등록 요약"
+                      : "AI 요약"}
+              </p>
               <p className="text-gray-800 text-sm">{resultSummary}</p>
             </div>
           )}
@@ -160,7 +244,7 @@ export default function UploadForm() {
             <label className="block text-sm font-semibold text-gray-700 mb-3">
               문서 종류 <span className="text-red-500">*</span>
             </label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {DOCUMENT_TYPES.map((type) => (
                 <button
                   key={type.value}
@@ -179,12 +263,46 @@ export default function UploadForm() {
             </div>
           </div>
 
+          {documentType === "vacation" && (
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-3">
+                휴가 구분 <span className="text-red-500">*</span>
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setVacationKind("office")}
+                  className={`p-3 rounded-xl border-2 text-left transition-all ${
+                    vacationKind === "office"
+                      ? "border-blue-500 bg-blue-50 text-blue-800"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="font-semibold text-sm">사무실 휴가</div>
+                  <div className="text-xs mt-0.5 opacity-80">일반 사무실</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setVacationKind("production")}
+                  className={`p-3 rounded-xl border-2 text-left transition-all ${
+                    vacationKind === "production"
+                      ? "border-indigo-500 bg-indigo-50 text-indigo-800"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="font-semibold text-sm">제작 휴가</div>
+                  <div className="text-xs mt-0.5 opacity-80">방송 제작</div>
+                </button>
+              </div>
+            </div>
+          )}
+
           {documentType === "work-schedule" && (
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-3">
                 근무표 종류 <span className="text-red-500">*</span>
               </label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <button
                   type="button"
                   onClick={() => setWorkScheduleKind("office")}
@@ -209,6 +327,18 @@ export default function UploadForm() {
                   <div className="font-semibold text-sm">제작 근무표</div>
                   <div className="text-xs mt-0.5 opacity-80">D/N 구분 (오전·오후)</div>
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setWorkScheduleKind("casting")}
+                  className={`p-3 rounded-xl border-2 text-left transition-all ${
+                    workScheduleKind === "casting"
+                      ? "border-orange-500 bg-orange-50 text-orange-800"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="font-semibold text-sm">주조 근무표</div>
+                  <div className="text-xs mt-0.5 opacity-80">휴가·대근 자동 추출</div>
+                </button>
               </div>
             </div>
           )}
@@ -216,12 +346,22 @@ export default function UploadForm() {
           {/* 파일 업로드 */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-3">
-              {documentType === "work-schedule" ? "파일" : "이미지"}{" "}
+              {isCasting ? "이미지" : documentType === "work-schedule" ? "파일" : "이미지"}{" "}
               <span className="text-gray-400 font-normal">
-                (선택 · 메모만으로도 등록 가능
-                {documentType === "work-schedule" ? " · 근무표는 PDF·Word도 가능" : ""})
+                {isCasting
+                  ? "(필수 · 주조 근무표 이미지)"
+                  : documentType === "work-schedule"
+                    ? "(선택 · 메모만으로도 등록 가능 · PDF·Word도 가능)"
+                    : documentType === "vacation"
+                      ? "(선택 · 폼만으로도 등록 가능)"
+                      : "(선택 · 메모만으로도 등록 가능)"}
               </span>
             </label>
+            {isCasting && (
+              <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 mb-3">
+                주조 근무표 이미지를 업로드하면 원본 이미지가 그대로 저장되고, 하단 휴가/대근 테이블이 자동 추출됩니다.
+              </p>
+            )}
             <div
               onClick={() => fileInputRef.current?.click()}
               className={`relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
@@ -234,9 +374,11 @@ export default function UploadForm() {
                 ref={fileInputRef}
                 type="file"
                 accept={
-                  documentType === "work-schedule"
-                    ? "image/jpeg,image/png,image/webp,image/gif,application/pdf,.pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    : "image/jpeg,image/png,image/webp,image/gif"
+                  isCasting
+                    ? IMAGE_ACCEPT
+                    : documentType === "work-schedule"
+                      ? `${IMAGE_ACCEPT},application/pdf,.pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+                      : IMAGE_ACCEPT
                 }
                 onChange={handleFileChange}
                 className="hidden"
@@ -270,36 +412,176 @@ export default function UploadForm() {
                     </svg>
                   </div>
                   <p className="text-sm font-medium text-gray-600">
-                    {documentType === "work-schedule"
-                      ? "클릭하여 파일 선택"
-                      : "클릭하여 이미지 선택"}
+                    {isCasting
+                      ? "클릭하여 이미지 선택"
+                      : documentType === "work-schedule"
+                        ? "클릭하여 파일 선택"
+                        : "클릭하여 이미지 선택"}
                   </p>
                   <p className="text-xs text-gray-400">
-                    {documentType === "work-schedule"
-                      ? "JPEG, PNG, PDF, Word(docx) · 최대 10MB"
-                      : "JPEG, PNG, WEBP, GIF · 최대 10MB"}
+                    {isCasting
+                      ? "JPEG, PNG, WEBP, GIF, BMP · 최대 10MB"
+                      : documentType === "work-schedule"
+                        ? "JPEG, PNG, GIF, WEBP, BMP, PDF, Word(docx) · 최대 10MB"
+                        : "JPEG, PNG, WEBP, GIF, BMP · 최대 10MB"}
                   </p>
                 </div>
               )}
             </div>
           </div>
 
-          {/* 메모 */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              메모{" "}
-              <span className="text-gray-400 font-normal">
-                (선택 · 이미지 없이 메모만 입력해도 등록됩니다)
-              </span>
-            </label>
-            <textarea
-              value={memo}
-              onChange={(e) => setMemo(e.target.value)}
-              placeholder="예: 4/14 14:05 즐거운 오후 녹화 / 또는 이미지 없이 일정만 적어도 됩니다"
-              rows={4}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-            />
-          </div>
+          {/* 녹화일정: 구조화 폼 / 그 외: 메모 (주조 근무표 제외) */}
+          {!isCasting && documentType === "vacation" && (
+            <div className="space-y-4">
+              <p className="text-xs text-gray-500">
+                이미지 없이 등록할 때는 <strong>휴가자</strong>와 <strong>시작일</strong>이 필요합니다.
+                하루만 쓸 때는 종료일을 비우면 됩니다. 연일이면 종료일까지 선택하세요.
+                이미지를 함께 올리면 AI 분석에 더해 아래 내용이 반영됩니다.
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    휴가자 <span className="text-red-500">*</span>
+                    {!selectedFile && (
+                      <span className="text-gray-400 font-normal"> (이미지 없을 때 필수)</span>
+                    )}
+                  </label>
+                  <input
+                    type="text"
+                    value={vacationPerson}
+                    onChange={(e) => setVacationPerson(e.target.value)}
+                    placeholder="예: 홍길동"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    시작일 <span className="text-red-500">*</span>
+                    {!selectedFile && (
+                      <span className="text-gray-400 font-normal"> (이미지 없을 때 필수)</span>
+                    )}
+                  </label>
+                  <input
+                    type="date"
+                    value={vacationDateStart}
+                    onChange={(e) => {
+                      setVacationDateStart(e.target.value);
+                    }}
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    종료일{" "}
+                    <span className="text-gray-400 font-normal text-xs">
+                      (비우면 시작일 하루만)
+                    </span>
+                  </label>
+                  <input
+                    type="date"
+                    value={vacationDateEnd}
+                    min={vacationDateStart || undefined}
+                    onChange={(e) => setVacationDateEnd(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">비고</label>
+                  <textarea
+                    value={vacationNote}
+                    onChange={(e) => setVacationNote(e.target.value)}
+                    placeholder="사유 등 추가 안내"
+                    rows={3}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {!isCasting && documentType === "recording" && (
+            <div className="space-y-4">
+              <p className="text-xs text-gray-500">
+                이미지 없이 등록할 때는 <strong>프로그램</strong>과 <strong>날짜</strong>가 필요합니다.
+                이미지를 함께 올리면 AI 분석에 더해 아래 내용이 일정에 반영됩니다.
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    프로그램 <span className="text-red-500">*</span>
+                    {!selectedFile && <span className="text-gray-400 font-normal"> (이미지 없을 때 필수)</span>}
+                  </label>
+                  <input
+                    type="text"
+                    value={recordingProgram}
+                    onChange={(e) => setRecordingProgram(e.target.value)}
+                    placeholder="예: 즐거운 오후"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    날짜 <span className="text-red-500">*</span>
+                    {!selectedFile && <span className="text-gray-400 font-normal"> (이미지 없을 때 필수)</span>}
+                  </label>
+                  <input
+                    type="date"
+                    value={recordingDate}
+                    onChange={(e) => setRecordingDate(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">시간</label>
+                  <input
+                    type="text"
+                    value={recordingTime}
+                    onChange={(e) => setRecordingTime(e.target.value)}
+                    placeholder="예: 14:00–16:00"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">장소</label>
+                  <input
+                    type="text"
+                    value={recordingPlace}
+                    onChange={(e) => setRecordingPlace(e.target.value)}
+                    placeholder="예: 1스튜디오"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">비고</label>
+                  <textarea
+                    value={recordingNote}
+                    onChange={(e) => setRecordingNote(e.target.value)}
+                    placeholder="추가 안내가 있으면 입력하세요"
+                    rows={3}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {!isCasting && documentType !== "recording" && documentType !== "vacation" && (
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                메모{" "}
+                <span className="text-gray-400 font-normal">
+                  (선택 · 이미지 없이 메모만 입력해도 등록됩니다)
+                </span>
+              </label>
+              <textarea
+                value={memo}
+                onChange={(e) => setMemo(e.target.value)}
+                placeholder="예: 4/14 14:05 즐거운 오후 녹화 / 또는 이미지 없이 일정만 적어도 됩니다"
+                rows={4}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              />
+            </div>
+          )}
 
           {/* 에러 메시지 */}
           {errorMessage && (
@@ -311,6 +593,33 @@ export default function UploadForm() {
             </div>
           )}
 
+          {/* 업로드 진행 (바) */}
+          {uploadState === "uploading" && (
+            <div className="space-y-2">
+              <p className="text-xs text-center text-gray-600 font-medium">
+                {selectedFile
+                  ? documentType === "work-schedule" && selectedFile.type.startsWith("image/")
+                    ? "저장 중..."
+                    : selectedFile.type.startsWith("image/")
+                      ? "AI 분석 중..."
+                      : "문서 분석 중..."
+                  : documentType === "recording" || documentType === "vacation"
+                    ? "저장 중..."
+                    : "저장 중..."}
+              </p>
+              <div
+                className="relative h-2.5 w-full overflow-hidden rounded-full bg-slate-200"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-busy="true"
+                aria-label="업로드 진행 중"
+              >
+                <div className="absolute inset-y-0 left-0 w-[35%] rounded-full bg-gradient-to-r from-blue-500 to-blue-400 shadow-sm upload-bar-indeterminate" />
+              </div>
+            </div>
+          )}
+
           {/* 제출 버튼 */}
           <button
             type="submit"
@@ -318,23 +627,21 @@ export default function UploadForm() {
             className="w-full py-3.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {uploadState === "uploading" ? (
-              <>
-                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
-                {selectedFile
-                  ? selectedFile.type.startsWith("image/")
-                    ? "AI 분석 중..."
-                    : "문서 분석 중..."
-                  : "저장 중..."}
-              </>
+              "처리 중..."
             ) : (
               selectedFile
-                ? documentType === "work-schedule" && !selectedFile.type.startsWith("image/")
-                  ? "문서 업로드 및 분석"
-                  : "업로드 및 분석"
-                : "메모만 저장"
+                ? isCasting
+                  ? "업로드 및 분석"
+                  : documentType === "work-schedule" && selectedFile.type.startsWith("image/")
+                    ? "이미지 업로드"
+                    : documentType === "work-schedule" && !selectedFile.type.startsWith("image/")
+                      ? "문서 업로드 및 분석"
+                      : "업로드 및 분석"
+                : documentType === "recording"
+                  ? "일정 등록"
+                  : documentType === "vacation"
+                    ? "휴가 등록"
+                    : "메모만 저장"
             )}
           </button>
         </form>

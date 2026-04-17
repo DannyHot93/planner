@@ -1,63 +1,40 @@
-import fs from "fs";
-import path from "path";
-import { pathToFileURL } from "url";
+import { PDFParse } from "pdf-parse";
 
 const MAX_CHARS = 120_000;
 
-function configurePdfWorker(GlobalWorkerOptions: { workerSrc: string }): void {
-  const local = path.join(
-    process.cwd(),
-    "node_modules/pdfjs-dist/build/pdf.worker.mjs"
-  );
-  if (fs.existsSync(local)) {
-    GlobalWorkerOptions.workerSrc = pathToFileURL(local).href;
-    return;
-  }
+export async function extractTextFromPdfBuffer(buffer: Buffer): Promise<string> {
+  const parser = new PDFParse({ data: new Uint8Array(buffer) });
   try {
-    const pkgPath = path.join(
-      process.cwd(),
-      "node_modules/pdfjs-dist/package.json"
-    );
-    const v = (JSON.parse(fs.readFileSync(pkgPath, "utf8")) as { version: string })
-      .version;
-    GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${v}/build/pdf.worker.mjs`;
-  } catch {
-    GlobalWorkerOptions.workerSrc =
-      "https://unpkg.com/pdfjs-dist@5.6.205/build/pdf.worker.mjs";
+    const result = await parser.getText();
+    const text = (result.text ?? "").trim();
+    if (!text) {
+      throw new Error(
+        "PDF에서 텍스트를 읽지 못했습니다. 스캔 PDF는 이미지로 저장한 뒤 올려 주세요."
+      );
+    }
+    return text.slice(0, MAX_CHARS);
+  } finally {
+    await parser.destroy();
   }
 }
 
-export async function extractTextFromPdfBuffer(buffer: Buffer): Promise<string> {
-  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
-  const { getDocument, GlobalWorkerOptions } = pdfjs;
-
-  configurePdfWorker(GlobalWorkerOptions);
-
-  const uint8Array = new Uint8Array(buffer);
-  const loadingTask = getDocument({
-    data: uint8Array,
-    useSystemFonts: true,
-    verbosity: 0,
-  });
-  const pdf = await loadingTask.promise;
-  let fullText = "";
-  for (let p = 1; p <= pdf.numPages; p++) {
-    const page = await pdf.getPage(p);
-    const content = await page.getTextContent();
-    const parts = content.items.map((item) =>
-      item && typeof item === "object" && "str" in item
-        ? String((item as { str: string }).str)
-        : ""
-    );
-    fullText += parts.join(" ") + "\n";
+/** PDF 첫 페이지를 PNG data URL로 렌더 (근무표 미리보기용) */
+export async function renderPdfFirstPageDataUrl(buffer: Buffer): Promise<string | null> {
+  const parser = new PDFParse({ data: new Uint8Array(buffer) });
+  try {
+    const shot = await parser.getScreenshot({
+      partial: [1],
+      imageDataUrl: true,
+      imageBuffer: false,
+      desiredWidth: 1400,
+    });
+    return shot.pages[0]?.dataUrl ?? null;
+  } catch (e) {
+    console.error("PDF 미리보기 렌더 실패:", e);
+    return null;
+  } finally {
+    await parser.destroy();
   }
-  const text = fullText.trim();
-  if (!text) {
-    throw new Error(
-      "PDF에서 텍스트를 읽지 못했습니다. 스캔 PDF는 이미지로 저장한 뒤 올려 주세요."
-    );
-  }
-  return text.slice(0, MAX_CHARS);
 }
 
 export async function extractTextFromDocxBuffer(buffer: Buffer): Promise<string> {
