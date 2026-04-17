@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1776401951100_db7cd6d5",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-17T04:59:11.102Z",
+    "memo": "",
+    "summary": "프로그램 '충북 시사토론 창'의 자립준비청년 주제 녹화가 5월 6일 오전 10시 30분부터 11시 40분까지 4층 뉴스룸에서 진행되는 제작 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-05-06",
+          "time": "10:30-11:40",
+          "place": "4층 뉴스룸",
+          "person": "담당PD 설경철",
+          "note": "녹화내용: 자립준비청년 / 패널 4명 출연 / 좌 2명, 우 2명"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1776401186543_f532ecf9",
     "type": "production-schedule",
     "uploadedAt": "2026-04-17T04:46:26.543Z",
