@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "id": "ps_1776399799585_324b588c",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-17T04:23:19.586Z",
+    "memo": "테스트일정 · 2026-04-17",
+    "summary": "테스트일정 · 2026-04-17",
+    "details": {
+      "title": "테스트일정",
+      "program": "테스트일정",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-04-17"
+        }
+      ]
+    }
+  }
+]
