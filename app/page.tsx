@@ -109,7 +109,7 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 py-12">
+      <div className="w-full max-w-none mx-auto px-3 sm:px-5 lg:px-6 xl:px-8 2xl:px-10 py-10 sm:py-12">
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-10">
           <div>
