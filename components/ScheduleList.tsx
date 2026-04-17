@@ -19,6 +19,17 @@ const TYPE_COLOR: Record<DocumentType, string> = {
   "casting-schedule": "bg-orange-100 text-orange-700",
 };
 
+/** GitHub에 남아 있을 수 있는 구 타입 `recording` */
+function typeLabel(type: string): string {
+  if (type === "recording") return "녹화일정(구)";
+  return TYPE_LABEL[type as DocumentType] ?? type;
+}
+
+function typeColorClass(type: string): string {
+  if (type === "recording") return "bg-purple-100 text-purple-700";
+  return TYPE_COLOR[type as DocumentType] ?? "bg-gray-100 text-gray-700";
+}
+
 function pad2(n: number): string {
   return n < 10 ? `0${n}` : `${n}`;
 }
@@ -49,9 +60,9 @@ function RecordCard({ record }: { record: ScheduleRecord }) {
     <div className="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-sm transition-shadow">
       <div className="flex items-start justify-between gap-3 mb-3">
         <span
-          className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${TYPE_COLOR[record.type]}`}
+          className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${typeColorClass(record.type)}`}
         >
-          {TYPE_LABEL[record.type]}
+          {typeLabel(record.type)}
         </span>
         <div className="flex flex-col items-end gap-1 shrink-0">
           <span className="text-xs text-gray-400 whitespace-nowrap">

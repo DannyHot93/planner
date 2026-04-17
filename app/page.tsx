@@ -38,8 +38,12 @@ async function loadRecords(filename: string): Promise<ScheduleRecord[]> {
   return loadRecordsFromDisk(filename);
 }
 
-/** 녹화일정: 직전 주 정리 후 GitHub 반영 (변경 시, GitHub 연동 시만) */
-async function cleanupOldRecordings(records: ScheduleRecord[]): Promise<ScheduleRecord[]> {
+/** 사무실/제작/레거시 녹화 JSON: 직전 주 정리 후 GitHub 반영 (변경 시, GitHub 연동 시만) */
+async function cleanupOldRecordingsFile(
+  records: ScheduleRecord[],
+  githubPath: string,
+  label: string
+): Promise<ScheduleRecord[]> {
   if (!hasGithubEnv()) return records;
 
   const filtered = filterRecordingsWeeklyCleanup(records);
@@ -47,12 +51,12 @@ async function cleanupOldRecordings(records: ScheduleRecord[]): Promise<Schedule
   if (filtered.length < records.length) {
     try {
       await overwriteFileOnGitHub(
-        "data/recordings.json",
+        githubPath,
         filtered,
-        `[자동] 직전 주 녹화일정 정리 - ${getTodaySeoulYmd()}`
+        `[자동] 직전 주 ${label} 정리 - ${getTodaySeoulYmd()}`
       );
     } catch (e) {
-      console.error("이전 주 녹화일정 정리 실패:", e);
+      console.error(`이전 주 ${label} 정리 실패:`, e);
       return records;
     }
   }
@@ -63,24 +67,42 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "일정 플래너",
-  description: "근무표, 휴가, 녹화일정을 한눈에 확인하세요.",
+  description: "근무표, 휴가, 사무실·제작 일정을 한눈에 확인하세요.",
 };
 
 export default async function HomePage() {
-  const [workSchedules, vacations, rawRecordings, castingSchedules] = await Promise.all([
+  const [
+    workSchedules,
+    vacations,
+    rawOfficeSchedules,
+    rawProductionSchedules,
+    rawLegacyRecordings,
+    castingSchedules,
+  ] = await Promise.all([
     loadRecords("work-schedules.json"),
     loadRecords("vacations.json"),
+    loadRecords("office-schedules.json"),
+    loadRecords("production-schedules.json"),
     loadRecords("recordings.json"),
     loadRecords("casting-schedules.json"),
   ]);
 
-  // 이전 주 녹화일정 자동 정리 (변경 시 GitHub 반영)
-  const recordings = await cleanupOldRecordings(rawRecordings);
+  const [officeSchedules, productionSchedules, legacyRecordings] = await Promise.all([
+    cleanupOldRecordingsFile(rawOfficeSchedules, "data/office-schedules.json", "사무실일정"),
+    cleanupOldRecordingsFile(
+      rawProductionSchedules,
+      "data/production-schedules.json",
+      "제작일정"
+    ),
+    cleanupOldRecordingsFile(rawLegacyRecordings, "data/recordings.json", "녹화일정(레거시)"),
+  ]);
 
   const allRecords: ScheduleRecord[] = [
     ...workSchedules,
     ...vacations,
-    ...recordings,
+    ...officeSchedules,
+    ...productionSchedules,
+    ...legacyRecordings,
   ].sort(
     (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
   );

@@ -26,9 +26,11 @@ export default function ScheduleListClient({
 }) {
   const [activeTab, setActiveTab] = useState<TabValue>("all");
 
-  const recordingRecords = records.filter((r) => r.type === "office-schedule" || r.type === "production-schedule");
   const officeRecords = records.filter((r) => r.type === "office-schedule");
-  const productionRecords = records.filter((r) => r.type === "production-schedule");
+  /** 구 타입 `recording`(recordings.json)은 제작일정 탭과 동일하게 표시 */
+  const productionRecords = records.filter(
+    (r) => r.type === "production-schedule" || (r.type as string) === "recording"
+  );
   const workScheduleRecords = records.filter((r) => r.type === "work-schedule");
   const vacationRecords = records.filter((r) => r.type === "vacation");
 
