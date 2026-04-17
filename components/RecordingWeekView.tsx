@@ -379,8 +379,16 @@ function WeekGrid({
 
 export default function RecordingWeekView({
   records,
+  sections = "both",
+  showLegend = true,
+  embedded = false,
 }: {
   records: ScheduleRecord[];
+  /** both: 이번 주 + 이번 주 외. 대시보드에서는 열마다 분리 */
+  sections?: "both" | "this-week" | "other-week";
+  showLegend?: boolean;
+  /** true면 카드 테두리·여백 최소화(그리드 상위에서 제목과 함께 사용) */
+  embedded?: boolean;
 }) {
   const todayStr = getTodaySeoul();
   /** 오늘이 속한 주의 월요일 — 제목 색(빨강) 기준 */
@@ -403,9 +411,51 @@ export default function RecordingWeekView({
 
   const hasAny = flat.length > 0;
 
+  const showBoth = sections === "both";
+  const showThis = sections === "both" || sections === "this-week";
+  const showOther = sections === "both" || sections === "other-week";
+
+  const thisWeekSectionClass = embedded
+    ? "rounded-xl border border-blue-100 bg-gradient-to-b from-blue-50/50 to-white p-3 shadow-sm"
+    : "rounded-2xl border border-blue-100 bg-gradient-to-b from-blue-50/80 to-white p-4 shadow-sm";
+  const otherWeekSectionClass = embedded
+    ? "rounded-xl border border-gray-200 bg-gray-50/80 p-3 shadow-sm"
+    : "rounded-2xl border border-gray-200 bg-gray-50/90 p-4 shadow-sm";
+
+  const emptyBlock = (
+    <div className={`text-center py-8 text-gray-400 ${embedded ? "py-6" : "py-16"}`}>
+      {!embedded && (
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg
+            className="w-8 h-8 text-gray-300"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            />
+          </svg>
+        </div>
+      )}
+      <p className="text-sm">표시할 일정이 없습니다.</p>
+      {!embedded && (
+        <p className="text-xs mt-1">
+          <a href="/submit" className="text-blue-500 hover:underline">
+            일정 업로드
+          </a>
+          에서 등록해 보세요.
+        </p>
+      )}
+    </div>
+  );
+
   return (
-    <div className="space-y-8">
-      {hasAny && (
+    <div className={embedded ? "space-y-0" : "space-y-8"}>
+      {showLegend && hasAny && showBoth && (
         <p className="text-xs text-gray-500 mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
           <span className="inline-flex items-center gap-1.5">
             <span className="inline-block w-2 h-2 rounded-full bg-red-500" />
@@ -418,59 +468,66 @@ export default function RecordingWeekView({
         </p>
       )}
 
-      {!hasAny ? (
-        <div className="text-center py-16 text-gray-400">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg
-              className="w-8 h-8 text-gray-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-              />
-            </svg>
-          </div>
-          <p className="text-sm">표시할 녹화일정이 없습니다.</p>
-          <p className="text-xs mt-1">
-            <a href="/submit" className="text-blue-500 hover:underline">
-              일정 업로드
-            </a>
-            에서 등록해 보세요.
-          </p>
-        </div>
+      {!hasAny && showBoth ? (
+        emptyBlock
+      ) : !hasAny && showThis ? (
+        emptyBlock
+      ) : !hasAny && showOther ? (
+        emptyBlock
       ) : (
         <>
-          {/* 이번 주(달력 기준) */}
-          <section className="rounded-2xl border border-blue-100 bg-gradient-to-b from-blue-50/80 to-white p-4 shadow-sm">
-            <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-              <h4 className="text-sm font-bold text-blue-900">이번 주 일정</h4>
-              <span className="text-xs font-medium text-blue-700/80">
-                {formatRangeLabel(thisWeekDays)}
-              </span>
-            </div>
-            <WeekGrid
-              dayGroups={thisWeekGroups}
-              todayStr={todayStr}
-              thisWeekMonday={calendarThisWeekMonday}
-            />
-          </section>
+          {showThis && (
+            <>
+              {!hasAny ? (
+                emptyBlock
+              ) : (
+                <section className={thisWeekSectionClass}>
+                  {embedded ? (
+                    <div className="flex justify-end mb-2">
+                      <span className="text-[10px] font-medium text-blue-700/90">
+                        {formatRangeLabel(thisWeekDays)}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                      <h4 className="text-sm font-bold text-blue-900">이번 주 일정</h4>
+                      <span className="text-xs font-medium text-blue-700/80">
+                        {formatRangeLabel(thisWeekDays)}
+                      </span>
+                    </div>
+                  )}
+                  <WeekGrid
+                    dayGroups={thisWeekGroups}
+                    todayStr={todayStr}
+                    thisWeekMonday={calendarThisWeekMonday}
+                  />
+                </section>
+              )}
+            </>
+          )}
 
-          {/* 이번 주 외: 한 블록 · 요일 열 합침 · 항목에 날짜 표시 */}
-          {hasOtherWeekAny && (
-            <section className="rounded-2xl border border-gray-200 bg-gray-50/90 p-4 shadow-sm">
-              <div className="mb-3">
-                <h4 className="text-sm font-bold text-gray-800">이번 주 외 일정</h4>
-              </div>
-              <OtherWeekMergedGrid
-                dayGroups={otherWeekByWeekday}
-                thisWeekMonday={calendarThisWeekMonday}
-              />
-            </section>
+          {showOther && (
+            <>
+              {hasOtherWeekAny ? (
+                <section className={otherWeekSectionClass}>
+                  {!embedded && (
+                    <div className="mb-3">
+                      <h4 className="text-sm font-bold text-gray-800">이번 주 외 일정</h4>
+                    </div>
+                  )}
+                  <OtherWeekMergedGrid
+                    dayGroups={otherWeekByWeekday}
+                    thisWeekMonday={calendarThisWeekMonday}
+                  />
+                </section>
+              ) : (
+                sections !== "both" && (
+                  <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50/80 p-4 text-center">
+                    <p className="text-xs text-gray-400">이번 주 외로 잡힌 일정이 없습니다.</p>
+                  </div>
+                )
+              )}
+            </>
           )}
         </>
       )}

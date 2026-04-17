@@ -623,9 +623,14 @@ function PersonGroupedCastingSection({
 export default function VacationWeekView({
   vacationRecords,
   castingRecords,
+  variant = "default",
+  hideTitle = false,
 }: {
   vacationRecords: ScheduleRecord[];
   castingRecords: ScheduleRecord[];
+  /** sidebar: 우측 열 — 세로 스택, 스크롤 영역 */
+  variant?: "default" | "sidebar";
+  hideTitle?: boolean;
 }) {
   const todayStr = getTodaySeoul();
 
@@ -655,12 +660,21 @@ export default function VacationWeekView({
   const allEmpty =
     officeFlat.length === 0 && productionFlat.length === 0 && castingFlat.length === 0;
 
+  const gridClass =
+    variant === "sidebar"
+      ? "flex flex-col gap-4 items-stretch"
+      : "grid grid-cols-1 sm:grid-cols-3 gap-4 items-start";
+
+  const rootClass = variant === "sidebar" ? "min-w-0" : "";
+
   return (
-    <div>
-      <h3 className="text-sm font-semibold text-gray-700 mb-5">휴가 일정</h3>
+    <div className={rootClass}>
+      {!hideTitle && (
+        <h3 className="text-sm font-semibold text-gray-700 mb-5">휴가 일정</h3>
+      )}
 
       {allEmpty ? (
-        <div className="text-center py-12 text-gray-400">
+        <div className={`text-center text-gray-400 ${variant === "sidebar" ? "py-8" : "py-12"}`}>
           <p className="text-sm">등록된 휴가가 없습니다.</p>
           <p className="text-xs mt-1">
             <a href="/submit" className="text-blue-500 hover:underline">
@@ -670,10 +684,10 @@ export default function VacationWeekView({
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className={variant === "sidebar" ? "space-y-3" : "space-y-4"}>
           <TodayVacationBox rows={todayRows} todayStr={todayStr} />
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+          <div className={gridClass}>
             <div className="min-w-0">
               <PersonGroupedVacationSection
                 title="사무실 휴가"
