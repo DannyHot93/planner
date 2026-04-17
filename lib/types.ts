@@ -97,4 +97,8 @@ export interface SubmitApiResponse {
   id?: string;
   summary?: string;
   error?: string;
+  /** 녹화일정: 방송일(또는 미입력 시 업로드일) 기준으로 이번 주 여부 */
+  recordingWeek?: "this-week" | "other-week";
+  /** 위 판단에 사용한 YYYY-MM-DD */
+  recordingEffectiveDate?: string;
 }

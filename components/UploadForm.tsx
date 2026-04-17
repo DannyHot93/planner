@@ -38,6 +38,12 @@ export default function UploadForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [lastSubmitHadImage, setLastSubmitHadImage] = useState(false);
   const [lastSubmitDocType, setLastSubmitDocType] = useState<DocumentType | null>(null);
+  const [lastRecordingWeek, setLastRecordingWeek] = useState<
+    "this-week" | "other-week" | null
+  >(null);
+  const [lastRecordingEffectiveDate, setLastRecordingEffectiveDate] = useState<string | null>(
+    null
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -95,6 +101,8 @@ export default function UploadForm() {
     setUploadState("uploading");
     setErrorMessage(null);
     setResultSummary(null);
+    setLastRecordingWeek(null);
+    setLastRecordingEffectiveDate(null);
 
     try {
       const formData = new FormData();
@@ -145,6 +153,13 @@ export default function UploadForm() {
       if (result.success) {
         setLastSubmitHadImage(Boolean(selectedFile));
         setLastSubmitDocType(submitDocType as DocumentType);
+        if (submitDocType === "recording") {
+          setLastRecordingWeek(result.recordingWeek ?? null);
+          setLastRecordingEffectiveDate(result.recordingEffectiveDate ?? null);
+        } else {
+          setLastRecordingWeek(null);
+          setLastRecordingEffectiveDate(null);
+        }
         setUploadState("success");
         setResultSummary(
           result.summary ?? (selectedFile ? "처리 완료" : "메모가 저장되었습니다.")
@@ -152,6 +167,11 @@ export default function UploadForm() {
         setSelectedFile(null);
         setPreviewUrl(null);
         setMemo("");
+        setRecordingProgram("");
+        setRecordingDate("");
+        setRecordingTime("");
+        setRecordingPlace("");
+        setRecordingNote("");
         setVacationPerson("");
         setVacationDateStart("");
         setVacationDateEnd("");
@@ -192,6 +212,8 @@ export default function UploadForm() {
     setVacationDateEnd("");
     setVacationNote("");
     setLastSubmitDocType(null);
+    setLastRecordingWeek(null);
+    setLastRecordingEffectiveDate(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -216,6 +238,30 @@ export default function UploadForm() {
                   ? "휴가 일정이 GitHub에 저장되었습니다."
                   : "메모 내용이 GitHub에 저장되었습니다."}
           </p>
+          {lastSubmitDocType === "recording" &&
+            lastRecordingWeek &&
+            lastRecordingEffectiveDate && (
+              <p className="text-green-800 text-sm mt-3 px-1 leading-relaxed text-left max-w-md mx-auto">
+                기준일{" "}
+                <span className="font-mono font-semibold">{lastRecordingEffectiveDate}</span>
+                은(는) 오늘(서울) 기준{" "}
+                {lastRecordingWeek === "this-week" ? (
+                  <>
+                    <strong>이번 주(월~일)</strong>에 속합니다. 홈 화면의{" "}
+                    <strong>이번 주 일정</strong> 블록에 표시됩니다.
+                  </>
+                ) : (
+                  <>
+                    <strong>이번 주가 아닙니다</strong>. 홈 화면의{" "}
+                    <strong>이번 주 외 일정</strong> 블록에 표시됩니다.
+                  </>
+                )}
+                <span className="block text-xs text-green-700/80 mt-1.5 font-normal">
+                  방송일이 여러 개면 첫 날짜를 기준으로 안내합니다. 날짜가 없으면 업로드일(서울)을
+                  사용합니다.
+                </span>
+              </p>
+            )}
           {resultSummary && (
             <div className="mt-4 bg-white rounded-xl p-4 border border-green-100 text-left">
               <p className="text-xs text-gray-500 mb-1 font-medium uppercase tracking-wide">

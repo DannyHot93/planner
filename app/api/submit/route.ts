@@ -31,6 +31,10 @@ import { appendRecordToGitHub } from "@/lib/github";
 import { SubmitApiResponse } from "@/lib/types";
 import type { WorkScheduleKind } from "@/lib/types";
 import { toSeoulDateYmd } from "@/lib/seoul-week";
+import {
+  classifyRecordingWeekScope,
+  getEffectiveRecordingYmd,
+} from "@/lib/recording-week";
 
 const MEMO_ONLY_MIN = 1;
 const MEMO_ONLY_MAX = 8000;
@@ -304,11 +308,18 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
     await appendRecordToGitHub(filePath, record, commitMessage);
     revalidatePath("/");
 
-    return NextResponse.json({
+    const payload: SubmitApiResponse = {
       success: true,
       id: record.id,
       summary: record.summary,
-    });
+    };
+    if (documentType === "recording") {
+      const recordingEffectiveDate = getEffectiveRecordingYmd(record);
+      payload.recordingEffectiveDate = recordingEffectiveDate;
+      payload.recordingWeek = classifyRecordingWeekScope(recordingEffectiveDate);
+    }
+
+    return NextResponse.json(payload);
   } catch (error) {
     if (error instanceof ValidationError) {
       return NextResponse.json(
