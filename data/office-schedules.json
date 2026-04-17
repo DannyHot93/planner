@@ -1,5 +1,25 @@
 [
   {
+    "id": "os_1776396809187_c5984b05",
+    "type": "office-schedule",
+    "uploadedAt": "2026-04-17T03:33:29.188Z",
+    "memo": "",
+    "summary": "4월 17일 오전 10시 30분부터 11시 30분까지 공개홀에서 프로그램 '전국시대' 스튜디오 녹화 일정이 있습니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": null,
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": "전국시대 스튜디오 녹화"
+        }
+      ]
+    }
+  },
+  {
     "id": "os_1776396617941_768a17fb",
     "type": "office-schedule",
     "uploadedAt": "2026-04-17T03:30:17.941Z",
