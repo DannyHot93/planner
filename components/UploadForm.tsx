@@ -224,7 +224,7 @@ export default function UploadForm() {
   };
 
   return (
-    <div className="w-full max-w-none">
+    <div className="w-full max-w-5xl mx-auto">
       {uploadState === "success" ? (
         <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -247,7 +247,7 @@ export default function UploadForm() {
           {(lastSubmitDocType === "office-schedule" || lastSubmitDocType === "production-schedule") &&
             lastRecordingWeek &&
             lastRecordingEffectiveDate && (
-              <p className="text-green-800 text-sm mt-3 px-1 leading-relaxed text-left max-w-none mx-auto">
+              <p className="text-green-800 text-sm mt-3 px-1 leading-relaxed text-left max-w-2xl mx-auto">
                 기준일{" "}
                 <span className="font-mono font-semibold">{lastRecordingEffectiveDate}</span>
                 은(는) 오늘(서울) 기준{" "}
