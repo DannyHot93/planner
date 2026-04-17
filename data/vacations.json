@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "id": "vac_1776401619230_beaf0562",
+    "type": "vacation",
+    "uploadedAt": "2026-04-17T04:53:39.231Z",
+    "memo": "안대현 · 2026-04-18",
+    "summary": "안대현 · 2026-04-18",
+    "details": {
+      "vacationKind": "production",
+      "period": "2026-04-18 ~ 2026-04-18",
+      "entries": [
+        {
+          "date": "2026-04-18",
+          "person": "안대현"
+        }
+      ]
+    }
+  }
+]
