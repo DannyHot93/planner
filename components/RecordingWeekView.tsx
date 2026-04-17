@@ -200,12 +200,6 @@ function EntryCard({
         {entry.time && (
           <p className="text-xs text-blue-600 font-medium mt-1">{entry.time}</p>
         )}
-        {entry.place && (
-          <p className="text-xs text-gray-600 mt-0.5 line-clamp-1">{entry.place}</p>
-        )}
-        {entry.person && (
-          <p className="text-xs text-gray-400 mt-0.5 line-clamp-2">{entry.person}</p>
-        )}
       </div>
 
       {open && (
