@@ -6,14 +6,16 @@ import DeleteRecordButton from "./DeleteRecordButton";
 const TYPE_LABEL: Record<DocumentType, string> = {
   "work-schedule": "근무표",
   vacation: "휴가",
-  recording: "녹화일정",
+  "office-schedule": "사무실일정",
+  "production-schedule": "제작일정",
   "casting-schedule": "주조 근무표",
 };
 
 const TYPE_COLOR: Record<DocumentType, string> = {
   "work-schedule": "bg-blue-100 text-blue-700",
   vacation: "bg-green-100 text-green-700",
-  recording: "bg-purple-100 text-purple-700",
+  "office-schedule": "bg-blue-100 text-blue-700",
+  "production-schedule": "bg-purple-100 text-purple-700",
   "casting-schedule": "bg-orange-100 text-orange-700",
 };
 

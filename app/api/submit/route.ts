@@ -94,7 +94,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
     let aiResult;
 
     if (!hasImage) {
-      if (documentType === "recording") {
+      if (documentType === "office-schedule" || documentType === "production-schedule") {
         if (!recordingForm.program) {
           return NextResponse.json(
             { success: false, error: "프로그램 이름을 입력해 주세요." },
@@ -114,13 +114,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
             { status: 400 }
           );
         }
+        const scheduleType = (formData.get("scheduleType") as string | null) === "office" ? "office" : "production";
         aiResult = validateAiResult(
           buildRecordingFormAiResult(
             recordingForm.program,
             ymd,
             recordingForm.time,
             recordingForm.place,
-            recordingForm.note
+            recordingForm.note,
+            scheduleType
           ),
           documentType
         );
@@ -277,7 +279,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
         );
         aiResult = validateAiResult(merged, documentType);
       }
-      if (documentType === "recording") {
+      if (documentType === "office-schedule" || documentType === "production-schedule") {
         const merged = mergeRecordingFormOverlay(aiResult, recordingForm);
         aiResult = validateAiResult(merged, documentType);
       }
@@ -285,7 +287,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
 
     const today = new Date().toISOString().split("T")[0];
     const memoForRecord =
-      documentType === "recording"
+      documentType === "office-schedule" || documentType === "production-schedule"
         ? recordingForm.note ||
           (!hasImage && recordingForm.program
             ? `${recordingForm.program} · ${recordingForm.dateYmd}`
@@ -313,7 +315,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
       id: record.id,
       summary: record.summary,
     };
-    if (documentType === "recording") {
+    if (documentType === "office-schedule" || documentType === "production-schedule") {
       const recordingEffectiveDate = getEffectiveRecordingYmd(record);
       payload.recordingEffectiveDate = recordingEffectiveDate;
       payload.recordingWeek = classifyRecordingWeekScope(recordingEffectiveDate);

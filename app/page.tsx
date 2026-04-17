@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import { ScheduleRecord, DocumentType } from "@/lib/types";
+import { ScheduleRecord } from "@/lib/types";
 import ScheduleListClient from "@/components/ScheduleListClient";
 import { readRecordsFromGitHub, overwriteFileOnGitHub } from "@/lib/github";
 import {
@@ -85,24 +85,13 @@ export default async function HomePage() {
     (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
   );
 
-  const stats: Record<DocumentType | "total", number> = {
-    total: allRecords.length + castingSchedules.length,
-    "work-schedule": workSchedules.length,
-    vacation: vacations.length,
-    recording: recordings.length,
-    "casting-schedule": castingSchedules.length,
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 py-12">
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-10">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">일정 플래너</h1>
-            <p className="text-gray-500 text-sm mt-1">
-              근무표 · 휴가 · 녹화일정을 한눈에 확인하세요
-            </p>
           </div>
           <a
             href="/submit"
@@ -113,21 +102,6 @@ export default async function HomePage() {
             </svg>
             업로드
           </a>
-        </div>
-
-        {/* 통계 카드 */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-          {[
-            { label: "전체", count: stats.total, color: "bg-gray-800 text-white" },
-            { label: "근무표", count: stats["work-schedule"] + stats["casting-schedule"], color: "bg-blue-600 text-white" },
-            { label: "휴가", count: stats.vacation, color: "bg-green-600 text-white" },
-            { label: "녹화일정", count: stats.recording, color: "bg-purple-600 text-white" },
-          ].map((item) => (
-            <div key={item.label} className={`${item.color} rounded-xl p-4 text-center`}>
-              <div className="text-2xl font-bold">{item.count}</div>
-              <div className="text-xs opacity-80 mt-0.5">{item.label}</div>
-            </div>
-          ))}
         </div>
 
         {/* 목록 (클라이언트 컴포넌트로 탭 처리) */}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, ChangeEvent, FormEvent } from "react";
-import { DocumentType, SubmitApiResponse } from "@/lib/types";
+import { DocumentType, SubmitApiResponse, VacationKind } from "@/lib/types";
 
 /** 휴가·녹화·주조 등 이미지 전용 업로드 */
 const IMAGE_ACCEPT =
@@ -10,7 +10,8 @@ const IMAGE_ACCEPT =
 const DOCUMENT_TYPES: { value: DocumentType; label: string; description: string }[] = [
   { value: "work-schedule", label: "근무표", description: "직원 근무 일정" },
   { value: "vacation", label: "휴가", description: "휴가 신청 및 일정" },
-  { value: "recording", label: "녹화일정", description: "녹화 및 촬영 일정" },
+  { value: "office-schedule", label: "사무실일정", description: "사무실 촬영 및 일정" },
+  { value: "production-schedule", label: "제작일정", description: "제작 촬영 및 일정" },
 ];
 
 type UploadState = "idle" | "uploading" | "success" | "error";
@@ -20,8 +21,9 @@ type WorkScheduleKind = "office" | "production" | "casting";
 export default function UploadForm() {
   const [documentType, setDocumentType] = useState<DocumentType>("work-schedule");
   const [workScheduleKind, setWorkScheduleKind] = useState<WorkScheduleKind>("office");
-  const [vacationKind, setVacationKind] = useState<"office" | "production">("office");
+  const [vacationKind, setVacationKind] = useState<VacationKind>("office");
   const [memo, setMemo] = useState("");
+  const [scheduleType, setScheduleType] = useState<"office" | "production">("production");
   const [recordingProgram, setRecordingProgram] = useState("");
   const [recordingDate, setRecordingDate] = useState("");
   const [recordingTime, setRecordingTime] = useState("");
@@ -73,12 +75,15 @@ export default function UploadForm() {
   const recordingFormReady =
     recordingProgram.trim().length > 0 && recordingDate.trim().length > 0;
 
+  const isOfficeSchedule = documentType === "office-schedule";
+  const isProductionSchedule = documentType === "production-schedule";
+
   const vacationFormReady =
     vacationPerson.trim().length > 0 && vacationDateStart.trim().length > 0;
 
   const canSubmit = isCasting
     ? Boolean(selectedFile)
-    : documentType === "recording"
+    : isOfficeSchedule || isProductionSchedule
       ? Boolean(selectedFile) || recordingFormReady
       : documentType === "vacation"
         ? Boolean(selectedFile) || vacationFormReady
@@ -87,9 +92,9 @@ export default function UploadForm() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!canSubmit) {
+      if (!canSubmit) {
       setErrorMessage(
-        documentType === "recording" && !selectedFile
+        isOfficeSchedule || isProductionSchedule && !selectedFile
           ? "프로그램과 날짜를 입력하거나, 이미지를 선택해 주세요."
           : documentType === "vacation" && !selectedFile
             ? "휴가자·시작일을 입력하거나, 이미지를 선택해 주세요."
@@ -119,12 +124,13 @@ export default function UploadForm() {
       if (documentType === "vacation") {
         formData.append("vacationKind", vacationKind);
       }
-      if (documentType === "recording") {
+      if (isOfficeSchedule || isProductionSchedule) {
         formData.append("recordingProgram", recordingProgram);
         formData.append("recordingDate", recordingDate);
         formData.append("recordingTime", recordingTime);
         formData.append("recordingPlace", recordingPlace);
         formData.append("recordingNote", recordingNote);
+        formData.append("scheduleType", scheduleType);
       }
       if (documentType === "vacation") {
         formData.append("vacationPerson", vacationPerson);
@@ -153,7 +159,7 @@ export default function UploadForm() {
       if (result.success) {
         setLastSubmitHadImage(Boolean(selectedFile));
         setLastSubmitDocType(submitDocType as DocumentType);
-        if (submitDocType === "recording") {
+        if (isOfficeSchedule || isProductionSchedule) {
           setLastRecordingWeek(result.recordingWeek ?? null);
           setLastRecordingEffectiveDate(result.recordingEffectiveDate ?? null);
         } else {
@@ -218,7 +224,7 @@ export default function UploadForm() {
   };
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="w-full max-w-5xl mx-auto">
       {uploadState === "success" ? (
         <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -232,16 +238,16 @@ export default function UploadForm() {
               ? lastSubmitDocType === "work-schedule"
                 ? "근무표 이미지가 저장되었습니다."
                 : "AI 분석 결과가 GitHub에 저장되었습니다."
-              : lastSubmitDocType === "recording"
-                ? "녹화 일정이 GitHub에 저장되었습니다."
+              : lastSubmitDocType === "office-schedule" || lastSubmitDocType === "production-schedule"
+                ? "일정이 GitHub에 저장되었습니다."
                 : lastSubmitDocType === "vacation"
                   ? "휴가 일정이 GitHub에 저장되었습니다."
                   : "메모 내용이 GitHub에 저장되었습니다."}
           </p>
-          {lastSubmitDocType === "recording" &&
+          {(lastSubmitDocType === "office-schedule" || lastSubmitDocType === "production-schedule") &&
             lastRecordingWeek &&
             lastRecordingEffectiveDate && (
-              <p className="text-green-800 text-sm mt-3 px-1 leading-relaxed text-left max-w-md mx-auto">
+              <p className="text-green-800 text-sm mt-3 px-1 leading-relaxed text-left max-w-2xl mx-auto">
                 기준일{" "}
                 <span className="font-mono font-semibold">{lastRecordingEffectiveDate}</span>
                 은(는) 오늘(서울) 기준{" "}
@@ -267,7 +273,7 @@ export default function UploadForm() {
               <p className="text-xs text-gray-500 mb-1 font-medium uppercase tracking-wide">
                 {lastSubmitDocType === "work-schedule" && lastSubmitHadImage
                   ? "등록 정보"
-                  : lastSubmitDocType === "recording" && !lastSubmitHadImage
+                  : lastSubmitDocType === "office-schedule" || lastSubmitDocType === "production-schedule" && !lastSubmitHadImage
                     ? "등록 요약"
                     : lastSubmitDocType === "vacation" && !lastSubmitHadImage
                       ? "등록 요약"
@@ -314,7 +320,7 @@ export default function UploadForm() {
               <label className="block text-sm font-semibold text-gray-700 mb-3">
                 휴가 구분 <span className="text-red-500">*</span>
               </label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
                   type="button"
                   onClick={() => setVacationKind("office")}
@@ -338,6 +344,18 @@ export default function UploadForm() {
                 >
                   <div className="font-semibold text-sm">제작 휴가</div>
                   <div className="text-xs mt-0.5 opacity-80">방송 제작</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setVacationKind("casting")}
+                  className={`p-3 rounded-xl border-2 text-left transition-all ${
+                    vacationKind === "casting"
+                      ? "border-orange-500 bg-orange-50 text-orange-900"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="font-semibold text-sm">주조 휴가</div>
+                  <div className="text-xs mt-0.5 opacity-80">주조 근무표와 동일 열에 표시</div>
                 </button>
               </div>
             </div>
@@ -545,8 +563,34 @@ export default function UploadForm() {
             </div>
           )}
 
-          {!isCasting && documentType === "recording" && (
+          {!isCasting && (isOfficeSchedule || isProductionSchedule) && (
             <div className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setScheduleType("office")}
+                    className={`flex-1 px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-all ${
+                      scheduleType === "office"
+                        ? "border-blue-500 bg-blue-50 text-blue-800"
+                        : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                    }`}
+                  >
+                    사무실
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setScheduleType("production")}
+                    className={`flex-1 px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-all ${
+                      scheduleType === "production"
+                        ? "border-indigo-500 bg-indigo-50 text-indigo-800"
+                        : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                    }`}
+                  >
+                    제작
+                  </button>
+                </div>
+              </div>
               <p className="text-xs text-gray-500">
                 이미지 없이 등록할 때는 <strong>프로그램</strong>과 <strong>날짜</strong>가 필요합니다.
                 이미지를 함께 올리면 AI 분석에 더해 아래 내용이 일정에 반영됩니다.
@@ -611,7 +655,7 @@ export default function UploadForm() {
             </div>
           )}
 
-          {!isCasting && documentType !== "recording" && documentType !== "vacation" && (
+          {!isCasting && documentType !== "office-schedule" && documentType !== "production-schedule" && documentType !== "vacation" && (
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 메모{" "}
@@ -649,7 +693,7 @@ export default function UploadForm() {
                     : selectedFile.type.startsWith("image/")
                       ? "AI 분석 중..."
                       : "문서 분석 중..."
-                  : documentType === "recording" || documentType === "vacation"
+                  : documentType === "office-schedule" || documentType === "production-schedule" || documentType === "vacation"
                     ? "저장 중..."
                     : "저장 중..."}
               </p>
@@ -683,7 +727,7 @@ export default function UploadForm() {
                     : documentType === "work-schedule" && !selectedFile.type.startsWith("image/")
                       ? "문서 업로드 및 분석"
                       : "업로드 및 분석"
-                : documentType === "recording"
+                : documentType === "office-schedule" || documentType === "production-schedule"
                   ? "일정 등록"
                   : documentType === "vacation"
                     ? "휴가 등록"

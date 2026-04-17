@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "context-window-management": {
+      "source": "smithery.ai",
+      "sourceType": "well-known",
+      "computedHash": "87e86874f19679375fbb3fe0f29bdd248f4bf830f697735d6ea2689b48356edc"
+    }
+  }
+}

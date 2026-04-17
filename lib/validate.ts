@@ -35,7 +35,8 @@ export function validateAiResult(
   if (
     documentType === "work-schedule" ||
     documentType === "vacation" ||
-    documentType === "recording" ||
+    documentType === "office-schedule" ||
+    documentType === "production-schedule" ||
     documentType === "casting-schedule"
   ) {
     if (!Array.isArray(details.entries)) {
@@ -144,16 +145,22 @@ export function parseWorkScheduleKind(raw: string | null): WorkScheduleKind {
   return "office";
 }
 
-export function parseVacationKind(raw: string | null): VacationKind {
+export function parseScheduleType(raw: string | null): "office" | "production" {
   if (raw === "production") return "production";
   return "office";
 }
 
+export function parseVacationKind(raw: string | null): VacationKind {
+  if (raw === "production") return "production";
+  if (raw === "casting") return "casting";
+  return "office";
+}
+
 export function validateDocumentType(type: string): DocumentType {
-  const validTypes: DocumentType[] = ["work-schedule", "vacation", "recording", "casting-schedule"];
+  const validTypes: DocumentType[] = ["work-schedule", "vacation", "office-schedule", "production-schedule", "casting-schedule"];
   if (!validTypes.includes(type as DocumentType)) {
     throw new ValidationError(
-      `올바르지 않은 문서 종류입니다. (work-schedule, vacation, recording, casting-schedule 중 하나)`
+      `올바르지 않은 문서 종류입니다. (work-schedule, vacation, office-schedule, production-schedule, casting-schedule 중 하나)`
     );
   }
   return type as DocumentType;

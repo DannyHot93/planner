@@ -29,7 +29,7 @@ export function buildMemoOnlyAiResult(
   const firstLine = m.split("\n")[0].slice(0, 120);
   const summary = firstLine || m.slice(0, 200);
 
-  if (documentType === "recording") {
+  if (documentType === "office-schedule" || documentType === "production-schedule") {
     return {
       summary,
       details: {
@@ -70,7 +70,8 @@ export function buildRecordingFormAiResult(
   dateYmd: string,
   time: string,
   place: string,
-  note: string
+  note: string,
+  scheduleType: "office" | "production" = "production"
 ): AiAnalysisResult {
   const p = program.trim();
   const d = dateYmd.trim();
@@ -80,6 +81,7 @@ export function buildRecordingFormAiResult(
     details: {
       title: p,
       program: p,
+      scheduleType,
       entries: [
         {
           date: d,
@@ -217,10 +219,11 @@ export function mergeVacationFormOverlay(
   };
 }
 
-const TYPE_PREFIX: Record<DocumentType, string> = {
+  const TYPE_PREFIX: Record<DocumentType, string> = {
   "work-schedule": "ws",
   vacation: "vac",
-  recording: "rec",
+  "office-schedule": "os",
+  "production-schedule": "ps",
   "casting-schedule": "cast",
 };
 
@@ -234,7 +237,7 @@ export function normalizeRecord(
   const id = `${prefix}_${timestamp}_${uuidv4().slice(0, 8)}`;
 
   let details: AiAnalysisResult["details"] = aiResult.details;
-  if (documentType === "recording" || documentType === "vacation") {
+  if (documentType === "office-schedule" || documentType === "production-schedule" || documentType === "vacation") {
     const d = aiResult.details as Record<string, unknown>;
     if (Array.isArray(d.entries)) {
       details = {
@@ -263,15 +266,17 @@ export function normalizeRecord(
 export const DATA_FILE_MAP: Record<DocumentType, string> = {
   "work-schedule": "data/work-schedules.json",
   vacation: "data/vacations.json",
-  recording: "data/recordings.json",
+  "office-schedule": "data/office-schedules.json",
+  "production-schedule": "data/production-schedules.json",
   "casting-schedule": "data/casting-schedules.json",
 };
 
-/** record id 접두사(ws_/vac_/rec_/cast_)로 JSON 파일 경로 결정 */
+/** record id 접두사(ws_/vac_/os_/ps_/cast_)로 JSON 파일 경로 결정 */
 export function getFilePathFromRecordId(id: string): string | null {
   if (id.startsWith("ws_")) return DATA_FILE_MAP["work-schedule"];
   if (id.startsWith("vac_")) return DATA_FILE_MAP["vacation"];
-  if (id.startsWith("rec_")) return DATA_FILE_MAP["recording"];
+  if (id.startsWith("os_")) return DATA_FILE_MAP["office-schedule"];
+  if (id.startsWith("ps_")) return DATA_FILE_MAP["production-schedule"];
   if (id.startsWith("cast_")) return DATA_FILE_MAP["casting-schedule"];
   return null;
 }
@@ -283,7 +288,8 @@ export function getCommitMessage(
   const typeLabel: Record<DocumentType, string> = {
     "work-schedule": "근무표",
     vacation: "휴가",
-    recording: "녹화일정",
+    "office-schedule": "사무실일정",
+    "production-schedule": "제작일정",
     "casting-schedule": "주조근무표",
   };
   return `[자동] ${typeLabel[documentType]} 업데이트 - ${date}`;

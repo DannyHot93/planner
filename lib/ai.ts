@@ -81,17 +81,38 @@ const PROMPTS: Record<Exclude<DocumentType, "casting-schedule">, string> = {
 
 이미지에서 읽을 수 없는 필드는 null로 설정하세요. 반드시 유효한 JSON만 응답하세요.`,
 
-  recording: `이 이미지는 녹화 일정입니다. 이미지에서 녹화 일정 정보를 추출하여 아래 JSON 형식으로 응답하세요.
+  "office-schedule": `이 이미지는 사무실 일정입니다. 이미지에서 사무실 일정 정보를 추출하여 아래 JSON 형식으로 응답하세요.
 
 {
-  "summary": "전체 녹화 일정 요약 (한 문장)",
+  "summary": "전체 사무실 일정 요약 (한 문장)",
   "details": {
     "period": "기간 (예: 2026-04-07 ~ 2026-04-11)",
     "title": "프로그램/콘텐츠 제목",
     "entries": [
       {
         "date": "날짜 (YYYY-MM-DD)",
-        "time": "녹화 시간 (예: 14:00-16:00)",
+        "time": "시간 (예: 14:00-16:00)",
+        "place": "장소",
+        "person": "담당자",
+        "note": "특이사항"
+      }
+    ]
+  }
+}
+
+이미지에서 읽을 수 없는 필드는 null로 설정하세요. 반드시 유효한 JSON만 응답하세요.`,
+
+  "production-schedule": `이 이미지는 제작 일정입니다. 이미지에서 제작 일정 정보를 추출하여 아래 JSON 형식으로 응답하세요.
+
+{
+  "summary": "전체 제작 일정 요약 (한 문장)",
+  "details": {
+    "period": "기간 (예: 2026-04-07 ~ 2026-04-11)",
+    "title": "프로그램/콘텐츠 제목",
+    "entries": [
+      {
+        "date": "날짜 (YYYY-MM-DD)",
+        "time": "제작 시간 (예: 14:00-16:00)",
         "place": "스튜디오·장소",
         "person": "담당자/출연자",
         "note": "특이사항"

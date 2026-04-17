@@ -32,8 +32,10 @@ function formatShortDate(ymd: string): string {
   return `${m}/${d}(${wd})`;
 }
 
-function vacationKindOf(details: VacationDetails): "office" | "production" {
-  return details.vacationKind === "production" ? "production" : "office";
+function vacationKindOf(details: VacationDetails): "office" | "production" | "casting" {
+  if (details.vacationKind === "production") return "production";
+  if (details.vacationKind === "casting") return "casting";
+  return "office";
 }
 
 function extractVacationDate(
@@ -70,6 +72,9 @@ interface CastingFlatEntry {
   nightReplacer?: string;
   note?: string;
   recordSummary: string;
+  /** vacations.json에서 등록한 주조 휴가 — 삭제 버튼용 */
+  recordId?: string;
+  uploadedAt?: string;
 }
 
 /** 동일인 병합 키 (이름 없으면 업로드 단위로 분리) */
@@ -189,6 +194,52 @@ function collectCastingFlat(castingRecords: ScheduleRecord[]): CastingFlatEntry[
     }
   }
   return rows;
+}
+
+/** 휴가 폼(구분: 주조)으로 저장한 레코드 → 주조 열과 동일 형태로 병합 */
+function collectCastingFlatFromVacations(vacationRecords: ScheduleRecord[]): CastingFlatEntry[] {
+  const rows: CastingFlatEntry[] = [];
+  for (const record of vacationRecords) {
+    const details = record.details as VacationDetails;
+    if (vacationKindOf(details) !== "casting") continue;
+    const entries = Array.isArray(details.entries) ? details.entries : [];
+    if (entries.length === 0) {
+      const dateYmd = extractVacationDate({}, record);
+      const person = (record.summary.split("·")[0] ?? "").trim() || "이름 미상";
+      rows.push({
+        dateYmd,
+        person,
+        note: record.memo || undefined,
+        recordSummary: record.summary,
+        recordId: record.id,
+        uploadedAt: record.uploadedAt,
+      });
+    } else {
+      for (const entry of entries) {
+        const e = entry as ScheduleEntry;
+        rows.push({
+          dateYmd: extractVacationDate(e, record),
+          person:
+            typeof e.person === "string" && e.person.trim()
+              ? e.person.trim()
+              : "이름 미상",
+          note:
+            (typeof e.note === "string" && e.note) ||
+            (typeof e.reason === "string" && e.reason) ||
+            undefined,
+          recordSummary: record.summary,
+          recordId: record.id,
+          uploadedAt: record.uploadedAt,
+        });
+      }
+    }
+  }
+  return rows;
+}
+
+function uniqueCastingRecordIds(rows: CastingFlatEntry[]): string[] {
+  const ids = rows.map((r) => r.recordId).filter((id): id is string => Boolean(id));
+  return [...new Set(ids)];
 }
 
 function mergeCastingByPerson(rows: CastingFlatEntry[]): MergedCastingPerson[] {
@@ -439,6 +490,7 @@ function MergedCastingPersonCard({
 }) {
   const [open, setOpen] = useState(false);
   const showcaseRow = merged.rows.find((r) => r.dateYmd === todayStr) ?? merged.rows[0];
+  const deletableRecordIds = uniqueCastingRecordIds(merged.rows);
 
   return (
     <div
@@ -447,7 +499,16 @@ function MergedCastingPersonCard({
       onMouseLeave={() => setOpen(false)}
     >
       <div className="bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 hover:border-orange-400 hover:shadow-sm transition-all cursor-default">
-        <p className="text-sm font-semibold text-orange-900">{merged.person}</p>
+        <div className="flex items-start justify-between gap-2 mb-0.5">
+          <p className="text-sm font-semibold text-orange-900 min-w-0 flex-1">{merged.person}</p>
+          {deletableRecordIds.length > 0 && (
+            <div className="flex flex-wrap gap-1 justify-end shrink-0">
+              {deletableRecordIds.map((id) => (
+                <DeleteRecordButton key={id} recordId={id} className="scale-90 origin-right" />
+              ))}
+            </div>
+          )}
+        </div>
         <DateChipList dateYmds={merged.dateYmds} todayStr={todayStr} />
         {(showcaseRow?.dayReplacer || showcaseRow?.nightReplacer) && (
           <div className="mt-2 space-y-0.5 text-xs">
@@ -468,7 +529,10 @@ function MergedCastingPersonCard({
         <div className="absolute z-50 left-0 top-full mt-1 w-64 bg-white border border-orange-200 rounded-xl shadow-xl p-4 text-xs text-gray-700 space-y-1.5">
           <p className="font-semibold text-orange-800">{merged.person} 휴가 (주조)</p>
           {merged.rows.map((entry, i) => (
-            <div key={`${entry.dateYmd}-${i}`} className="border-t border-gray-100 pt-2 first:border-0 first:pt-0">
+            <div
+              key={`${entry.recordId ?? "cast-sheet"}-${entry.dateYmd}-${i}`}
+              className="border-t border-gray-100 pt-2 first:border-0 first:pt-0"
+            >
               <p className="text-gray-600">{formatDateLabel(entry.dateYmd)}</p>
               <p className="text-gray-500 text-[11px]">{entry.recordSummary}</p>
               {entry.dayReplacer && (
@@ -573,7 +637,11 @@ export default function VacationWeekView({
     () => collectVacationFlat(vacationRecords, "production"),
     [vacationRecords]
   );
-  const castingFlat = useMemo(() => collectCastingFlat(castingRecords), [castingRecords]);
+  const castingFlat = useMemo(() => {
+    const fromVacationForm = collectCastingFlatFromVacations(vacationRecords);
+    const fromCastingSheet = collectCastingFlat(castingRecords);
+    return [...fromVacationForm, ...fromCastingSheet];
+  }, [vacationRecords, castingRecords]);
 
   const officeMerged = useMemo(() => mergeVacationByPerson(officeFlat), [officeFlat]);
   const productionMerged = useMemo(() => mergeVacationByPerson(productionFlat), [productionFlat]);
@@ -589,10 +657,7 @@ export default function VacationWeekView({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-5">
-        <h3 className="text-sm font-semibold text-gray-700">휴가 일정</h3>
-        <span className="text-xs text-gray-400">인원별 · 사무실→제작→주조 가로 배치</span>
-      </div>
+      <h3 className="text-sm font-semibold text-gray-700 mb-5">휴가 일정</h3>
 
       {allEmpty ? (
         <div className="text-center py-12 text-gray-400">

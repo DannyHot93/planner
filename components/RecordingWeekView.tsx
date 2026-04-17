@@ -402,7 +402,6 @@ export default function RecordingWeekView({
   }, [flat, calendarThisWeekMonday]);
 
   const hasAny = flat.length > 0;
-  const hasThisWeek = thisWeekGroups.some((g) => g.entries.length > 0);
 
   return (
     <div className="space-y-8">
@@ -454,12 +453,6 @@ export default function RecordingWeekView({
                 {formatRangeLabel(thisWeekDays)}
               </span>
             </div>
-            {!hasThisWeek && hasOtherWeekAny && (
-              <p className="text-xs text-blue-800/80 mb-3 bg-white/60 border border-blue-100 rounded-lg px-3 py-2">
-                이번 주에 해당하는 일정이 없습니다. 아래 &ldquo;이번 주 외&rdquo;에서
-                확인해 주세요.
-              </p>
-            )}
             <WeekGrid
               dayGroups={thisWeekGroups}
               todayStr={todayStr}
@@ -472,10 +465,6 @@ export default function RecordingWeekView({
             <section className="rounded-2xl border border-gray-200 bg-gray-50/90 p-4 shadow-sm">
               <div className="mb-3">
                 <h4 className="text-sm font-bold text-gray-800">이번 주 외 일정</h4>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  이번 주(월~일)에 속하지 않는 일정만 모았습니다. 같은 요일 칸에 여러 주의
-                  일정이 있을 수 있어, 각 녹화 카드 위에 날짜를 표시합니다.
-                </p>
               </div>
               <OtherWeekMergedGrid
                 dayGroups={otherWeekByWeekday}

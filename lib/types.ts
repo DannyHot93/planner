@@ -1,4 +1,4 @@
-export type DocumentType = "work-schedule" | "vacation" | "recording" | "casting-schedule";
+export type DocumentType = "work-schedule" | "vacation" | "office-schedule" | "production-schedule" | "casting-schedule";
 
 export interface ScheduleEntry {
   date?: string;
@@ -27,8 +27,8 @@ export interface WorkScheduleDetails {
   [key: string]: unknown;
 }
 
-/** 휴가 업로드 시 선택: 사무실 / 제작 (주조는 casting-schedules.json 별도) */
-export type VacationKind = "office" | "production";
+/** 휴가 업로드 시 선택: 사무실 / 제작 / 주조(수동 등록은 vacations.json, 주조표 이미지는 casting-schedules.json) */
+export type VacationKind = "office" | "production" | "casting";
 
 export interface VacationDetails {
   period?: string;

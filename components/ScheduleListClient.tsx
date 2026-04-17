@@ -7,13 +7,14 @@ import RecordingWeekView from "./RecordingWeekView";
 import WorkScheduleWeekView from "./WorkScheduleWeekView";
 import VacationWeekView from "./VacationWeekView";
 
-type TabValue = "all" | "work-schedule" | "vacation" | "recording";
+type TabValue = "all" | "work-schedule" | "vacation" | "office-schedule" | "production-schedule";
 
 const TABS: { value: TabValue; label: string }[] = [
   { value: "all", label: "전체" },
   { value: "work-schedule", label: "근무표" },
   { value: "vacation", label: "휴가" },
-  { value: "recording", label: "녹화일정" },
+  { value: "office-schedule", label: "사무실일정" },
+  { value: "production-schedule", label: "제작일정" },
 ];
 
 export default function ScheduleListClient({
@@ -25,7 +26,9 @@ export default function ScheduleListClient({
 }) {
   const [activeTab, setActiveTab] = useState<TabValue>("all");
 
-  const recordingRecords = records.filter((r) => r.type === "recording");
+  const recordingRecords = records.filter((r) => r.type === "office-schedule" || r.type === "production-schedule");
+  const officeRecords = records.filter((r) => r.type === "office-schedule");
+  const productionRecords = records.filter((r) => r.type === "production-schedule");
   const workScheduleRecords = records.filter((r) => r.type === "work-schedule");
   const vacationRecords = records.filter((r) => r.type === "vacation");
 
@@ -48,8 +51,10 @@ export default function ScheduleListClient({
         ))}
       </div>
 
-      {activeTab === "recording" ? (
-        <RecordingWeekView records={recordingRecords} />
+      {activeTab === "office-schedule" ? (
+        <RecordingWeekView records={officeRecords} />
+      ) : activeTab === "production-schedule" ? (
+        <RecordingWeekView records={productionRecords} />
       ) : activeTab === "work-schedule" ? (
         <WorkScheduleWeekView records={workScheduleRecords} castingRecords={castingRecords} />
       ) : activeTab === "vacation" ? (
