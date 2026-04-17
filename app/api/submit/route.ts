@@ -29,12 +29,6 @@ import {
 } from "@/lib/normalize";
 import { appendRecordToGitHub } from "@/lib/github";
 import { SubmitApiResponse } from "@/lib/types";
-import {
-  extractTextFromDocxBuffer,
-  extractTextFromPdfBuffer,
-  renderPdfFirstPageDataUrl,
-} from "@/lib/document-text";
-import { toOpenAiVisionInput } from "@/lib/image-for-openai";
 import type { WorkScheduleKind } from "@/lib/types";
 import { toSeoulDateYmd } from "@/lib/seoul-week";
 
@@ -193,6 +187,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
       validateImageFile(imageFile);
       const buffer = Buffer.from(await imageFile.arrayBuffer());
       const mimeType = inferImageMimeType(imageFile);
+      const { toOpenAiVisionInput } = await import("@/lib/image-for-openai");
       const { base64: visionBase64, mimeType: visionMime } =
         await toOpenAiVisionInput(buffer, mimeType);
 
@@ -230,6 +225,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
           documentType
         );
       } else if (category === "pdf") {
+        const { extractTextFromPdfBuffer, renderPdfFirstPageDataUrl } =
+          await import("@/lib/document-text");
         const text = await extractTextFromPdfBuffer(buffer);
         const raw = await analyzeWorkScheduleFromText(text, workScheduleKind);
         aiResult = validateAiResult(raw, documentType);
@@ -240,6 +237,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
           d.imagePreviewSource = "pdf-first-page";
         }
       } else {
+        const { extractTextFromDocxBuffer } = await import("@/lib/document-text");
         const text = await extractTextFromDocxBuffer(buffer);
         const raw = await analyzeWorkScheduleFromText(text, workScheduleKind);
         aiResult = validateAiResult(raw, documentType);
@@ -250,6 +248,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
       const arrayBuffer = await imageFile.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
       const mimeType = inferImageMimeType(imageFile);
+      const { toOpenAiVisionInput } = await import("@/lib/image-for-openai");
       const { base64: visionBase64, mimeType: visionMime } =
         await toOpenAiVisionInput(buffer, mimeType);
 
