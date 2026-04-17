@@ -1,25 +1,28 @@
 # 일정 플래너 (Planner)
 
-외부 사용자가 **근무표**, **휴가**, **녹화일정** 이미지를 업로드하면 OpenAI GPT-4o Vision으로 분석하고, 결과를 JSON으로 저장한 뒤 GitHub에 반영합니다. GitHub와 연동된 Vercel이 자동 배포하면 공개 페이지에 최신 일정이 표시됩니다.
+근무·휴가·사무실·제작 일정을 **이미지 업로드** 또는 **폼 입력**으로 등록하면, 서버에서 OpenAI Vision으로 분석하고 결과를 JSON으로 만든 뒤 **GitHub 저장소**에 커밋합니다. [Vercel](https://vercel.com)에 연결해 두면 `main` 푸시 시 자동 배포되고, 공개 홈에서 최신 일정을 볼 수 있습니다.
 
-## 기능
+## 주요 기능
 
-- `/submit` — 문서 종류 선택, 이미지 1장 업로드, 선택 메모 입력
-- `/` — 최신 일정 요약 및 종류별(전체·근무표·휴가·녹화일정) 목록
-- 서버에서 OpenAI 멀티모달 API 호출 → JSON 검증·정규화 → GitHub Contents API로 커밋
+| 구분 | 설명 |
+|------|------|
+| **홈 `/`** | 상단 탭: **일정**(대시보드) · **근무표** · **휴가** · **사무실일정** · **제작일정** |
+| **일정 탭** | 이번 주 / 이번 주 외 사무실·제작 일정 요약, 우측에 휴가(오늘의 휴가·부서별) |
+| **업로드 `/submit`** | 문서 종류 선택, 이미지·메모·폼 입력 → AI 분석 후 GitHub에 저장 |
+| **데이터** | 서버가 `data/*.json`을 읽고(GitHub 연동 시 원격 우선), 업로드 시 Contents API로 커밋 |
 
 ## 기술 스택
 
-- Next.js 16 (App Router), React 19, TypeScript
-- Tailwind CSS 4
-- OpenAI API (`gpt-4o`, Vision + JSON 응답)
-- GitHub REST API (Contents: 파일 읽기·커밋)
+- Next.js 16 (App Router), React 19, TypeScript  
+- Tailwind CSS 4  
+- OpenAI API (`gpt-4o` 등, Vision + 구조화 응답)  
+- GitHub REST API (Contents: 읽기·쓰기·커밋)
 
 ## 사전 요구 사항
 
-- Node.js 20 이상 권장
-- [OpenAI API 키](https://platform.openai.com/)
-- GitHub 저장소 및 [Personal Access Token (classic)](https://github.com/settings/tokens) — `repo` 권한
+- Node.js 20 이상 권장  
+- [OpenAI API 키](https://platform.openai.com/)  
+- GitHub 저장소 및 [Personal Access Token (classic)](https://github.com/settings/tokens) — `repo` 권한  
 
 ## 로컬 실행
 
@@ -29,13 +32,13 @@ cd planner
 npm install
 ```
 
-1. 프로젝트 루트에 `.env.local` 파일을 만듭니다. (`.env.example`을 참고)
+1. `.env.example`을 복사해 `.env.local`을 만듭니다.
 
 ```bash
 cp .env.example .env.local
 ```
 
-2. `.env.local`에 실제 값을 채웁니다.
+2. `.env.local`에 값을 채웁니다.
 
 | 변수 | 설명 |
 |------|------|
@@ -45,13 +48,13 @@ cp .env.example .env.local
 | `GITHUB_REPO` | 저장소 이름 |
 | `GITHUB_BRANCH` | 커밋할 브랜치 (기본 `main`) |
 
-3. 개발 서버 실행
+3. 개발 서버
 
 ```bash
 npm run dev
 ```
 
-브라우저에서 [http://localhost:3000](http://localhost:3000) (또는 터미널에 표시된 포트)로 접속합니다.
+브라우저에서 [http://localhost:3000](http://localhost:3000)으로 접속합니다.
 
 ## 스크립트
 
@@ -59,28 +62,40 @@ npm run dev
 |------|------|
 | `npm run dev` | 개발 서버 |
 | `npm run build` | 프로덕션 빌드 |
-| `npm run start` | 프로덕션 서버 실행 |
+| `npm run start` | 프로덕션 서버 |
 | `npm run lint` | ESLint |
 
-## 데이터 구조
+## 데이터 파일 (`data/`)
 
-- `data/work-schedules.json` — 근무표
-- `data/vacations.json` — 휴가
-- `data/recordings.json` — 녹화일정
+| 파일 | 용도 |
+|------|------|
+| `work-schedules.json` | 근무표 |
+| `vacations.json` | 휴가 |
+| `office-schedules.json` | 사무실 일정 |
+| `production-schedules.json` | 제작 일정 |
+| `recordings.json` | 구 녹화 일정(레거시) |
+| `casting-schedules.json` | 주조 근무 |
 
-각 파일은 JSON 배열이며, 업로드 시 새 항목이 앞쪽에 추가됩니다.
+각 파일은 JSON 배열이며, 새 항목은 앞쪽에 추가됩니다.
 
 ## Vercel 배포
 
-1. 이 저장소를 Vercel에 연결합니다.
-2. **Environment Variables**에 `.env.local`과 동일한 변수를 등록합니다. (Vercel 대시보드에만 키를 넣고, 저장소에는 커밋하지 않습니다.)
-3. `main` 브랜치에 푸시하면 자동 배포됩니다. 업로드 후 GitHub에 커밋이 생기면 다음 배포에서 최신 `data/*.json`이 반영됩니다.
+1. [Vercel](https://vercel.com)에서 이 GitHub 저장소를 Import합니다.  
+2. **Settings → Environment Variables**에 `.env.local`과 동일한 변수를 등록합니다. (키는 Vercel에만 두고 저장소에 커밋하지 않습니다.)  
+3. `main`에 푸시하면 프로덕션 빌드·배포가 실행됩니다.  
+4. 업로드로 GitHub의 `data/*.json`이 바뀌면, 다음 배포 또는 재배포 시 반영됩니다.
+
+CLI로 수동 배포할 때(로그인·링크된 프로젝트가 있을 때):
+
+```bash
+npx vercel deploy --prod
+```
 
 ## 보안
 
-- `.env.local`은 `.gitignore`에 포함되어 Git에 올라가지 않습니다.
-- API 키·토큰·시크릿은 채팅이나 이슈에 붙여 넣지 마세요. 노출 시 즉시 키를 폐기하고 새로 발급하세요.
+- `.env.local`은 `.gitignore`에 포함되어 Git에 올라가지 않습니다.  
+- API 키·토큰은 이슈·채팅에 붙이지 마세요. 노출 시 즉시 폐기 후 재발급하세요.
 
 ## 라이선스
 
-Private 프로젝트로 설정되어 있으면 본인만 사용합니다. 필요 시 별도 라이선스를 추가하세요.
+Private 저장소라면 팀 내부 용도로 사용합니다. 공개 시 원하는 라이선스를 추가하세요.

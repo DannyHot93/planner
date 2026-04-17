@@ -7,6 +7,7 @@ import {
   VacationKind,
   WorkScheduleKind,
 } from "./types";
+import { anchorRecordingScheduleDateYmd } from "./recording-date-anchor";
 import { addDaysYmd, toSeoulDateYmd } from "./seoul-week";
 
 /** AI/메모 결과에 근무표 종류를 서버에서 확정합니다. */
@@ -255,7 +256,10 @@ export function normalizeRecord(
           }
           const ymd = toSeoulDateYmd(s) || s.slice(0, 10);
           if (/^\d{4}-\d{2}-\d{2}$/.test(ymd)) {
-            return { ...(e as object), date: ymd };
+            return {
+              ...(e as object),
+              date: anchorRecordingScheduleDateYmd(ymd),
+            };
           }
           return { ...(e as object), date: seoulTodayYmd };
         }),

@@ -1,4 +1,5 @@
 import { AiAnalysisResult } from "./types";
+import { anchorRecordingScheduleDateYmd } from "./recording-date-anchor";
 import { toSeoulDateYmd } from "./seoul-week";
 
 function pad2(n: number): string {
@@ -85,14 +86,16 @@ export function enrichRecordingScheduleAiResult(
   const period = typeof details.period === "string" ? details.period : "";
   const title = typeof details.title === "string" ? details.title : "";
   const summary = aiResult.summary || "";
-  const bounds = extractYmdListFromText(`${period} ${summary} ${title}`);
+  const bounds = extractYmdListFromText(`${period} ${summary} ${title}`).map(
+    anchorRecordingScheduleDateYmd
+  );
   const todayYmd = getSeoulTodayYmd();
   const refYear = refYearFromBounds(bounds, todayYmd);
 
   let entries = Array.isArray(details.entries) ? [...details.entries] : [];
 
   if (entries.length === 0) {
-    const fallbackDate = bounds[0] ?? todayYmd;
+    const fallbackDate = anchorRecordingScheduleDateYmd(bounds[0] ?? todayYmd);
     entries = [{ date: fallbackDate, note: summary || undefined }];
   } else {
     entries = entries.map((e) =>
@@ -124,7 +127,7 @@ export function enrichRecordingScheduleAiResult(
         ymd = todayYmd;
       }
 
-      row.date = ymd;
+      row.date = anchorRecordingScheduleDateYmd(ymd);
       lastYmd = ymd;
       entries[i] = row;
     }

@@ -110,26 +110,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <div className="w-full max-w-none mx-auto px-3 sm:px-5 lg:px-6 xl:px-8 2xl:px-10 py-10 sm:py-12">
-        {/* 헤더 */}
-        <div className="flex items-center justify-between mb-10">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">일정 플래너</h1>
-          </div>
-          <a
-            href="/submit"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors shadow-sm"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            업로드
-          </a>
-        </div>
-
-        {/* 목록 (클라이언트 컴포넌트로 탭 처리) */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <ScheduleListClient records={allRecords} castingRecords={castingSchedules} />
-        </div>
+        <ScheduleListClient records={allRecords} castingRecords={castingSchedules} />
       </div>
     </div>
   );

@@ -344,7 +344,7 @@ function TodayVacationBox({ rows, todayStr }: { rows: TodayVacationRow[]; todayS
   const label = formatDateLabel(todayStr);
 
   return (
-    <div className="rounded-2xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-white p-4 shadow-sm">
+    <div className="w-full rounded-2xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-white p-4 shadow-sm">
       <div className="flex items-center justify-between gap-2 mb-3">
         <div>
           <p className="text-xs font-bold text-blue-800 uppercase tracking-wide">오늘의 휴가</p>
@@ -573,7 +573,7 @@ function PersonGroupedVacationSection({
 }) {
   if (merged.length === 0) {
     return (
-      <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+      <div className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4">
         <p className={`text-xs font-bold mb-2 ${color}`}>{title}</p>
         <p className="text-xs text-gray-300 text-center py-3">등록된 휴가 없음</p>
       </div>
@@ -581,7 +581,7 @@ function PersonGroupedVacationSection({
   }
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+    <div className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4">
       <p className={`text-xs font-bold mb-4 ${color}`}>{title}</p>
       <div className="space-y-3">
         {merged.map((m) => (
@@ -601,7 +601,7 @@ function PersonGroupedCastingSection({
 }) {
   if (merged.length === 0) {
     return (
-      <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+      <div className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4">
         <p className="text-xs font-bold mb-2 text-orange-700">주조 휴가</p>
         <p className="text-xs text-gray-300 text-center py-3">등록된 휴가 없음</p>
       </div>
@@ -609,7 +609,7 @@ function PersonGroupedCastingSection({
   }
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+    <div className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4">
       <p className="text-xs font-bold mb-4 text-orange-700">주조 휴가</p>
       <div className="space-y-3">
         {merged.map((m) => (

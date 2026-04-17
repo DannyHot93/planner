@@ -1,4 +1,5 @@
 import { ScheduleRecord } from "./types";
+import { anchorRecordingScheduleDateYmd } from "./recording-date-anchor";
 import { mondayOfWeekContaining, toSeoulDateYmd } from "./seoul-week";
 
 /** Asia/Seoul 기준 오늘 YYYY-MM-DD */
@@ -18,7 +19,9 @@ export function getEffectiveRecordingYmd(record: ScheduleRecord): string {
   for (const e of entries) {
     if (e?.date) {
       const y = toSeoulDateYmd(String(e.date));
-      if (y && /^\d{4}-\d{2}-\d{2}$/.test(y)) return y;
+      if (y && /^\d{4}-\d{2}-\d{2}$/.test(y)) {
+        return anchorRecordingScheduleDateYmd(y);
+      }
     }
   }
   return toSeoulDateYmd(record.uploadedAt) || record.uploadedAt.slice(0, 10);

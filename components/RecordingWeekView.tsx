@@ -190,7 +190,7 @@ function EntryCard({
         <div className="flex items-start justify-between gap-1 mb-0.5">
           <p
             className={`text-sm font-semibold leading-snug flex-1 min-w-0 ${
-              isThisWeek ? "text-red-600" : "text-gray-800"
+              isThisWeek ? "text-gray-900" : "text-gray-800"
             }`}
           >
             {headline}
@@ -205,11 +205,7 @@ function EntryCard({
       {open && (
         <div className="absolute z-50 left-0 top-full mt-1 w-64 bg-white border border-purple-200 rounded-xl shadow-xl p-4 text-xs text-gray-700 space-y-1.5">
           {entry.programTitle && (
-            <p
-              className={`font-semibold text-sm ${
-                isThisWeek ? "text-red-600" : "text-gray-900"
-              }`}
-            >
+            <p className="font-semibold text-sm text-gray-900">
               {entry.programTitle}
             </p>
           )}
@@ -476,13 +472,7 @@ export default function RecordingWeekView({
                 emptyBlock
               ) : (
                 <section className={thisWeekSectionClass}>
-                  {embedded ? (
-                    <div className="flex justify-end mb-2">
-                      <span className="text-[10px] font-medium text-blue-700/90">
-                        {formatRangeLabel(thisWeekDays)}
-                      </span>
-                    </div>
-                  ) : (
+                  {!embedded && (
                     <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
                       <h4 className="text-sm font-bold text-blue-900">이번 주 일정</h4>
                       <span className="text-xs font-medium text-blue-700/80">
