@@ -146,25 +146,6 @@
     }
   },
   {
-    "id": "vac_1776502392252_0bb41b1e",
-    "type": "vacation",
-    "uploadedAt": "2026-04-18T08:53:12.252Z",
-    "memo": "연차휴가",
-    "summary": "이기성 · 2026-04-18",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-04-18 ~ 2026-04-18",
-      "entries": [
-        {
-          "date": "2026-04-18",
-          "person": "이기성",
-          "reason": "구분: 연차휴가 · 비고: 연차휴가",
-          "note": "구분: 연차휴가 · 비고: 연차휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1776502391699_b5902ab2",
     "type": "vacation",
     "uploadedAt": "2026-04-18T08:53:11.726Z",
