@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1776503840145_8109e105",
+    "type": "vacation",
+    "uploadedAt": "2026-04-18T09:17:20.145Z",
+    "memo": "연차휴가",
+    "summary": "오홍택 · 2026-04-16",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-04-16 ~ 2026-04-16",
+      "entries": [
+        {
+          "date": "2026-04-16",
+          "person": "오홍택",
+          "reason": "구분: 연차휴가 · 비고: 연차휴가",
+          "note": "구분: 연차휴가 · 비고: 연차휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1776503839728_ba41b6e7",
     "type": "vacation",
     "uploadedAt": "2026-04-18T09:17:19.728Z",
