@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { ScheduleRecord, ScheduleEntry } from "@/lib/types";
 import {
+  isSundayYmd,
   mondayOfWeekContaining,
   sevenDaysFromMonday,
   toSeoulDateYmd,
@@ -158,16 +159,23 @@ function formatEntryDateLine(ymd: string): string {
   return `${mo}/${d} (${wd})`;
 }
 
-/** 이번 주 제외 일정을 요일 7칸으로만 묶음 (여러 주 혼합) */
+/**
+ * 이번 주 제외 일정을 요일 7칸으로 묶음.
+ * 월~토에는 지난주 이전(과거) 일정을 숨겨 사용자가 보기에 "월요일부터 지난주가 깔끔히 사라진" 상태를 만든다.
+ * 일요일 당일은 그 주가 끝나기 전이라 지난주도 그대로 표시(클린업 정책과 동일).
+ */
 function buildOtherWeekByWeekdayGroups(
   flat: EntryWithMeta[],
-  calendarThisWeekMonday: string
+  calendarThisWeekMonday: string,
+  todayYmd: string
 ): DayGroup[] {
+  const hidePast = !isSundayYmd(todayYmd);
   const buckets: EntryWithMeta[][] = [[], [], [], [], [], [], []];
   for (const e of flat) {
     const d = e.date ? toSeoulDateYmd(e.date) : "";
     if (!d) continue;
     if (mondayOfWeekContaining(d) === calendarThisWeekMonday) continue;
+    if (hidePast && d < calendarThisWeekMonday) continue;
     const col = weekdayColumnIndex(d);
     buckets[col].push({ ...e, date: d });
   }
@@ -515,8 +523,8 @@ export default function RecordingWeekView({
   const flat = useMemo(() => flattenRecordingEntries(records), [records]);
 
   const otherWeekByWeekday = useMemo(
-    () => buildOtherWeekByWeekdayGroups(flat, calendarThisWeekMonday),
-    [flat, calendarThisWeekMonday]
+    () => buildOtherWeekByWeekdayGroups(flat, calendarThisWeekMonday, todayStr),
+    [flat, calendarThisWeekMonday, todayStr]
   );
 
   const hasOtherWeekAny = otherWeekByWeekday.some((g) => g.entries.length > 0);

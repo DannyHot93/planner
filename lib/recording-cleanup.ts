@@ -70,11 +70,56 @@ export function keepRecordingAfterWeeklyCleanup(
   return false;
 }
 
+/**
+ * 레코드 내부 entries에서 지난주(월요일 기준 이전) 날짜 항목을 제거한다.
+ * - 일요일 당일: 그 주가 끝나기 전이라 prune 하지 않음(기존 유지 정책과 동일).
+ * - 월~토: `date < thisWeekMonday` 인 entry 제거. 날짜가 없는 entry는 보존.
+ * - 레코드가 entries를 원래 갖고 있었는데 prune 후 전부 비면, 이 레코드는
+ *   `keepRecordingAfterWeeklyCleanup` 이전 단계에서 삭제 대상이 된다.
+ */
+export function pruneRecordEntriesForWeeklyCleanup(
+  record: ScheduleRecord,
+  todayYmd: string,
+  thisWeekMondayYmd: string
+): ScheduleRecord {
+  if (isSundayYmd(todayYmd)) return record;
+  const details = record.details as { entries?: unknown } | undefined;
+  if (!details || !Array.isArray(details.entries) || details.entries.length === 0) {
+    return record;
+  }
+  const original = details.entries as { date?: string }[];
+  const pruned = original.filter((entry) => {
+    const ymd = toSeoulDateYmd(entry?.date);
+    if (!ymd) return true;
+    return ymd >= thisWeekMondayYmd;
+  });
+  if (pruned.length === original.length) return record;
+  return {
+    ...record,
+    details: { ...(record.details as object), entries: pruned },
+  } as ScheduleRecord;
+}
+
 /** 녹화일정 배열을 오늘 기준으로 필터 (GitHub 덮어쓰기 전에 사용) */
 export function filterRecordingsWeeklyCleanup(records: ScheduleRecord[]): ScheduleRecord[] {
   const todayYmd = getTodaySeoulYmd();
   const thisWeekMondayYmd = mondayOfWeekContaining(todayYmd);
-  return records.filter((record) =>
-    keepRecordingAfterWeeklyCleanup(record, todayYmd, thisWeekMondayYmd)
-  );
+  const result: ScheduleRecord[] = [];
+  for (const record of records) {
+    const originalEntries = (record.details as { entries?: unknown }).entries;
+    const hadEntries = Array.isArray(originalEntries) && originalEntries.length > 0;
+
+    const pruned = pruneRecordEntriesForWeeklyCleanup(
+      record,
+      todayYmd,
+      thisWeekMondayYmd
+    );
+    const prunedEntries = (pruned.details as { entries?: unknown }).entries;
+    const prunedHasEntries = Array.isArray(prunedEntries) && prunedEntries.length > 0;
+
+    if (hadEntries && !prunedHasEntries) continue;
+    if (!keepRecordingAfterWeeklyCleanup(pruned, todayYmd, thisWeekMondayYmd)) continue;
+    result.push(pruned);
+  }
+  return result;
 }
