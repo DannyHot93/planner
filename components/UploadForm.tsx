@@ -619,20 +619,20 @@ export default function UploadForm() {
           {!isCasting && (isOfficeSchedule || isProductionSchedule) && (
             <div className="space-y-4">
               <p className="text-xs text-gray-500">
-                이미지 없이 등록할 때는 <strong>프로그램</strong>과 <strong>날짜</strong>가 필요합니다.
+                이미지 없이 등록할 때는 <strong>{isOfficeSchedule ? "일정" : "프로그램"}</strong>과 <strong>날짜</strong>가 필요합니다.
                 이미지를 함께 올리면 AI 분석에 더해 아래 내용이 일정에 반영됩니다.
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    프로그램 <span className="text-red-500">*</span>
+                    {isOfficeSchedule ? "일정" : "프로그램"} <span className="text-red-500">*</span>
                     {!selectedFile && <span className="text-gray-400 font-normal"> (이미지 없을 때 필수)</span>}
                   </label>
                   <input
                     type="text"
                     value={recordingProgram}
                     onChange={(e) => setRecordingProgram(e.target.value)}
-                    placeholder="예: 즐거운 오후"
+                    placeholder={isOfficeSchedule ? "예: 편성회의" : "예: 즐거운 오후"}
                     className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
