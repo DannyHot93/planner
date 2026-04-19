@@ -33,7 +33,7 @@ export default function SubmitPage() {
         <div className="mt-6 bg-blue-50 border border-blue-100 rounded-xl p-4">
           <h3 className="text-sm font-semibold text-blue-800 mb-2">업로드 안내</h3>
           <ul className="text-xs text-blue-700 space-y-1">
-            <li>• 근무표는 사무실/제작을 선택할 수 있고, 이미지·PDF·Word(docx)를 올릴 수 있습니다.</li>
+            <li>• 근무표는 사무실/제작을 선택할 수 있고, 이미지만 업로드할 수 있습니다.</li>
             <li>• 이미지 없이 메모만 입력해도 같은 방식으로 GitHub에 저장됩니다 (AI 분석 없음).</li>
             <li>• 이미지는 서버에 저장되지 않으며 AI 분석 후 즉시 삭제됩니다.</li>
             <li>• 분석 결과는 GitHub 저장소에 저장되고 자동 배포됩니다.</li>

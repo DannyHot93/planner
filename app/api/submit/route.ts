@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   analyzeImage,
-  analyzeWorkScheduleFromText,
   analyzeCastingScheduleImage,
 } from "@/lib/ai";
 import {
@@ -11,7 +10,6 @@ import {
   validateWorkScheduleUploadFile,
   validateVacationUploadFile,
   getVacationFileCategory,
-  getWorkScheduleFileCategory,
   parseWorkScheduleKind,
   parseVacationKind,
   ValidationError,
@@ -42,7 +40,7 @@ import { enrichRecordingScheduleAiResult } from "@/lib/recording-schedule-enrich
 const MEMO_ONLY_MIN = 1;
 const MEMO_ONLY_MAX = 8000;
 
-/** PDF/AI 처리 시간 여유 (Vercel 등) */
+/** AI 이미지 분석 여유 시간 (Vercel 등) */
 export const maxDuration = 60;
 
 function parseRecordingForm(formData: FormData) {
@@ -215,39 +213,18 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
     } else if (documentType === "work-schedule") {
       validateWorkScheduleUploadFile(imageFile);
       const buffer = Buffer.from(await imageFile.arrayBuffer());
-      const category = getWorkScheduleFileCategory(imageFile);
-
-      if (category === "image") {
-        const mimeType = inferImageMimeType(imageFile);
-        const { toOpenAiVisionInput } = await import("@/lib/image-for-openai");
-        const { base64: visionBase64, mimeType: visionMime } =
-          await toOpenAiVisionInput(buffer, mimeType);
-        const raw = await analyzeImage(visionBase64, visionMime, "work-schedule", {
-          workScheduleKind,
-        });
-        aiResult = validateAiResult(raw, documentType);
-        const imageDataUrl = `data:${mimeType};base64,${buffer.toString("base64")}`;
-        const d = aiResult.details as Record<string, unknown>;
-        d.imageDataUrl = imageDataUrl;
-        d.imagePreviewSource = "uploaded-image";
-      } else if (category === "pdf") {
-        const { extractTextFromPdfBuffer, renderPdfFirstPageDataUrl } =
-          await import("@/lib/document-text");
-        const text = await extractTextFromPdfBuffer(buffer);
-        const raw = await analyzeWorkScheduleFromText(text, workScheduleKind);
-        aiResult = validateAiResult(raw, documentType);
-        const previewUrl = await renderPdfFirstPageDataUrl(buffer);
-        if (previewUrl) {
-          const d = aiResult.details as Record<string, unknown>;
-          d.imageDataUrl = previewUrl;
-          d.imagePreviewSource = "pdf-first-page";
-        }
-      } else {
-        const { extractTextFromDocxBuffer } = await import("@/lib/document-text");
-        const text = await extractTextFromDocxBuffer(buffer);
-        const raw = await analyzeWorkScheduleFromText(text, workScheduleKind);
-        aiResult = validateAiResult(raw, documentType);
-      }
+      const mimeType = inferImageMimeType(imageFile);
+      const { toOpenAiVisionInput } = await import("@/lib/image-for-openai");
+      const { base64: visionBase64, mimeType: visionMime } =
+        await toOpenAiVisionInput(buffer, mimeType);
+      const raw = await analyzeImage(visionBase64, visionMime, "work-schedule", {
+        workScheduleKind,
+      });
+      aiResult = validateAiResult(raw, documentType);
+      const imageDataUrl = `data:${mimeType};base64,${buffer.toString("base64")}`;
+      const d = aiResult.details as Record<string, unknown>;
+      d.imageDataUrl = imageDataUrl;
+      d.imagePreviewSource = "uploaded-image";
       ensureWorkScheduleKindInDetails(aiResult, workScheduleKind);
     } else if (documentType === "vacation") {
       const buffer = Buffer.from(await imageFile.arrayBuffer());

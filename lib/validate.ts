@@ -93,13 +93,6 @@ export function inferImageMimeType(file: File): string {
   return t || "image/jpeg";
 }
 
-const WORK_SCHEDULE_TYPES = [
-  ...IMAGE_MIME_ALLOWLIST,
-  "application/pdf",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-];
-
-/** 근무표: 이미지·PDF·docx */
 /** macOS/Windows 등에서 xls MIME이 octet-stream·레거시 타입으로 오는 경우가 많음 */
 const VACATION_SPREADSHEET_MIMES = new Set([
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -155,44 +148,9 @@ export function getVacationFileCategory(
   return "image";
 }
 
+/** 근무표: 이미지 전용 */
 export function validateWorkScheduleUploadFile(file: File): void {
-  const name = file.name.toLowerCase();
-  const okMime = WORK_SCHEDULE_TYPES.includes(file.type);
-  const okExt =
-    name.endsWith(".pdf") ||
-    name.endsWith(".docx") ||
-    /\.(jpe?g|png|webp|gif|bmp)$/i.test(name);
-  if (!okMime && !okExt) {
-    throw new ValidationError(
-      "근무표는 이미지(JPEG, PNG, WEBP, GIF, BMP), PDF, Word(.docx)만 업로드할 수 있습니다."
-    );
-  }
-  const maxSize = 10 * 1024 * 1024;
-  if (file.size > maxSize) {
-    throw new ValidationError("파일 크기가 10MB를 초과합니다.");
-  }
-}
-
-export function getWorkScheduleFileCategory(
-  file: File
-): "image" | "pdf" | "docx" {
-  const t = file.type;
-  const n = file.name.toLowerCase();
-  if (t.startsWith("image/") || /\.(jpe?g|png|webp|gif|bmp)$/i.test(n)) {
-    return "image";
-  }
-  if (t === "application/pdf" || n.endsWith(".pdf")) {
-    return "pdf";
-  }
-  if (
-    t === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-    n.endsWith(".docx")
-  ) {
-    return "docx";
-  }
-  throw new ValidationError(
-    "근무표 파일 형식을 확인할 수 없습니다. 이미지, PDF, docx만 지원합니다."
-  );
+  validateImageFile(file);
 }
 
 export function parseWorkScheduleKind(raw: string | null): WorkScheduleKind {

@@ -460,12 +460,12 @@ export default function UploadForm() {
           {/* 파일 업로드 */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-3">
-              {isCasting ? "이미지" : documentType === "work-schedule" ? "파일" : "이미지"}{" "}
+              이미지{" "}
               <span className="text-gray-400 font-normal">
                 {isCasting
                   ? "(필수 · 주조 근무표 이미지)"
                   : documentType === "work-schedule"
-                    ? "(선택 · 메모만으로도 등록 가능 · PDF·Word도 가능)"
+                    ? "(선택 · 메모만으로도 등록 가능)"
                     : documentType === "vacation"
                       ? "(선택 · 폼만으로도 등록 가능)"
                       : "(선택 · 메모만으로도 등록 가능)"}
@@ -488,13 +488,7 @@ export default function UploadForm() {
                 ref={fileInputRef}
                 type="file"
                 accept={
-                  isCasting
-                    ? IMAGE_ACCEPT
-                    : documentType === "work-schedule"
-                      ? `${IMAGE_ACCEPT},application/pdf,.pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document`
-                      : documentType === "vacation"
-                        ? undefined
-                        : IMAGE_ACCEPT
+                  documentType === "vacation" ? undefined : IMAGE_ACCEPT
                 }
                 onChange={handleFileChange}
                 className="hidden"
@@ -528,22 +522,14 @@ export default function UploadForm() {
                     </svg>
                   </div>
                   <p className="text-sm font-medium text-gray-600">
-                    {isCasting
-                      ? "클릭하여 이미지 선택"
-                      : documentType === "work-schedule"
-                        ? "클릭하여 파일 선택"
-                        : documentType === "vacation"
-                          ? "클릭하여 이미지 또는 엑셀 선택"
-                          : "클릭하여 이미지 선택"}
+                    {documentType === "vacation"
+                      ? "클릭하여 이미지 또는 엑셀 선택"
+                      : "클릭하여 이미지 선택"}
                   </p>
                   <p className="text-xs text-gray-400">
-                    {isCasting
-                      ? "JPEG, PNG, WEBP, GIF, BMP · 최대 10MB"
-                      : documentType === "work-schedule"
-                        ? "JPEG, PNG, GIF, WEBP, BMP, PDF, Word(docx) · 최대 10MB"
-                        : documentType === "vacation"
-                          ? "JPEG, PNG, WEBP, GIF, BMP, Excel(xlsx, xls) · 최대 10MB"
-                          : "JPEG, PNG, WEBP, GIF, BMP · 최대 10MB"}
+                    {documentType === "vacation"
+                      ? "JPEG, PNG, WEBP, GIF, BMP, Excel(xlsx, xls) · 최대 10MB"
+                      : "JPEG, PNG, WEBP, GIF, BMP · 최대 10MB"}
                   </p>
                 </div>
               )}

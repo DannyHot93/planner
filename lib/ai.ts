@@ -217,30 +217,6 @@ export async function analyzeCastingScheduleImage(
   return JSON.parse(content) as CastingAiResult;
 }
 
-export async function analyzeWorkScheduleFromText(
-  rawText: string,
-  kind: WorkScheduleKind
-): Promise<AiAnalysisResult> {
-  const prompt = buildWorkSchedulePrompt(kind);
-  const response = await openai.chat.completions.create({
-    model: CHAT_MODEL,
-    messages: [
-      {
-        role: "user",
-        content: `${prompt}\n\n--- 문서에서 추출한 텍스트 ---\n${rawText}`,
-      },
-    ],
-    response_format: { type: "json_object" },
-    max_completion_tokens: 4000,
-  });
-
-  const content = response.choices[0]?.message?.content;
-  if (!content) {
-    throw new Error("AI API에서 응답을 받지 못했습니다.");
-  }
-  return JSON.parse(content) as AiAnalysisResult;
-}
-
 /** 엑셀에서 추출한 표 텍스트로 휴가 일정 분석 */
 export async function analyzeVacationFromText(
   rawText: string
