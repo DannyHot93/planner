@@ -42,25 +42,6 @@
     }
   },
   {
-    "id": "ps_1776416597081_2989cdc5",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-17T09:03:17.112Z",
-    "memo": "국힘 토론회 · 2026-04-20",
-    "summary": "국힘 토론회 · 2026-04-20 17:00~19:05",
-    "details": {
-      "title": "국힘 토론회",
-      "program": "국힘 토론회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-04-20",
-          "time": "17:00~19:05",
-          "place": "공개홀"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1776410479373_a6cca986",
     "type": "production-schedule",
     "uploadedAt": "2026-04-17T07:21:19.376Z",
