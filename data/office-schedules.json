@@ -15,24 +15,5 @@
         }
       ]
     }
-  },
-  {
-    "id": "os_1776401158157_e7ebad62",
-    "type": "office-schedule",
-    "uploadedAt": "2026-04-17T04:45:58.157Z",
-    "memo": "테스트일정 월 · 2026-04-13",
-    "summary": "테스트일정 월 · 2026-04-13 14:00",
-    "details": {
-      "title": "테스트일정 월",
-      "program": "테스트일정 월",
-      "scheduleType": "office",
-      "entries": [
-        {
-          "date": "2026-04-13",
-          "time": "14:00",
-          "place": "사무실"
-        }
-      ]
-    }
   }
 ]
