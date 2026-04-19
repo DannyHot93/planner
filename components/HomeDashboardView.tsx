@@ -67,7 +67,6 @@ export default function HomeDashboardView({
                   <RecordingWeekView
                     records={officeRecords}
                     sections="this-week"
-                    showLegend={false}
                     embedded
                     hideRecordActions
                     inlineEditMode={editMode}
@@ -84,7 +83,6 @@ export default function HomeDashboardView({
                   <RecordingWeekView
                     records={productionRecords}
                     sections="this-week"
-                    showLegend={false}
                     embedded
                     hideRecordActions
                     inlineEditMode={editMode}
@@ -113,7 +111,6 @@ export default function HomeDashboardView({
                   <RecordingWeekView
                     records={officeRecords}
                     sections="other-week"
-                    showLegend={false}
                     embedded
                     hideRecordActions
                     inlineEditMode={editMode}
@@ -130,7 +127,6 @@ export default function HomeDashboardView({
                   <RecordingWeekView
                     records={productionRecords}
                     sections="other-week"
-                    showLegend={false}
                     embedded
                     hideRecordActions
                     inlineEditMode={editMode}

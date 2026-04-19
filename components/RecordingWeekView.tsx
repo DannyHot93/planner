@@ -500,7 +500,6 @@ function WeekGrid({
 export default function RecordingWeekView({
   records,
   sections = "both",
-  showLegend = true,
   embedded = false,
   hideRecordActions = false,
   inlineEditMode = false,
@@ -508,7 +507,6 @@ export default function RecordingWeekView({
   records: ScheduleRecord[];
   /** both: 이번 주 + 이번 주 외. 대시보드에서는 열마다 분리 */
   sections?: "both" | "this-week" | "other-week";
-  showLegend?: boolean;
   /** true면 카드 테두리·여백 최소화(그리드 상위에서 제목과 함께 사용) */
   embedded?: boolean;
   /** true면 카드별 삭제 숨김(대시보드 통합 편집 등) */
@@ -582,19 +580,6 @@ export default function RecordingWeekView({
 
   return (
     <div className={embedded ? "space-y-0" : "space-y-8"}>
-      {showLegend && hasAny && showBoth && (
-        <p className="text-xs text-gray-500 mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-          <span className="inline-flex items-center gap-1.5">
-            <span className="inline-block w-2 h-2 rounded-full bg-red-500" />
-            빨간 제목 = 오늘이 속한 주(월~일) 방송일
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="inline-block w-2 h-2 rounded-full bg-gray-700" />
-            검은 제목 = 이번 주 외 방송일
-          </span>
-        </p>
-      )}
-
       {!hasAny && showBoth ? (
         emptyBlock
       ) : !hasAny && showThis ? (
