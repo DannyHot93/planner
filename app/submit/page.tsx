@@ -12,11 +12,12 @@ export default function SubmitPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 py-12">
         {/* 헤더 */}
         <div className="text-center mb-10">
-          <NavigateHomeLink className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-6 transition-colors">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <NavigateHomeLink className="group relative inline-flex items-center gap-2 px-5 py-2.5 mb-6 rounded-xl bg-blue-600 text-white text-sm font-semibold shadow-md shadow-blue-500/20 ring-2 ring-blue-300 ring-offset-2 ring-offset-slate-50 hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-blue-400 transition-all">
+            <span className="absolute -inset-1 rounded-2xl bg-blue-400/30 blur opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
+            <svg className="relative w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            일정 보기로 돌아가기
+            <span className="relative">일정 보기로 돌아가기</span>
           </NavigateHomeLink>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">일정 업로드</h1>
           <p className="text-gray-500 text-sm">

@@ -294,6 +294,12 @@ export default function UploadForm() {
                   ? "휴가 일정이 GitHub에 저장되었습니다."
                   : "메모 내용이 GitHub에 저장되었습니다."}
           </p>
+          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium">
+            <svg className="w-3.5 h-3.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v3m0 6v3m6-6h-3m-6 0H3m12.364-6.364l-2.121 2.121M7.757 16.243l-2.121 2.121m0-12.728l2.121 2.121m8.486 8.486l2.121 2.121" />
+            </svg>
+            홈 화면 반영까지 보통 몇 초가 걸립니다
+          </div>
           {(lastSubmitDocType === "office-schedule" || lastSubmitDocType === "production-schedule") &&
             lastRecordingWeek &&
             lastRecordingEffectiveDate && (
