@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { ScheduleRecord } from "@/lib/types";
 import ScheduleListClient from "@/components/ScheduleListClient";
@@ -7,6 +7,7 @@ import {
   filterRecordingsWeeklyCleanup,
   getTodaySeoulYmd,
 } from "@/lib/recording-cleanup";
+import { filterPastVacations } from "@/lib/vacation-cleanup";
 
 function loadRecordsFromDisk(filename: string): ScheduleRecord[] {
   try {
@@ -63,7 +64,50 @@ async function cleanupOldRecordingsFile(
   return filtered;
 }
 
-export const dynamic = "force-dynamic";
+/**
+ * 휴가: 마지막 일정일이 오늘(서울) 이전이면 제거.
+ * - GitHub 연동 시: 원격 JSON 덮어쓰기
+ * - 로컬만 쓸 때: `data/vacations.json`에 동일 반영 (이전에는 미반영이라 파일이 안 지워졌음)
+ */
+async function cleanupOldVacationsFile(
+  records: ScheduleRecord[],
+  githubPath: string,
+  label: string
+): Promise<ScheduleRecord[]> {
+  const todayYmd = getTodaySeoulYmd();
+  const filtered = filterPastVacations(records, todayYmd);
+
+  if (filtered.length === records.length) {
+    return filtered;
+  }
+
+  if (hasGithubEnv()) {
+    try {
+      await overwriteFileOnGitHub(
+        githubPath,
+        filtered,
+        `[자동] ${label} 지난 일정 정리 - ${todayYmd}`
+      );
+    } catch (e) {
+      console.error(`${label} GitHub 정리 실패:`, e);
+    }
+    return filtered;
+  }
+
+  try {
+    const filename = githubPath.replace(/^data\//, "");
+    const filePath = join(process.cwd(), "data", filename);
+    writeFileSync(filePath, `${JSON.stringify(filtered, null, 2)}\n`, "utf-8");
+  } catch (e) {
+    console.error(`${label} 로컬 파일 정리 실패:`, e);
+  }
+  return filtered;
+}
+
+/**
+ * ISR: 30초 캐시. 등록·삭제·수정 시 revalidatePlannerHome()로 태그+경로 무효화.
+ */
+export const revalidate = 30;
 
 export const metadata = {
   title: "일정 플래너",
@@ -73,7 +117,7 @@ export const metadata = {
 export default async function HomePage() {
   const [
     workSchedules,
-    vacations,
+    rawVacations,
     rawOfficeSchedules,
     rawProductionSchedules,
     rawLegacyRecordings,
@@ -86,6 +130,12 @@ export default async function HomePage() {
     loadRecords("recordings.json"),
     loadRecords("casting-schedules.json"),
   ]);
+
+  const vacations = await cleanupOldVacationsFile(
+    rawVacations,
+    "data/vacations.json",
+    "휴가"
+  );
 
   const [officeSchedules, productionSchedules, legacyRecordings] = await Promise.all([
     cleanupOldRecordingsFile(rawOfficeSchedules, "data/office-schedules.json", "사무실일정"),

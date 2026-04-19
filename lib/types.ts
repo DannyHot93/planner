@@ -94,7 +94,10 @@ export interface AiAnalysisResult {
 
 export interface SubmitApiResponse {
   success: boolean;
+  /** 첫 레코드 id (엑셀 다건 시에도 호환용) */
   id?: string;
+  /** 엑셀 고정 양식 등 여러 건 등록 시 전체 id */
+  ids?: string[];
   summary?: string;
   error?: string;
   /** 녹화일정: 방송일(또는 미입력 시 업로드일) 기준으로 이번 주 여부 */

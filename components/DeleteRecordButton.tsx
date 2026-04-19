@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useMarkRecordRemoved } from "./RecordDeleteContext";
 
 export default function DeleteRecordButton({
   recordId,
@@ -11,6 +12,7 @@ export default function DeleteRecordButton({
   className?: string;
 }) {
   const router = useRouter();
+  const markRemoved = useMarkRecordRemoved();
   const [loading, setLoading] = useState(false);
 
   async function handleDelete() {
@@ -31,7 +33,8 @@ export default function DeleteRecordButton({
       if (!res.ok) {
         throw new Error(data.error ?? "삭제에 실패했습니다.");
       }
-      router.refresh();
+      markRemoved?.(recordId);
+      await router.refresh();
     } catch (e) {
       alert(e instanceof Error ? e.message : "삭제 중 오류가 발생했습니다.");
     } finally {

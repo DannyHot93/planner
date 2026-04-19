@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef, ChangeEvent, FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useRef, ChangeEvent, FormEvent, useEffect } from "react";
 import { DocumentType, SubmitApiResponse, VacationKind } from "@/lib/types";
 
 /** 휴가·녹화·주조 등 이미지 전용 업로드 */
@@ -19,8 +18,17 @@ type UploadState = "idle" | "uploading" | "success" | "error";
 
 type WorkScheduleKind = "office" | "production" | "casting";
 
+const UPLOAD_OK_STORAGE = "planner_upload_ok";
+
+interface StoredUploadSuccess {
+  summary: string;
+  hadImage: boolean;
+  docType: string;
+  recordingWeek: "this-week" | "other-week" | null;
+  recordingEffectiveDate: string | null;
+}
+
 export default function UploadForm() {
-  const router = useRouter();
   const [documentType, setDocumentType] = useState<DocumentType>("work-schedule");
   const [workScheduleKind, setWorkScheduleKind] = useState<WorkScheduleKind>("office");
   const [vacationKind, setVacationKind] = useState<VacationKind>("office");
@@ -48,6 +56,42 @@ export default function UploadForm() {
     null
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadOkHydratedRef = useRef(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("ok") !== "1") return;
+    if (uploadOkHydratedRef.current) return;
+    uploadOkHydratedRef.current = true;
+
+    let data: StoredUploadSuccess | null = null;
+    try {
+      const raw = sessionStorage.getItem(UPLOAD_OK_STORAGE);
+      if (raw) {
+        data = JSON.parse(raw) as StoredUploadSuccess;
+        sessionStorage.removeItem(UPLOAD_OK_STORAGE);
+      }
+    } catch {
+      sessionStorage.removeItem(UPLOAD_OK_STORAGE);
+    }
+
+    if (data) {
+      setLastSubmitHadImage(data.hadImage);
+      setLastSubmitDocType(data.docType as DocumentType);
+      setLastRecordingWeek(data.recordingWeek);
+      setLastRecordingEffectiveDate(data.recordingEffectiveDate);
+      setResultSummary(data.summary);
+    } else {
+      setLastSubmitHadImage(false);
+      setLastSubmitDocType(null);
+      setLastRecordingWeek(null);
+      setLastRecordingEffectiveDate(null);
+      setResultSummary("저장이 완료되었습니다.");
+    }
+    setUploadState("success");
+    window.history.replaceState(null, "", "/submit");
+  }, []);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -161,33 +205,28 @@ export default function UploadForm() {
       }
 
       if (result.success) {
-        setLastSubmitHadImage(Boolean(selectedFile));
-        setLastSubmitDocType(submitDocType as DocumentType);
-        router.refresh();
-        if (isOfficeSchedule || isProductionSchedule) {
-          setLastRecordingWeek(result.recordingWeek ?? null);
-          setLastRecordingEffectiveDate(result.recordingEffectiveDate ?? null);
-        } else {
-          setLastRecordingWeek(null);
-          setLastRecordingEffectiveDate(null);
+        const summaryText =
+          result.summary ?? (selectedFile ? "처리 완료" : "메모가 저장되었습니다.");
+        const payload: StoredUploadSuccess = {
+          summary: summaryText,
+          hadImage: Boolean(selectedFile),
+          docType: String(submitDocType),
+          recordingWeek:
+            isOfficeSchedule || isProductionSchedule
+              ? result.recordingWeek ?? null
+              : null,
+          recordingEffectiveDate:
+            isOfficeSchedule || isProductionSchedule
+              ? result.recordingEffectiveDate ?? null
+              : null,
+        };
+        try {
+          sessionStorage.setItem(UPLOAD_OK_STORAGE, JSON.stringify(payload));
+        } catch {
+          /* private 모드 등 */
         }
-        setUploadState("success");
-        setResultSummary(
-          result.summary ?? (selectedFile ? "처리 완료" : "메모가 저장되었습니다.")
-        );
-        setSelectedFile(null);
-        setPreviewUrl(null);
-        setMemo("");
-        setRecordingProgram("");
-        setRecordingDate("");
-        setRecordingTime("");
-        setRecordingPlace("");
-        setRecordingNote("");
-        setVacationPerson("");
-        setVacationDateStart("");
-        setVacationDateEnd("");
-        setVacationNote("");
-        if (fileInputRef.current) fileInputRef.current.value = "";
+        window.location.replace("/submit?ok=1");
+        return;
       } else {
         setUploadState("error");
         setErrorMessage(
@@ -207,6 +246,11 @@ export default function UploadForm() {
   };
 
   const handleReset = () => {
+    try {
+      sessionStorage.removeItem(UPLOAD_OK_STORAGE);
+    } catch {
+      /* ignore */
+    }
     setUploadState("idle");
     setResultSummary(null);
     setErrorMessage(null);
@@ -223,6 +267,7 @@ export default function UploadForm() {
     setVacationDateEnd("");
     setVacationNote("");
     setLastSubmitDocType(null);
+    setLastSubmitHadImage(false);
     setLastRecordingWeek(null);
     setLastRecordingEffectiveDate(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -447,7 +492,9 @@ export default function UploadForm() {
                     ? IMAGE_ACCEPT
                     : documentType === "work-schedule"
                       ? `${IMAGE_ACCEPT},application/pdf,.pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document`
-                      : IMAGE_ACCEPT
+                      : documentType === "vacation"
+                        ? undefined
+                        : IMAGE_ACCEPT
                 }
                 onChange={handleFileChange}
                 className="hidden"
@@ -485,14 +532,18 @@ export default function UploadForm() {
                       ? "클릭하여 이미지 선택"
                       : documentType === "work-schedule"
                         ? "클릭하여 파일 선택"
-                        : "클릭하여 이미지 선택"}
+                        : documentType === "vacation"
+                          ? "클릭하여 이미지 또는 엑셀 선택"
+                          : "클릭하여 이미지 선택"}
                   </p>
                   <p className="text-xs text-gray-400">
                     {isCasting
                       ? "JPEG, PNG, WEBP, GIF, BMP · 최대 10MB"
                       : documentType === "work-schedule"
                         ? "JPEG, PNG, GIF, WEBP, BMP, PDF, Word(docx) · 최대 10MB"
-                        : "JPEG, PNG, WEBP, GIF, BMP · 최대 10MB"}
+                        : documentType === "vacation"
+                          ? "JPEG, PNG, WEBP, GIF, BMP, Excel(xlsx, xls) · 최대 10MB"
+                          : "JPEG, PNG, WEBP, GIF, BMP · 최대 10MB"}
                   </p>
                 </div>
               )}
@@ -505,7 +556,12 @@ export default function UploadForm() {
               <p className="text-xs text-gray-500">
                 이미지 없이 등록할 때는 <strong>휴가자</strong>와 <strong>시작일</strong>이 필요합니다.
                 하루만 쓸 때는 종료일을 비우면 됩니다. 연일이면 종료일까지 선택하세요.
-                이미지를 함께 올리면 AI 분석에 더해 아래 내용이 반영됩니다.
+                <span className="block mt-1">
+                  엑셀(xlsx, xls)은 <strong>1행 헤더, 2행부터 데이터</strong>, 고정 열: B 이름, C 구분, D
+                  시작일, E 시작 요일, F 종료일, G 종료 요일, H 휴가 일수, I 비고. 날짜는 셀 서식·텍스트
+                  모두 인식합니다. 데이터 행마다 레코드 1건이 등록됩니다.
+                </span>
+                이미지를 올리면 AI가 표를 읽고, 아래 폼을 함께 쓰면 그 내용이 병합됩니다.
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">

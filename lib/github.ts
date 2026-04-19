@@ -1,4 +1,6 @@
-import { ScheduleRecord } from "./types";
+import { ScheduleRecord, ScheduleEntry } from "./types";
+import { PLANNER_RECORDS_CACHE_TAG } from "./planner-cache";
+import { toSeoulDateYmd } from "./seoul-week";
 
 const GITHUB_API_BASE = "https://api.github.com";
 
@@ -66,6 +68,21 @@ function authHeaders(token: string): HeadersInit {
   };
 }
 
+/** 읽기 전용(홈) vs 쓰기 직전 — 쓰기 시 캐시된 SHA로 409 Conflict 나면 안 됨 */
+type GitHubFetchCache =
+  | { cache: "no-store" }
+  | { next: { revalidate: number; tags: string[] } };
+
+function cacheForRead(): GitHubFetchCache {
+  return {
+    next: { revalidate: 30, tags: [PLANNER_RECORDS_CACHE_TAG] },
+  };
+}
+
+function cacheForWrite(): GitHubFetchCache {
+  return { cache: "no-store" };
+}
+
 /**
  * Contents API는 약 1MB 초과 시 content를 생략함.
  * Git Blob API는 최대 ~100MB까지 base64 본문을 반환.
@@ -73,12 +90,13 @@ function authHeaders(token: string): HeadersInit {
 async function fetchUtf8TextFromGitBlob(
   config: GitHubConfig,
   blobSha: string,
-  filePath: string
+  filePath: string,
+  cache: GitHubFetchCache
 ): Promise<string> {
   const url = `${GITHUB_API_BASE}/repos/${config.owner}/${config.repo}/git/blobs/${blobSha}`;
   const response = await fetch(url, {
     headers: authHeaders(config.token),
-    cache: "no-store",
+    ...cache,
   });
 
   if (!response.ok) {
@@ -104,14 +122,15 @@ async function fetchUtf8TextFromGitBlob(
 async function fetchUtf8FromDownloadUrl(
   config: GitHubConfig,
   downloadUrl: string,
-  filePath: string
+  filePath: string,
+  cache: GitHubFetchCache
 ): Promise<string> {
   const response = await fetch(downloadUrl, {
     headers: {
       Authorization: `Bearer ${config.token}`,
       Accept: "application/vnd.github.raw",
     },
-    cache: "no-store",
+    ...cache,
   });
   if (!response.ok) {
     throw new Error(
@@ -123,13 +142,15 @@ async function fetchUtf8FromDownloadUrl(
 
 async function getFileContent(
   config: GitHubConfig,
-  filePath: string
+  filePath: string,
+  options: { forWrite?: boolean } = {}
 ): Promise<{ sha: string; data: ScheduleRecord[] }> {
+  const cache: GitHubFetchCache = options.forWrite ? cacheForWrite() : cacheForRead();
   const url = `${GITHUB_API_BASE}/repos/${config.owner}/${config.repo}/contents/${filePath}?ref=${config.branch}`;
 
   const response = await fetch(url, {
     headers: authHeaders(config.token),
-    cache: "no-store",
+    ...cache,
   });
 
   if (response.status === 404) {
@@ -160,9 +181,9 @@ async function getFileContent(
   if (body.content && body.encoding === "base64") {
     decoded = Buffer.from(body.content, "base64").toString("utf-8");
   } else if (body.sha) {
-    decoded = await fetchUtf8TextFromGitBlob(config, body.sha, filePath);
+    decoded = await fetchUtf8TextFromGitBlob(config, body.sha, filePath, cache);
   } else if (body.download_url) {
-    decoded = await fetchUtf8FromDownloadUrl(config, body.download_url, filePath);
+    decoded = await fetchUtf8FromDownloadUrl(config, body.download_url, filePath, cache);
   } else {
     throw new Error(
       `GitHub가 파일 본문을 주지 않았습니다(용량·형식). ${filePath} — blob SHA·download_url도 없습니다.`
@@ -207,10 +228,29 @@ async function putFileContent(
 
   if (!response.ok) {
     const errorBody = await response.text();
+    if (response.status === 409) {
+      const err = new Error(
+        `GitHub 파일 업데이트 실패: 409 Conflict — 원격이 이미 변경되었습니다. ${errorBody}`
+      );
+      (err as Error & { status?: number }).status = 409;
+      throw err;
+    }
     throw new Error(
       `GitHub 파일 업데이트 실패: ${response.status} ${response.statusText} - ${errorBody}`
     );
   }
+}
+
+function isPutConflict(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const status = (error as { status?: number }).status;
+  if (status === 409) return true;
+  const msg = error instanceof Error ? error.message : String(error);
+  return msg.includes("409 Conflict") || msg.includes(" 409 ");
+}
+
+async function sleepMs(ms: number): Promise<void> {
+  await new Promise((r) => setTimeout(r, ms));
 }
 
 export async function appendRecordToGitHub(
@@ -219,14 +259,23 @@ export async function appendRecordToGitHub(
   commitMessage: string
 ): Promise<void> {
   const config = getConfig();
+  const maxAttempts = 6;
 
-  const { sha, data } = await getFileContent(config, filePath);
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const { sha, data } = await getFileContent(config, filePath, { forWrite: true });
+    const next = data.some((r) => r.id === newRecord.id)
+      ? data.map((r) => (r.id === newRecord.id ? newRecord : r))
+      : [newRecord, ...data];
+    const updatedContent = JSON.stringify(next, null, 2);
 
-  data.unshift(newRecord);
-
-  const updatedContent = JSON.stringify(data, null, 2);
-
-  await putFileContent(config, filePath, sha, updatedContent, commitMessage);
+    try {
+      await putFileContent(config, filePath, sha, updatedContent, commitMessage);
+      return;
+    } catch (e) {
+      if (!isPutConflict(e) || attempt === maxAttempts) throw e;
+      await sleepMs(150 * attempt);
+    }
+  }
 }
 
 /** 홈 화면 등에서 최신 목록을 보기 위해 GitHub에 저장된 JSON을 읽습니다. */
@@ -245,9 +294,19 @@ export async function overwriteFileOnGitHub(
   commitMessage: string
 ): Promise<void> {
   const config = getConfig();
-  const { sha } = await getFileContent(config, filePath);
+  const maxAttempts = 6;
   const content = JSON.stringify(records, null, 2);
-  await putFileContent(config, filePath, sha, content, commitMessage);
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const { sha } = await getFileContent(config, filePath, { forWrite: true });
+    try {
+      await putFileContent(config, filePath, sha, content, commitMessage);
+      return;
+    } catch (e) {
+      if (!isPutConflict(e) || attempt === maxAttempts) throw e;
+      await sleepMs(150 * attempt);
+    }
+  }
 }
 
 /** id에 해당하는 레코드 1건을 제거하고 GitHub에 반영합니다. */
@@ -257,10 +316,109 @@ export async function deleteRecordByIdFromGitHub(
   commitMessage: string
 ): Promise<boolean> {
   const config = getConfig();
-  const { sha, data } = await getFileContent(config, filePath);
-  const filtered = data.filter((r) => r.id !== recordId);
-  if (filtered.length === data.length) return false;
-  const content = JSON.stringify(filtered, null, 2);
-  await putFileContent(config, filePath, sha, content, commitMessage);
-  return true;
+  const maxAttempts = 6;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const { sha, data } = await getFileContent(config, filePath, { forWrite: true });
+    const filtered = data.filter((r) => r.id !== recordId);
+    if (filtered.length === data.length) return false;
+    const content = JSON.stringify(filtered, null, 2);
+    try {
+      await putFileContent(config, filePath, sha, content, commitMessage);
+      return true;
+    } catch (e) {
+      if (!isPutConflict(e) || attempt === maxAttempts) throw e;
+      await sleepMs(150 * attempt);
+    }
+  }
+  throw new Error("deleteRecordByIdFromGitHub: 예기치 않은 종료");
+}
+
+/** 사무실·제작(및 레거시 녹화) 일정의 details에 제목·날짜별 시간을 반영합니다. */
+function applyRecordingTitleAndEntryTime(
+  record: ScheduleRecord,
+  fields: {
+    title?: string;
+    entryDateYmd?: string;
+    entryTime?: string;
+  }
+): ScheduleRecord {
+  const t = record.type as string;
+  if (
+    t !== "office-schedule" &&
+    t !== "production-schedule" &&
+    t !== "recording"
+  ) {
+    return record;
+  }
+
+  const details = { ...(record.details as Record<string, unknown>) };
+
+  if (fields.title !== undefined) {
+    details.title = fields.title;
+    details.program = fields.title;
+  }
+
+  if (
+    fields.entryDateYmd !== undefined &&
+    fields.entryDateYmd.trim() !== "" &&
+    fields.entryTime !== undefined
+  ) {
+    const target = toSeoulDateYmd(fields.entryDateYmd.trim());
+    if (target) {
+      const raw = details.entries;
+      const list: ScheduleEntry[] = Array.isArray(raw)
+        ? raw.map((e) => ({ ...(e as ScheduleEntry) }))
+        : [];
+      const i = list.findIndex(
+        (e) => toSeoulDateYmd(e.date) === target
+      );
+      if (i >= 0) {
+        list[i] = { ...list[i], time: fields.entryTime };
+      } else {
+        list.push({ date: target, time: fields.entryTime });
+      }
+      details.entries = list;
+    }
+  }
+
+  return { ...record, details: details as ScheduleRecord["details"] };
+}
+
+/** id에 해당하는 레코드의 summary·memo·제목·엔트리 시간 등을 갱신합니다. */
+export async function updateRecordFieldsInGitHub(
+  filePath: string,
+  recordId: string,
+  fields: {
+    summary?: string;
+    memo?: string;
+    title?: string;
+    entryDateYmd?: string;
+    entryTime?: string;
+  },
+  commitMessage: string
+): Promise<boolean> {
+  const config = getConfig();
+  const maxAttempts = 6;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const { sha, data } = await getFileContent(config, filePath, { forWrite: true });
+    const idx = data.findIndex((r) => r.id === recordId);
+    if (idx === -1) return false;
+    let next = { ...data[idx] };
+    if (fields.summary !== undefined) next.summary = fields.summary;
+    if (fields.memo !== undefined) next.memo = fields.memo;
+    next = applyRecordingTitleAndEntryTime(next, fields);
+    const copy = [...data];
+    copy[idx] = next;
+    const content = JSON.stringify(copy, null, 2);
+    try {
+      await putFileContent(config, filePath, sha, content, commitMessage);
+      return true;
+    } catch (e) {
+      if (!isPutConflict(e) || attempt === maxAttempts) throw e;
+      await sleepMs(150 * attempt);
+    }
+  }
+  throw new Error("updateRecordFieldsInGitHub: 예기치 않은 종료");
 }

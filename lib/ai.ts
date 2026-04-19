@@ -241,6 +241,33 @@ export async function analyzeWorkScheduleFromText(
   return JSON.parse(content) as AiAnalysisResult;
 }
 
+/** 엑셀에서 추출한 표 텍스트로 휴가 일정 분석 */
+export async function analyzeVacationFromText(
+  rawText: string
+): Promise<AiAnalysisResult> {
+  const base = PROMPTS.vacation.replace(
+    "이 이미지는 휴가 일정입니다. 이미지에서 휴가 정보를 추출하여",
+    "아래는 엑셀(표)에서 추출한 텍스트입니다. 열 이름과 행을 맥락으로 이해하고 휴가 정보를 추출하여"
+  );
+  const response = await openai.chat.completions.create({
+    model: CHAT_MODEL,
+    messages: [
+      {
+        role: "user",
+        content: `${base}\n\n--- 문서에서 추출한 텍스트 ---\n${rawText}`,
+      },
+    ],
+    response_format: { type: "json_object" },
+    max_completion_tokens: 4096,
+  });
+
+  const content = response.choices[0]?.message?.content;
+  if (!content) {
+    throw new Error("AI API에서 응답을 받지 못했습니다.");
+  }
+  return JSON.parse(content) as AiAnalysisResult;
+}
+
 export async function analyzeImage(
   imageBase64: string,
   mimeType: string,

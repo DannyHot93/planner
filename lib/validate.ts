@@ -100,6 +100,61 @@ const WORK_SCHEDULE_TYPES = [
 ];
 
 /** 근무표: 이미지·PDF·docx */
+/** macOS/Windows 등에서 xls MIME이 octet-stream·레거시 타입으로 오는 경우가 많음 */
+const VACATION_SPREADSHEET_MIMES = new Set([
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-excel",
+  "application/excel",
+  "application/x-excel",
+  "application/x-msexcel",
+  "application/vnd.ms-excel.sheet.macroEnabled.12",
+]);
+
+/**
+ * 파일명·MIME이 빈약할 때(xls가 octet-stream 등) 엑셀 경로로 보내기 위한 시그니처.
+ * - xlsx: ZIP(50 4B 03 04)
+ * - 구 xls: OLE 복합문서(D0 CF 11 E0 …) — 워드 등도 OLE라 오탐 가능, 휴가 엑셀 분기에서만 사용.
+ */
+export function bufferLooksLikeSpreadsheetBuffer(buf: Buffer): boolean {
+  if (buf.length < 8) return false;
+  if (buf[0] === 0x50 && buf[1] === 0x4b && buf[2] === 0x03 && buf[3] === 0x04) return true;
+  if (buf[0] === 0xd0 && buf[1] === 0xcf && buf[2] === 0x11 && buf[3] === 0xe0) return true;
+  return false;
+}
+
+function isVacationSpreadsheetFile(file: File): boolean {
+  const n = file.name.toLowerCase();
+  if (n.endsWith(".xlsx") || n.endsWith(".xls")) return true;
+  const t = file.type;
+  return Boolean(t && VACATION_SPREADSHEET_MIMES.has(t));
+}
+
+/** 휴가: 이미지 또는 엑셀(.xlsx/.xls) — bufferHint는 시그니처로만 사용 */
+export function validateVacationUploadFile(file: File, bufferHint?: Buffer): void {
+  const maxSize = 10 * 1024 * 1024;
+  if (file.size > maxSize) {
+    throw new ValidationError("파일 크기가 10MB를 초과합니다.");
+  }
+  if (isVacationSpreadsheetFile(file)) {
+    return;
+  }
+  if (bufferHint && bufferLooksLikeSpreadsheetBuffer(bufferHint)) {
+    return;
+  }
+  validateImageFile(file);
+}
+
+export type VacationUploadCategory = "image" | "spreadsheet";
+
+export function getVacationFileCategory(
+  file: File,
+  bufferHint?: Buffer
+): VacationUploadCategory {
+  if (isVacationSpreadsheetFile(file)) return "spreadsheet";
+  if (bufferHint && bufferLooksLikeSpreadsheetBuffer(bufferHint)) return "spreadsheet";
+  return "image";
+}
+
 export function validateWorkScheduleUploadFile(file: File): void {
   const name = file.name.toLowerCase();
   const okMime = WORK_SCHEDULE_TYPES.includes(file.type);

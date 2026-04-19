@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
 import {
   analyzeImage,
   analyzeWorkScheduleFromText,
@@ -10,6 +9,8 @@ import {
   validateImageFile,
   validateDocumentType,
   validateWorkScheduleUploadFile,
+  validateVacationUploadFile,
+  getVacationFileCategory,
   getWorkScheduleFileCategory,
   parseWorkScheduleKind,
   parseVacationKind,
@@ -28,6 +29,7 @@ import {
   ensureWorkScheduleKindInDetails,
 } from "@/lib/normalize";
 import { appendRecordToGitHub } from "@/lib/github";
+import { revalidatePlannerHome } from "@/lib/planner-cache";
 import { SubmitApiResponse } from "@/lib/types";
 import type { WorkScheduleKind } from "@/lib/types";
 import { toSeoulDateYmd } from "@/lib/seoul-week";
@@ -247,6 +249,100 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
         aiResult = validateAiResult(raw, documentType);
       }
       ensureWorkScheduleKindInDetails(aiResult, workScheduleKind);
+    } else if (documentType === "vacation") {
+      const buffer = Buffer.from(await imageFile.arrayBuffer());
+      if (getVacationFileCategory(imageFile, buffer) === "spreadsheet") {
+        validateVacationUploadFile(imageFile, buffer);
+        const {
+          parseFixedVacationExcel,
+          buildCombinedNote,
+          inferVacationKindFromCategory,
+        } = await import("@/lib/vacation-excel-fixed");
+        let rows;
+        try {
+          rows = parseFixedVacationExcel(buffer);
+        } catch {
+          return NextResponse.json(
+            {
+              success: false,
+              error:
+                "엑셀 파일을 열 수 없습니다. .xlsx 또는 구 Excel(.xls)인지 확인해 주세요.",
+            },
+            { status: 400 }
+          );
+        }
+        if (rows.length === 0) {
+          return NextResponse.json(
+            {
+              success: false,
+              error:
+                "엑셀에서 유효한 휴가 행을 찾지 못했습니다. 1행 헤더·2행부터 B 이름, D·F 시작·종료일을 확인해 주세요. (열 B~I 고정)",
+            },
+            { status: 400 }
+          );
+        }
+
+        const today = new Date().toISOString().split("T")[0];
+        const filePath = DATA_FILE_MAP[documentType];
+        const commitMessage = getCommitMessage(documentType, today);
+
+        const ids: string[] = [];
+        const summaries: string[] = [];
+        for (const row of rows) {
+          const kind = inferVacationKindFromCategory(row.category, vacationKind);
+          const note = buildCombinedNote(row);
+          const aiResult = validateAiResult(
+            buildVacationFormAiResult(row.name, kind, row.startYmd, row.endYmd, note),
+            documentType
+          );
+          const memoForRecord =
+            row.remark.trim() || vacationForm.note.trim() || note || "";
+          const record = normalizeRecord(aiResult, documentType, memoForRecord);
+          await appendRecordToGitHub(filePath, record, commitMessage);
+          ids.push(record.id);
+          summaries.push(record.summary);
+        }
+
+        revalidatePlannerHome();
+
+        const summaryText =
+          summaries.length === 1
+            ? summaries[0]
+            : `엑셀 ${summaries.length}건 등록: ${summaries.slice(0, 3).join(" · ")}${summaries.length > 3 ? " …" : ""}`;
+
+        return NextResponse.json({
+          success: true,
+          id: ids[0],
+          ids,
+          summary: summaryText,
+        });
+      }
+
+      validateImageFile(imageFile);
+      const mimeType = inferImageMimeType(imageFile);
+      const { toOpenAiVisionInput } = await import("@/lib/image-for-openai");
+      const { base64: visionBase64, mimeType: visionMime } =
+        await toOpenAiVisionInput(buffer, mimeType);
+
+      const aiRawResult = await analyzeImage(
+        visionBase64,
+        visionMime,
+        documentType as Exclude<typeof documentType, "casting-schedule">
+      );
+      aiResult = validateAiResult(aiRawResult, documentType);
+      const d = aiResult.details as Record<string, unknown>;
+      d.vacationKind = vacationKind;
+      const merged = mergeVacationFormOverlay(
+        aiResult,
+        {
+          person: vacationForm.person,
+          startYmd: vacationForm.startYmd,
+          endYmd: vacationForm.endYmd,
+          note: vacationForm.note,
+        },
+        vacationKind
+      );
+      aiResult = validateAiResult(merged, documentType);
     } else {
       validateImageFile(imageFile);
       const arrayBuffer = await imageFile.arrayBuffer();
@@ -264,21 +360,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
       aiResult = validateAiResult(aiRawResult, documentType);
       if (documentType === "office-schedule" || documentType === "production-schedule") {
         aiResult = enrichRecordingScheduleAiResult(aiResult, documentType);
-      }
-      if (documentType === "vacation") {
-        const d = aiResult.details as Record<string, unknown>;
-        d.vacationKind = vacationKind;
-        const merged = mergeVacationFormOverlay(
-          aiResult,
-          {
-            person: vacationForm.person,
-            startYmd: vacationForm.startYmd,
-            endYmd: vacationForm.endYmd,
-            note: vacationForm.note,
-          },
-          vacationKind
-        );
-        aiResult = validateAiResult(merged, documentType);
       }
       if (documentType === "office-schedule" || documentType === "production-schedule") {
         const merged = mergeRecordingFormOverlay(aiResult, recordingForm);
@@ -309,7 +390,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
     const commitMessage = getCommitMessage(documentType, today);
 
     await appendRecordToGitHub(filePath, record, commitMessage);
-    revalidatePath("/");
+    revalidatePlannerHome();
 
     const payload: SubmitApiResponse = {
       success: true,
