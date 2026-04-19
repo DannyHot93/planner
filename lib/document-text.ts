@@ -1,9 +1,43 @@
-import { PDFParse } from "pdf-parse";
 import * as XLSX from "xlsx";
 
 const MAX_CHARS = 120_000;
 
+/**
+ * pdfjs-dist는 모듈 평가 시점에 DOMMatrix/Path2D/ImageData를 참조한다.
+ * Vercel Node 런타임에는 이 전역들이 없어 `ReferenceError: DOMMatrix is not defined`가 난다.
+ * 텍스트 추출에는 실제 기하 연산이 쓰이지 않으므로 stub만 주입해도 안전하다.
+ * (getScreenshot 등 실제 canvas 렌더링은 Node 환경에서 try/catch로 감싸 실패 시 null 반환)
+ */
+function installPdfJsPolyfills(): void {
+  const g = globalThis as unknown as Record<string, unknown>;
+  if (typeof g.DOMMatrix === "undefined") {
+    class DOMMatrixStub {
+      constructor(..._args: unknown[]) {}
+    }
+    g.DOMMatrix = DOMMatrixStub;
+  }
+  if (typeof g.Path2D === "undefined") {
+    class Path2DStub {
+      constructor(..._args: unknown[]) {}
+    }
+    g.Path2D = Path2DStub;
+  }
+  if (typeof g.ImageData === "undefined") {
+    class ImageDataStub {
+      constructor(..._args: unknown[]) {}
+    }
+    g.ImageData = ImageDataStub;
+  }
+}
+
+async function loadPdfParseClass(): Promise<typeof import("pdf-parse").PDFParse> {
+  installPdfJsPolyfills();
+  const mod = await import("pdf-parse");
+  return mod.PDFParse;
+}
+
 export async function extractTextFromPdfBuffer(buffer: Buffer): Promise<string> {
+  const PDFParse = await loadPdfParseClass();
   const parser = new PDFParse({ data: new Uint8Array(buffer) });
   try {
     const result = await parser.getText();
@@ -19,22 +53,25 @@ export async function extractTextFromPdfBuffer(buffer: Buffer): Promise<string> 
   }
 }
 
-/** PDF 첫 페이지를 PNG data URL로 렌더 (근무표 미리보기용) */
+/** PDF 첫 페이지를 PNG data URL로 렌더 (근무표 미리보기용) — Node 환경에서 실패하면 null */
 export async function renderPdfFirstPageDataUrl(buffer: Buffer): Promise<string | null> {
-  const parser = new PDFParse({ data: new Uint8Array(buffer) });
   try {
-    const shot = await parser.getScreenshot({
-      partial: [1],
-      imageDataUrl: true,
-      imageBuffer: false,
-      desiredWidth: 1400,
-    });
-    return shot.pages[0]?.dataUrl ?? null;
+    const PDFParse = await loadPdfParseClass();
+    const parser = new PDFParse({ data: new Uint8Array(buffer) });
+    try {
+      const shot = await parser.getScreenshot({
+        partial: [1],
+        imageDataUrl: true,
+        imageBuffer: false,
+        desiredWidth: 1400,
+      });
+      return shot.pages[0]?.dataUrl ?? null;
+    } finally {
+      await parser.destroy();
+    }
   } catch (e) {
     console.error("PDF 미리보기 렌더 실패:", e);
     return null;
-  } finally {
-    await parser.destroy();
   }
 }
 
