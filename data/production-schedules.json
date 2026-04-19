@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1776612363146_5b4ea61c",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-19T15:26:03.155Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 녹화 일정으로, 4월 30일 오전 9시 50분부터 11시까지 4층 뉴스룸에서 진행된다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-04-30",
+          "time": "09:50-11:00",
+          "place": "4층 뉴스룸",
+          "person": "담당PD 설경철 / 패널 4명 출연",
+          "note": "6.3 지방선거 D-30, 충북도지사와 교육감 전망 / 패널 4명 출연 / 좌 2명, 우 2명"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1776612292751_fdb07d71",
     "type": "production-schedule",
     "uploadedAt": "2026-04-19T15:24:52.751Z",
