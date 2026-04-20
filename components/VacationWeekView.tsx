@@ -395,22 +395,22 @@ function TodayVacationBox({
   const headerLabel = formatDateLabel(todayStr);
 
   return (
-    <div className="w-full rounded-2xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-white p-4 shadow-sm">
-      <p className="text-sm font-semibold text-gray-900 mb-3">{headerLabel}</p>
+    <div className="w-full rounded-xl border border-[#5A2FB7]/50 bg-gradient-to-br from-[#5A2FB7]/20 via-[#4361DE]/10 to-black/70 p-2 shadow-md shadow-[#5A2FB7]/20">
+      <p className="text-xs font-semibold text-white mb-1.5 px-1">{headerLabel}</p>
 
       {rows.length === 0 ? (
-        <p className="text-xs text-gray-400 text-center py-4">오늘 예정된 휴가가 없습니다.</p>
+        <p className="text-xs text-gray-500 text-center py-2">오늘 예정된 휴가가 없습니다.</p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-1">
           {rows.map((r, i) => (
             <li
               key={`${r.displayName}-${i}`}
-              className="rounded-xl bg-white/80 border border-blue-100 px-3 py-2.5"
+              className="rounded-lg bg-white/5 border border-[#5A2FB7]/30 px-2.5 py-1.5"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0 flex flex-col gap-0.5">
-                  <span className="text-sm font-semibold text-gray-900 truncate">{r.displayName}</span>
-                  <span className="text-xs text-gray-600 leading-snug break-words">{r.dateLabel}</span>
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex flex-wrap items-baseline gap-x-2 gap-y-0">
+                  <span className="text-sm font-semibold text-white whitespace-nowrap">{r.displayName}</span>
+                  <span className="text-xs text-gray-300 leading-snug whitespace-nowrap">{r.dateLabel}</span>
                 </div>
                 {r.recordIds && r.recordIds.length > 0 && !hideDeleteButtons && !inlineEditMode && (
                   <div className="flex flex-wrap gap-1 justify-end shrink-0">
@@ -428,7 +428,7 @@ function TodayVacationBox({
                   const rec = recordById.get(id);
                   if (!rec) return null;
                   return (
-                    <div key={id} className="mt-2 border-t border-blue-100 pt-2">
+                    <div key={id} className="mt-2 border-t border-white/10 pt-2">
                       <InlineRecordEditor
                         recordId={id}
                         initialSummary={rec.summary}
@@ -469,32 +469,32 @@ function MergedVacationPersonCard({
     dateMode === "tab" ? buildTabVacationSegments(merged) : [];
 
   return (
-    <div className="bg-white border border-green-200 rounded-xl hover:border-green-400 hover:shadow-sm transition-all overflow-hidden">
-      <div className="flex items-start justify-between gap-2 px-4 py-3">
+    <div className="bg-[#14141c] border border-white/10 rounded-lg hover:border-[#CD366D]/60 hover:shadow-md hover:shadow-[#CD366D]/20 transition-all overflow-hidden">
+      <div className="flex items-center justify-between gap-2 px-2.5 py-1.5">
         <div className="min-w-0 flex-1">
           {dateMode === "sidebar" ? (
-            <div className="min-w-0">
-              <p className="text-sm font-semibold text-gray-900 truncate">{merged.displayName}</p>
-              <p className="text-xs text-gray-600 mt-0.5 leading-snug break-words">{dateLine}</p>
+            <div className="min-w-0 flex flex-wrap items-baseline gap-x-2 gap-y-0">
+              <span className="text-sm font-semibold text-white whitespace-nowrap">{merged.displayName}</span>
+              <span className="text-xs text-gray-400 leading-snug whitespace-nowrap">{dateLine}</span>
             </div>
           ) : (
             <>
-              <p className="text-sm font-semibold text-gray-900">{merged.displayName}</p>
+              <p className="text-sm font-semibold text-white">{merged.displayName}</p>
               <div className="mt-2 space-y-3">
                 {tabSegments.map((seg) => (
-                  <div key={seg.recordId} className="border-l-2 border-emerald-300 pl-2.5">
+                  <div key={seg.recordId} className="border-l-2 border-[#CD366D]/70 pl-2.5">
                     <ul className="space-y-0.5 list-none">
                       {seg.daysYmd.map((d) => (
-                        <li key={d} className="text-xs text-gray-800">
+                        <li key={d} className="text-xs text-gray-200">
                           {formatDateLabel(d)}
                         </li>
                       ))}
                     </ul>
-                    <p className="text-xs mt-1.5 text-gray-700">
+                    <p className="text-xs mt-1.5 text-gray-300">
                       <span className="text-gray-500">구분</span>{" "}
-                      <span className="font-medium text-gray-900">{seg.kindLabel}</span>
+                      <span className="font-medium text-white">{seg.kindLabel}</span>
                     </p>
-                    <p className="text-xs mt-0.5 text-gray-700">
+                    <p className="text-xs mt-0.5 text-gray-300">
                       <span className="text-gray-500">비고</span>{" "}
                       <span className="break-words">{seg.noteText}</span>
                     </p>
@@ -518,7 +518,7 @@ function MergedVacationPersonCard({
           const rec = recordById.get(id);
           if (!rec) return null;
           return (
-            <div key={id} className="border-t border-green-100 px-4 py-2">
+            <div key={id} className="border-t border-white/10 px-4 py-2">
               <InlineRecordEditor
                 recordId={id}
                 initialSummary={rec.summary}
@@ -551,17 +551,17 @@ function PersonGroupedVacationSection({
 }) {
   if (merged.length === 0) {
     return (
-      <div className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4">
-        <p className={`text-xs font-bold mb-2 ${color}`}>{title}</p>
-        <p className="text-xs text-gray-300 text-center py-3">등록된 휴가 없음</p>
+      <div className="w-full rounded-xl border border-white/10 bg-white/5 p-2">
+        <p className={`text-xs font-bold mb-1 px-1 ${color}`}>{title}</p>
+        <p className="text-xs text-gray-600 text-center py-2">등록된 휴가 없음</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4">
-      <p className={`text-xs font-bold mb-4 ${color}`}>{title}</p>
-      <div className="space-y-3">
+    <div className="w-full rounded-xl border border-white/10 bg-white/5 p-2">
+      <p className={`text-xs font-bold mb-1.5 px-1 ${color}`}>{title}</p>
+      <div className="space-y-1">
         {merged.map((m) => (
           <MergedVacationPersonCard
             key={vacationPersonKey(m.rows[0])}
@@ -633,21 +633,21 @@ export default function VacationWeekView({
   return (
     <div className={rootClass}>
       {!hideTitle && (
-        <h3 className="text-sm font-semibold text-gray-700 mb-5">휴가 일정</h3>
+        <h3 className="text-sm font-semibold text-gray-200 mb-5">휴가 일정</h3>
       )}
 
       {allEmpty ? (
-        <div className={`text-center text-gray-400 ${variant === "sidebar" ? "py-8" : "py-12"}`}>
+        <div className={`text-center text-gray-500 ${variant === "sidebar" ? "py-8" : "py-12"}`}>
           <p className="text-sm">등록된 휴가가 없습니다.</p>
           <p className="text-xs mt-1">
-            <a href="/submit" className="text-blue-500 hover:underline">
+            <a href="/submit" className="text-[#9ab0ff] hover:underline">
               일정 업로드
             </a>
             에서 휴가를 등록해 주세요.
           </p>
         </div>
       ) : (
-        <div className={variant === "sidebar" ? "space-y-3" : "space-y-4"}>
+        <div className={variant === "sidebar" ? "space-y-1.5" : "space-y-4"}>
           <TodayVacationBox
             rows={todayRows}
             todayStr={todayStr}
@@ -658,7 +658,7 @@ export default function VacationWeekView({
 
           <PersonGroupedVacationSection
             title="휴가"
-            color="text-emerald-800"
+            color="text-[#CD366D]"
             merged={combinedMerged}
             dateMode={dateMode}
             hideDeleteButtons={hideDeleteButtons}

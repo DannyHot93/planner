@@ -23,7 +23,7 @@ function VerticalTypeLabel({
         {chars.map((c, i) => (
           <span
             key={`${c}-${i}`}
-            className="text-[11px] font-bold leading-[1.05] tracking-tight text-gray-900 sm:text-xs"
+            className="text-[11px] font-bold leading-[1.05] tracking-tight text-gray-100 sm:text-xs"
           >
             {c}
           </span>
@@ -46,22 +46,22 @@ export default function HomeDashboardView({
 }) {
   return (
     <>
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-6">
-        <div className="min-w-0 flex flex-1 flex-col gap-6">
+      <div className="flex flex-col gap-2 lg:flex-row lg:items-stretch lg:gap-3">
+        <div className="min-w-0 flex flex-1 flex-col gap-2">
           {/* 사무실·제작 — 이번 주 */}
           <section
             aria-labelledby="dash-this-week-heading"
-            className="w-full rounded-2xl border-2 border-blue-200/90 bg-gradient-to-br from-blue-50/80 via-white to-sky-50/40 p-4 sm:p-5 shadow-md shadow-blue-900/5 ring-1 ring-blue-100/80"
+            className="w-full rounded-2xl border-2 border-[#4361DE]/70 bg-gradient-to-br from-[#4361DE]/20 via-[#4361DE]/10 to-black p-2 sm:p-3 shadow-lg shadow-[#4361DE]/20 ring-1 ring-[#4361DE]/30"
           >
             <h2 id="dash-this-week-heading" className="sr-only">
               이번 주 사무실·제작 일정
             </h2>
-            <div className="flex min-w-0 flex-col gap-5">
+            <div className="flex min-w-0 flex-col gap-2">
               <div className="flex min-w-0 flex-row items-stretch gap-2 sm:gap-2.5">
                 <VerticalTypeLabel
                   label="사무실일정"
-                  accentClass="border-blue-200/70"
-                  barClass="bg-blue-500"
+                  accentClass="border-[#4361DE]/40"
+                  barClass="bg-[#4361DE]"
                 />
                 <div className="min-w-0 flex-1">
                   <RecordingWeekView
@@ -76,8 +76,8 @@ export default function HomeDashboardView({
               <div className="flex min-w-0 flex-row items-stretch gap-2 sm:gap-2.5">
                 <VerticalTypeLabel
                   label="제작일정"
-                  accentClass="border-indigo-200/70"
-                  barClass="bg-indigo-500"
+                  accentClass="border-[#4361DE]/30"
+                  barClass="bg-[#6b82ea]"
                 />
                 <div className="min-w-0 flex-1">
                   <RecordingWeekView
@@ -95,17 +95,17 @@ export default function HomeDashboardView({
           {/* 사무실·제작 — 이번 주 외 */}
           <section
             aria-labelledby="dash-other-week-heading"
-            className="w-full rounded-2xl border-2 border-slate-300/90 bg-gradient-to-br from-slate-100/90 via-white to-gray-50/60 p-4 sm:p-5 shadow-md shadow-slate-900/5 ring-1 ring-slate-200/90"
+            className="w-full rounded-2xl border-2 border-[#CD366D]/70 bg-gradient-to-br from-[#CD366D]/20 via-[#CD366D]/10 to-black p-2 sm:p-3 shadow-lg shadow-[#CD366D]/20 ring-1 ring-[#CD366D]/30"
           >
             <h2 id="dash-other-week-heading" className="sr-only">
               이번 주 외 사무실·제작 일정
             </h2>
-            <div className="flex min-w-0 flex-col gap-5">
+            <div className="flex min-w-0 flex-col gap-2">
               <div className="flex min-w-0 flex-row items-stretch gap-2 sm:gap-2.5">
                 <VerticalTypeLabel
                   label="사무실일정"
-                  accentClass="border-slate-300/70"
-                  barClass="bg-slate-500"
+                  accentClass="border-[#CD366D]/40"
+                  barClass="bg-[#CD366D]"
                 />
                 <div className="min-w-0 flex-1">
                   <RecordingWeekView
@@ -120,8 +120,8 @@ export default function HomeDashboardView({
               <div className="flex min-w-0 flex-row items-stretch gap-2 sm:gap-2.5">
                 <VerticalTypeLabel
                   label="제작일정"
-                  accentClass="border-slate-400/70"
-                  barClass="bg-slate-600"
+                  accentClass="border-[#CD366D]/30"
+                  barClass="bg-[#e05d8c]"
                 />
                 <div className="min-w-0 flex-1">
                   <RecordingWeekView
@@ -137,8 +137,8 @@ export default function HomeDashboardView({
           </section>
         </div>
 
-        <aside className="w-full shrink-0 border-gray-100 lg:ml-0 lg:w-[min(100%,168px)] lg:shrink-0 lg:border-l lg:pl-5">
-          <div className="lg:sticky lg:top-4 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:pr-1">
+        <aside className="w-full shrink-0 lg:ml-0 lg:w-[min(100%,168px)] lg:shrink-0 lg:border-l lg:border-white/10 lg:pl-3">
+          <div className="lg:sticky lg:top-10 lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto lg:pr-1">
             <VacationWeekView
               vacationRecords={vacationRecords}
               variant="sidebar"

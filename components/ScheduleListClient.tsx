@@ -106,13 +106,13 @@ const TABS: { value: TabValue; label: string }[] = [
 ];
 
 const uploadButtonClass =
-  "inline-flex shrink-0 items-center gap-2 px-4 py-2.5 sm:px-5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors shadow-sm";
+  "inline-flex shrink-0 items-center gap-1 px-2.5 py-1 sm:px-3 bg-[#4361DE] text-white rounded-md text-xs sm:text-sm font-semibold hover:bg-[#3551c0] transition-colors shadow shadow-[#4361DE]/30 ring-1 ring-white/10";
 
 const editButtonClass = (on: boolean) =>
-  `inline-flex shrink-0 items-center gap-1.5 rounded-xl border px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-semibold shadow-sm transition-colors ${
+  `inline-flex shrink-0 items-center gap-1 rounded-md border px-2 py-1 sm:px-2.5 text-xs sm:text-sm font-semibold transition-colors ${
     on
-      ? "border-blue-300 bg-blue-50 text-blue-900 hover:bg-blue-100"
-      : "border-gray-200 bg-white text-gray-800 hover:bg-gray-50"
+      ? "border-[#CD366D]/60 bg-[#CD366D]/15 text-[#f7c5d6] hover:bg-[#CD366D]/25"
+      : "border-white/10 bg-white/5 text-gray-100 hover:bg-white/10"
   }`;
 
 export default function ScheduleListClient({
@@ -197,15 +197,17 @@ export default function ScheduleListClient({
 
   return (
     <RecordRemoveProvider value={markRecordRemoved}>
-      <header className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-4">
-        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl lg:shrink-0">
+      <header
+        className="sticky top-0 z-40 mb-2 -mx-2 sm:-mx-3 lg:-mx-4 xl:-mx-5 2xl:-mx-6 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-[#5A2FB7]/40 bg-gradient-to-r from-[#5A2FB7] via-[#5A2FB7]/90 to-[#4361DE]/60 px-3 py-2 shadow-md shadow-[#5A2FB7]/25 backdrop-blur"
+      >
+        <h1 className="text-base font-bold text-white sm:text-lg lg:shrink-0 drop-shadow">
           일정 플래너
         </h1>
 
         <nav className="flex min-w-0 flex-1 justify-center" aria-label="일정 구역">
           <div
             role="tablist"
-            className="inline-flex max-w-full gap-0.5 overflow-x-auto rounded-xl bg-gray-100/95 p-1 shadow-inner ring-1 ring-gray-200/80 [scrollbar-width:thin]"
+            className="inline-flex max-w-full gap-0.5 overflow-x-auto rounded-lg bg-black/30 p-0.5 shadow-inner ring-1 ring-white/10 [scrollbar-width:thin]"
           >
             {TABS.map((tab) => (
               <button
@@ -214,10 +216,10 @@ export default function ScheduleListClient({
                 role="tab"
                 aria-selected={activeTab === tab.value}
                 onClick={() => setActiveTab(tab.value)}
-                className={`shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-all sm:px-3.5 sm:text-sm ${
+                className={`shrink-0 rounded-md px-2.5 py-1 text-xs font-medium transition-all sm:px-3 sm:text-sm ${
                   activeTab === tab.value
-                    ? "bg-white text-gray-900 shadow-sm ring-1 ring-gray-200/80"
-                    : "text-gray-500 hover:text-gray-800"
+                    ? "bg-white/95 text-[#2a1466] shadow-sm ring-1 ring-white/80"
+                    : "text-white/75 hover:text-white"
                 }`}
               >
                 {tab.label}
@@ -226,7 +228,7 @@ export default function ScheduleListClient({
           </div>
         </nav>
 
-        <div className="flex shrink-0 items-center gap-2 self-end lg:self-auto">
+        <div className="flex shrink-0 items-center gap-1.5">
           {activeTab === "schedule" && (
             <button
               type="button"
@@ -234,7 +236,7 @@ export default function ScheduleListClient({
               className={editButtonClass(editMode)}
               aria-pressed={editMode}
             >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -246,7 +248,7 @@ export default function ScheduleListClient({
             </button>
           )}
           <a href="/submit" className={uploadButtonClass}>
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -259,9 +261,9 @@ export default function ScheduleListClient({
         </div>
       </header>
 
-      <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
+      <div className="text-gray-100">
         {activeTab === "schedule" ? (
-          <section className="space-y-4" aria-label="사무실·제작 일정과 휴가 요약">
+          <section className="space-y-2" aria-label="사무실·제작 일정과 휴가 요약">
             <HomeDashboardView
               officeRecords={officeRecords}
               productionRecords={productionRecords}

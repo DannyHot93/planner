@@ -206,11 +206,13 @@ function EntryCard({
   thisWeekMonday,
   hideRecordActions,
   inlineEditMode,
+  variant = "this-week",
 }: {
   entry: EntryWithMeta;
   thisWeekMonday: string;
   hideRecordActions?: boolean;
   inlineEditMode?: boolean;
+  variant?: "this-week" | "other-week";
 }) {
   const [open, setOpen] = useState(false);
 
@@ -230,7 +232,7 @@ function EntryCard({
       (entry.note && String(entry.note).trim()) ||
       "";
     return (
-      <div className="bg-white border border-blue-200 rounded-xl p-2 shadow-sm ring-1 ring-blue-100">
+      <div className="rounded-xl bg-gradient-to-br from-[#323a52]/95 to-[#252b3d] p-2">
         <InlineRecordEditor
           recordId={entry.recordId}
           initialSummary={entry.recordSummary}
@@ -246,17 +248,23 @@ function EntryCard({
     );
   }
 
+  const cardSurface =
+    variant === "this-week"
+      ? "bg-gradient-to-br from-[#323a52]/95 to-[#252b3d]"
+      : "bg-gradient-to-br from-[#3d2f3a]/95 to-[#2a222c]";
+  const timeColor = variant === "this-week" ? "text-[#c5d4ff]" : "text-[#f5c4d6]";
+
   return (
     <div
       className="relative group"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <div className="bg-white border border-gray-200 rounded-xl p-3 cursor-default hover:border-purple-300 hover:shadow-md transition-all">
+      <div className={`rounded-xl p-3 cursor-default ${cardSurface}`}>
         <div className="flex items-start justify-between gap-1 mb-0.5">
           <p
-            className={`text-sm font-semibold leading-snug flex-1 min-w-0 ${
-              isThisWeek ? "text-gray-900" : "text-gray-800"
+            className={`text-sm font-semibold leading-snug flex-1 min-w-0 tracking-tight ${
+              isThisWeek ? "text-[#f4f6fc]" : "text-[#f0eaed]"
             }`}
           >
             {headline}
@@ -266,22 +274,22 @@ function EntryCard({
           )}
         </div>
         {entry.time && (
-          <p className="text-xs text-blue-600 font-medium mt-1">{entry.time}</p>
+          <p className={`text-xs font-medium mt-1 ${timeColor}`}>{entry.time}</p>
         )}
       </div>
 
       {open && (
-        <div className="absolute z-50 left-0 top-full mt-1 w-64 bg-white border border-purple-200 rounded-xl shadow-xl p-4 text-xs text-gray-700 space-y-1.5">
+        <div className="absolute z-50 left-0 top-full mt-1 w-64 rounded-xl bg-gradient-to-br from-[#323a52] to-[#252b3d] p-4 text-xs text-gray-200 space-y-1.5">
           {entry.programTitle && (
-            <p className="font-semibold text-sm text-gray-900">
+            <p className="font-semibold text-sm text-white">
               {entry.programTitle}
             </p>
           )}
-          <p className="text-gray-600">{entry.recordSummary}</p>
+          <p className="text-gray-300">{entry.recordSummary}</p>
           {entry.time && (
             <p>
               <span className="text-gray-400">시간</span>{" "}
-              <span className="text-blue-600 font-medium">{entry.time}</span>
+              <span className={`font-medium ${timeColor}`}>{entry.time}</span>
             </p>
           )}
           {entry.place && (
@@ -304,7 +312,7 @@ function EntryCard({
               <span className="text-gray-400">비고</span> {entry.recordMemo}
             </p>
           )}
-          <p className="text-gray-300 pt-1 border-t border-gray-100">
+          <p className="text-gray-500 pt-1 border-t border-white/10">
             업로드: {entry.uploadedAt.slice(0, 10)}
           </p>
         </div>
@@ -335,12 +343,12 @@ function OtherWeekMergedGrid({
         return (
           <div
             key={group.date}
-            className="min-w-0 rounded-xl border border-gray-200 bg-gray-50 p-2 flex flex-col gap-2"
+            className="min-w-0 rounded-xl border border-[#CD366D]/20 bg-black/40 p-2 flex flex-col gap-2"
           >
             <div className="flex items-center justify-center px-1 py-0.5">
               <span
                 className={`text-xs font-bold ${
-                  isWeekend ? "text-red-500" : "text-gray-700"
+                  isWeekend ? "text-[#f7a7c1]" : "text-gray-200"
                 }`}
               >
                 {dayLabel}
@@ -348,14 +356,14 @@ function OtherWeekMergedGrid({
             </div>
 
             {group.entries.length === 0 ? (
-              <p className="text-xs text-gray-300 text-center py-3">일정 없음</p>
+              <p className="text-xs text-gray-600 text-center py-3">일정 없음</p>
             ) : (
               <div className="flex flex-col gap-2">
                 {group.entries.map((entry, i) => {
                   const ymd = entry.date ? toSeoulDateYmd(entry.date) : "";
                   return (
                     <div key={`${entry.recordId}-${ymd}-${i}`} className="flex flex-col gap-1">
-                      <p className="text-[10px] font-semibold text-gray-500 leading-tight px-0.5">
+                      <p className="text-[10px] font-semibold text-[#f7a7c1]/70 leading-tight px-0.5">
                         {formatEntryDateLine(ymd)}
                       </p>
                       <EntryCard
@@ -363,6 +371,7 @@ function OtherWeekMergedGrid({
                         thisWeekMonday={thisWeekMonday}
                         hideRecordActions={hideRecordActions}
                         inlineEditMode={inlineEditMode}
+                        variant="other-week"
                       />
                     </div>
                   );
@@ -414,8 +423,8 @@ function WeekGrid({
             key={group.date}
             className={`min-w-0 rounded-xl border p-2 flex flex-col gap-2 ${
               isToday
-                ? "border-blue-400 bg-blue-50"
-                : "border-gray-200 bg-gray-50"
+                ? "border-[#4361DE] bg-[#4361DE]/20"
+                : "border-[#4361DE]/20 bg-black/40"
             }`}
           >
             {isWeekendCol ? (
@@ -423,7 +432,7 @@ function WeekGrid({
                 <div className="flex items-center justify-between">
                   <span
                     className={`text-xs font-bold ${
-                      isToday ? "text-blue-600" : "text-red-500"
+                      isToday ? "text-[#9ab0ff]" : "text-[#f7a7c1]"
                     }`}
                   >
                     {dayLabel}
@@ -433,8 +442,8 @@ function WeekGrid({
                   <span
                     className={
                       todayStr === satYmd
-                        ? "font-semibold text-blue-600"
-                        : "text-red-400"
+                        ? "font-semibold text-[#9ab0ff]"
+                        : "text-[#f7a7c1]/80"
                     }
                   >
                     토 {pad2(moSat)}/{pad2(daSat)}
@@ -442,8 +451,8 @@ function WeekGrid({
                   <span
                     className={
                       todayStr === sunYmd
-                        ? "font-semibold text-blue-600"
-                        : "text-red-400"
+                        ? "font-semibold text-[#9ab0ff]"
+                        : "text-[#f7a7c1]/80"
                     }
                   >
                     일 {pad2(moSun)}/{pad2(daSun)}
@@ -455,10 +464,10 @@ function WeekGrid({
                 <span
                   className={`text-xs font-bold ${
                     isToday
-                      ? "text-blue-600"
+                      ? "text-[#9ab0ff]"
                       : isWeekend
-                        ? "text-red-500"
-                        : "text-gray-700"
+                        ? "text-[#f7a7c1]"
+                        : "text-gray-200"
                   }`}
                 >
                   {dayLabel}
@@ -466,10 +475,10 @@ function WeekGrid({
                 <span
                   className={`text-xs ${
                     isToday
-                      ? "text-blue-500 font-semibold"
+                      ? "text-[#9ab0ff] font-semibold"
                       : isWeekend
-                        ? "text-red-400"
-                        : "text-gray-400"
+                        ? "text-[#f7a7c1]/80"
+                        : "text-gray-500"
                   }`}
                 >
                   {pad2(mo)}/{pad2(da)}
@@ -478,7 +487,7 @@ function WeekGrid({
             )}
 
             {group.entries.length === 0 ? (
-              <p className="text-xs text-gray-300 text-center py-3">일정 없음</p>
+              <p className="text-xs text-gray-600 text-center py-3">일정 없음</p>
             ) : (
               group.entries.map((entry, i) => (
                 <EntryCard
@@ -487,6 +496,7 @@ function WeekGrid({
                   thisWeekMonday={thisWeekMonday}
                   hideRecordActions={hideRecordActions}
                   inlineEditMode={inlineEditMode}
+                  variant="this-week"
                 />
               ))
             )}
@@ -541,14 +551,14 @@ export default function RecordingWeekView({
   const showOther = sections === "both" || sections === "other-week";
 
   const thisWeekSectionClass = embedded
-    ? "rounded-xl border border-blue-100 bg-gradient-to-b from-blue-50/50 to-white p-3 shadow-sm"
-    : "rounded-2xl border border-blue-100 bg-gradient-to-b from-blue-50/80 to-white p-4 shadow-sm";
+    ? "rounded-xl border border-[#4361DE]/40 bg-[#0e0e14]/80 p-3"
+    : "rounded-2xl border border-[#4361DE]/40 bg-gradient-to-b from-[#4361DE]/15 to-[#0e0e14]/95 p-4";
   const otherWeekSectionClass = embedded
-    ? "rounded-xl border border-gray-200 bg-gray-50/80 p-3 shadow-sm"
-    : "rounded-2xl border border-gray-200 bg-gray-50/90 p-4 shadow-sm";
+    ? "rounded-xl border border-[#CD366D]/40 bg-[#0e0e14]/80 p-3"
+    : "rounded-2xl border border-[#CD366D]/40 bg-gradient-to-b from-[#CD366D]/15 to-[#0e0e14]/95 p-4";
 
   const emptyBlock = (
-    <div className={`text-center py-8 text-gray-400 ${embedded ? "py-6" : "py-16"}`}>
+    <div className={`text-center py-8 text-gray-500 ${embedded ? "py-6" : "py-16"}`}>
       {!embedded && (
         <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <svg
@@ -596,8 +606,8 @@ export default function RecordingWeekView({
                 <section className={thisWeekSectionClass}>
                   {!embedded && (
                     <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                      <h4 className="text-sm font-bold text-blue-900">이번 주 일정</h4>
-                      <span className="text-xs font-medium text-blue-700/80">
+                      <h4 className="text-sm font-bold text-[#9ab0ff]">이번 주 일정</h4>
+                      <span className="text-xs font-medium text-[#9ab0ff]/80">
                         {formatRangeLabel(thisWeekDays)}
                       </span>
                     </div>
@@ -621,7 +631,7 @@ export default function RecordingWeekView({
                 <section className={otherWeekSectionClass}>
                   {!embedded && (
                     <div className="mb-3">
-                      <h4 className="text-sm font-bold text-gray-800">이번 주 외 일정</h4>
+                      <h4 className="text-sm font-bold text-[#f7a7c1]">이번 주 외 일정</h4>
                     </div>
                   )}
                   <OtherWeekMergedGrid
@@ -633,7 +643,7 @@ export default function RecordingWeekView({
                 </section>
               ) : (
                 sections !== "both" && (
-                  <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50/80 p-4 text-center">
+                  <div className="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-center">
                     <p className="text-xs text-gray-400">이번 주 외로 잡힌 일정이 없습니다.</p>
                   </div>
                 )
