@@ -257,12 +257,12 @@ function EntryCard({
       : "bg-gradient-to-br from-[#3d2f3a]/95 to-[#2a222c]";
   const timeColor =
     accentToday && variant === "this-week"
-      ? "text-[#b5ecff] font-semibold"
+      ? "text-gray-200 font-semibold"
       : accentToday && variant === "other-week"
-        ? "text-[#ffc2df] font-semibold"
+        ? "text-gray-200 font-semibold"
         : variant === "this-week"
-          ? "text-[#c5d4ff]"
-          : "text-[#f5c4d6]";
+          ? "text-gray-300"
+          : "text-gray-300";
 
   return (
     <div
@@ -273,16 +273,8 @@ function EntryCard({
       <div className={`rounded-xl p-3 cursor-default ${cardSurface}`}>
         <div className="flex items-start justify-between gap-1 mb-0.5">
           <p
-            className={`text-sm leading-snug flex-1 min-w-0 tracking-tight ${
-              accentToday
-                ? variant === "this-week"
-                  ? "font-bold text-[#74e8ff] [text-shadow:0_0_18px_rgba(96,200,255,0.45),0_1px_2px_rgba(0,20,45,0.85)]"
-                  : "font-bold text-[#ffb8dd] [text-shadow:0_0_16px_rgba(255,140,190,0.4),0_1px_2px_rgba(45,8,25,0.75)]"
-                : `font-semibold ${
-                    isThisWeek
-                      ? "text-[#c8e4ff]"
-                      : "text-[#ffd0e4]"
-                  }`
+            className={`text-sm leading-snug flex-1 min-w-0 tracking-tight text-white ${
+              accentToday ? "font-bold" : "font-semibold"
             }`}
           >
             {headline}

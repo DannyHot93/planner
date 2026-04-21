@@ -409,7 +409,7 @@ function TodayVacationBox({
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="min-w-0 flex flex-wrap items-baseline gap-x-2 gap-y-0">
-                  <span className="text-sm font-semibold text-[#9cf0ff] whitespace-nowrap drop-shadow-[0_0_8px_rgba(120,200,255,0.35)]">{r.displayName}</span>
+                  <span className="text-sm font-semibold text-white whitespace-nowrap">{r.displayName}</span>
                   <span className="text-xs text-gray-300 leading-snug whitespace-nowrap">{r.dateLabel}</span>
                 </div>
                 {r.recordIds && r.recordIds.length > 0 && !hideDeleteButtons && !inlineEditMode && (

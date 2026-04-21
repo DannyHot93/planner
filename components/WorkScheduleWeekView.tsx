@@ -29,10 +29,10 @@ function WorkScheduleRecordBlock({ record }: { record: ScheduleRecord }) {
       >
         <div className="flex-1 min-w-0">
           <span
-            className={`inline-block text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded ${
+            className={`inline-block text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded text-white ${
               kind === "production"
-                ? "bg-[#5A2FB7]/40 text-[#d7c7ff]"
-                : "bg-[#4361DE]/40 text-[#c7d4ff]"
+                ? "bg-[#5A2FB7]/40"
+                : "bg-[#4361DE]/40"
             }`}
           >
             {kindLabel}
