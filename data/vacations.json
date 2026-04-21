@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1776765717873_009203d4",
+    "type": "vacation",
+    "uploadedAt": "2026-04-21T10:01:57.873Z",
+    "memo": "오후 반차",
+    "summary": "손호율 · 2026-04-22",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-04-22 ~ 2026-04-22",
+      "entries": [
+        {
+          "date": "2026-04-22",
+          "person": "손호율",
+          "reason": "구분: 연차휴가 · 비고: 오후 반차",
+          "note": "구분: 연차휴가 · 비고: 오후 반차"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1776763504895_8c3997ad",
     "type": "vacation",
     "uploadedAt": "2026-04-21T09:25:04.895Z",
