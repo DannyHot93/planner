@@ -12,6 +12,9 @@ const REMOVED_IDS_STORAGE = "planner_removed_ids_v1";
 /** GitHub/Next 캐시가 따라잡지 못한 짧은 창 동안 삭제 묘비 유지 */
 const REMOVED_TOMBSTONE_TTL_MS = 10 * 60 * 1000;
 
+/** 백그라운드에서 주기적 갱신(새로고침 대신) */
+const POLL_INTERVAL_MS = 90_000;
+
 const UI_STATE_STORAGE = "planner_home_ui_v1";
 
 interface PersistedUiState {
@@ -115,13 +118,35 @@ const editButtonClass = (on: boolean) =>
       : "border-white/10 bg-white/5 text-gray-100 hover:bg-white/10"
   }`;
 
-export default function ScheduleListClient({
-  records,
-  castingRecords,
-}: {
-  records: ScheduleRecord[];
+type LoadStatus = "loading" | "ok" | "error";
+
+async function fetchPlannerData(): Promise<{
+  allRecords: ScheduleRecord[];
   castingRecords: ScheduleRecord[];
-}) {
+}> {
+  const res = await fetch("/api/planner-data", {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(
+      typeof (err as { error?: string }).error === "string"
+        ? (err as { error: string }).error
+        : "일정을 불러오지 못했습니다."
+    );
+  }
+  return res.json() as Promise<{
+    allRecords: ScheduleRecord[];
+    castingRecords: ScheduleRecord[];
+  }>;
+}
+
+export default function ScheduleListClient() {
+  const [loadStatus, setLoadStatus] = useState<LoadStatus>("loading");
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [records, setRecords] = useState<ScheduleRecord[]>([]);
+  const [castingRecords, setCastingRecords] = useState<ScheduleRecord[]>([]);
+
   const [activeTab, setActiveTab] = useState<TabValue>("schedule");
   const [editMode, setEditMode] = useState(false);
   /**
@@ -142,6 +167,54 @@ export default function ScheduleListClient({
     setUiHydrated(true);
   }, []);
 
+  const applyPayload = useCallback((payload: { allRecords: ScheduleRecord[]; castingRecords: ScheduleRecord[] }) => {
+    setRecords(payload.allRecords);
+    setCastingRecords(payload.castingRecords);
+    setLoadStatus("ok");
+    setLoadError(null);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await fetchPlannerData();
+        if (!cancelled) applyPayload(data);
+      } catch (e) {
+        if (!cancelled) {
+          setLoadStatus("error");
+          setLoadError(e instanceof Error ? e.message : "일정을 불러오지 못했습니다.");
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [applyPayload]);
+
+  /** 탭 복귀·주기 폴링으로 다른 기기의 업로드 반영(F5 의존 완화) */
+  useEffect(() => {
+    if (loadStatus !== "ok") return;
+
+    const run = () => {
+      fetchPlannerData()
+        .then(applyPayload)
+        .catch(() => {
+          /* 조용히 무시, 다음 폴링에서 재시도 */
+        });
+    };
+
+    const id = window.setInterval(run, POLL_INTERVAL_MS);
+    const onVis = () => {
+      if (document.visibilityState === "visible") run();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [loadStatus, applyPayload]);
+
   useEffect(() => {
     if (!uiHydrated) return;
     writeUiState({ activeTab, editMode });
@@ -155,8 +228,9 @@ export default function ScheduleListClient({
     });
   }, []);
 
-  /** 서버에서 이미 사라진 id, 혹은 TTL 만료된 id는 묘비에서 제거 */
+  /** 서버에서 이미 사라진 id, 혹은 TTL 만료된 id는 묘비에서 제거 (최초 로드 전에는 records=[]이므로 스킵) */
   useEffect(() => {
+    if (loadStatus !== "ok") return;
     setTombstones((prev) => {
       const now = Date.now();
       const present = new Set(records.map((r) => r.id));
@@ -177,7 +251,7 @@ export default function ScheduleListClient({
       writeTombstones(next);
       return next;
     });
-  }, [records]);
+  }, [records, loadStatus]);
 
   useEffect(() => {
     if (activeTab !== "schedule") setEditMode(false);
@@ -194,6 +268,38 @@ export default function ScheduleListClient({
   );
   const workScheduleRecords = visibleRecords.filter((r) => r.type === "work-schedule");
   const vacationRecords = visibleRecords.filter((r) => r.type === "vacation");
+
+  if (loadStatus === "loading") {
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-3 text-gray-400">
+        <p className="text-sm">일정 불러오는 중…</p>
+      </div>
+    );
+  }
+
+  if (loadStatus === "error") {
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 text-center">
+        <p className="text-sm text-red-300">{loadError ?? "오류가 발생했습니다."}</p>
+        <button
+          type="button"
+          onClick={() => {
+            setLoadStatus("loading");
+            setLoadError(null);
+            fetchPlannerData()
+              .then(applyPayload)
+              .catch((e) => {
+                setLoadStatus("error");
+                setLoadError(e instanceof Error ? e.message : "다시 시도해 주세요.");
+              });
+          }}
+          className="rounded-md bg-[#4361DE] px-4 py-2 text-sm font-semibold text-white hover:bg-[#3551c0]"
+        >
+          다시 시도
+        </button>
+      </div>
+    );
+  }
 
   return (
     <RecordRemoveProvider value={markRecordRemoved}>
