@@ -47,6 +47,7 @@ cp .env.example .env.local
 | `GITHUB_OWNER` | GitHub 사용자 또는 조직 이름 |
 | `GITHUB_REPO` | 저장소 이름 |
 | `GITHUB_BRANCH` | 커밋할 브랜치 (기본 `main`) |
+| `BLOB_READ_WRITE_TOKEN` | (선택) Vercel Blob 토큰. 설정 시 업로드된 근무표 이미지는 GitHub JSON 대신 Blob에 저장돼 Fast Origin Transfer / ISR Write 사용량이 크게 줄어듭니다. Vercel 프로젝트에서 Blob Store를 만들어 연결하면 자동 주입됩니다. 토큰이 없으면 기존 base64 data URL 방식으로 자동 fallback 합니다. |
 
 3. 개발 서버
 

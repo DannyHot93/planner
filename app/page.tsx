@@ -9,6 +9,25 @@ import {
 } from "@/lib/recording-cleanup";
 import { filterPastVacations } from "@/lib/vacation-cleanup";
 
+/**
+ * 클라이언트 RSC/HTML 페이로드 축소를 위해 `details.imageDataUrl`(base64)을
+ * 떼어내고, 존재 여부만 `hasImage: true`로 전달한다.
+ * 실제 이미지는 `/api/records/{id}/image`에서 immutable 캐시로 지연 로드.
+ */
+function stripImageDataUrl(records: ScheduleRecord[]): ScheduleRecord[] {
+  return records.map((record) => {
+    const details = record.details as Record<string, unknown> | undefined;
+    const hasImage =
+      typeof details?.imageDataUrl === "string" &&
+      (details.imageDataUrl as string).startsWith("data:");
+    if (!hasImage) return record;
+    const rest: Record<string, unknown> = { ...details };
+    delete rest.imageDataUrl;
+    rest.hasImage = true;
+    return { ...record, details: rest as ScheduleRecord["details"] };
+  });
+}
+
 function loadRecordsFromDisk(filename: string): ScheduleRecord[] {
   try {
     const filePath = join(process.cwd(), "data", filename);
@@ -40,9 +59,10 @@ async function loadRecords(filename: string): Promise<ScheduleRecord[]> {
 }
 
 /**
- * ISR: 300초 캐시. 등록·삭제·수정 시 revalidatePlannerHome()로 태그+경로 무효화.
+ * ISR: 1800초(30분) 캐시. 등록·삭제·수정 시 revalidatePlannerHome()로
+ * 태그+경로가 즉시 무효화되므로 주기를 길게 잡아 재빌드 횟수를 줄인다.
  */
-export const revalidate = 300;
+export const revalidate = 1800;
 
 export const metadata = {
   title: "일정 플래너",
@@ -72,20 +92,24 @@ export default async function HomePage() {
   const productionSchedules = filterRecordingsWeeklyCleanup(rawProductionSchedules);
   const legacyRecordings = filterRecordingsWeeklyCleanup(rawLegacyRecordings);
 
-  const allRecords: ScheduleRecord[] = [
-    ...workSchedules,
-    ...vacations,
-    ...officeSchedules,
-    ...productionSchedules,
-    ...legacyRecordings,
-  ].sort(
-    (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
+  const allRecords: ScheduleRecord[] = stripImageDataUrl(
+    [
+      ...workSchedules,
+      ...vacations,
+      ...officeSchedules,
+      ...productionSchedules,
+      ...legacyRecordings,
+    ].sort(
+      (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
+    )
   );
+
+  const castingRecords = stripImageDataUrl(castingSchedules);
 
   return (
     <div className="min-h-screen bg-black">
       <div className="w-full max-w-none mx-auto px-2 sm:px-3 lg:px-4 xl:px-5 2xl:px-6">
-        <ScheduleListClient records={allRecords} castingRecords={castingSchedules} />
+        <ScheduleListClient records={allRecords} castingRecords={castingRecords} />
       </div>
     </div>
   );

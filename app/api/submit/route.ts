@@ -27,6 +27,7 @@ import {
   ensureWorkScheduleKindInDetails,
 } from "@/lib/normalize";
 import { appendRecordToGitHub } from "@/lib/github";
+import { uploadRecordImageToBlob } from "@/lib/blob";
 import { revalidatePlannerHome } from "@/lib/planner-cache";
 import { SubmitApiResponse } from "@/lib/types";
 import type { WorkScheduleKind } from "@/lib/types";
@@ -93,6 +94,11 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
     const hasImage = imageFile && imageFile.size > 0;
 
     let aiResult;
+    /**
+     * casting / work-schedule 업로드의 원본 이미지.
+     * 레코드 id가 생성된 뒤 Vercel Blob에 업로드해 data URL 대신 외부 URL로 교체한다.
+     */
+    let pendingImageForBlob: { buffer: Buffer; mime: string } | null = null;
 
     if (!hasImage) {
       if (documentType === "office-schedule" || documentType === "production-schedule") {
@@ -210,22 +216,30 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
           entries: castingRaw.details.entries ?? [],
         },
       };
+      pendingImageForBlob = { buffer, mime: mimeType };
     } else if (documentType === "work-schedule") {
       validateWorkScheduleUploadFile(imageFile);
       const buffer = Buffer.from(await imageFile.arrayBuffer());
       const mimeType = inferImageMimeType(imageFile);
-      const { toOpenAiVisionInput } = await import("@/lib/image-for-openai");
-      const { base64: visionBase64, mimeType: visionMime } =
-        await toOpenAiVisionInput(buffer, mimeType);
-      const raw = await analyzeImage(visionBase64, visionMime, "work-schedule", {
-        workScheduleKind,
-      });
-      aiResult = validateAiResult(raw, documentType);
       const imageDataUrl = `data:${mimeType};base64,${buffer.toString("base64")}`;
-      const d = aiResult.details as Record<string, unknown>;
-      d.imageDataUrl = imageDataUrl;
-      d.imagePreviewSource = "uploaded-image";
+      const label = workScheduleKind === "production" ? "제작 근무표" : "사무실 근무표";
+      const seoulToday = new Intl.DateTimeFormat("sv-SE", {
+        timeZone: "Asia/Seoul",
+      }).format(new Date());
+      aiResult = validateAiResult(
+        {
+          summary: `${label} (${seoulToday})`,
+          details: {
+            scheduleKind: workScheduleKind,
+            entries: [],
+            imageDataUrl,
+            imagePreviewSource: "uploaded-image",
+          },
+        },
+        documentType
+      );
       ensureWorkScheduleKindInDetails(aiResult, workScheduleKind);
+      pendingImageForBlob = { buffer, mime: mimeType };
     } else if (documentType === "vacation") {
       const buffer = Buffer.from(await imageFile.arrayBuffer());
       if (getVacationFileCategory(imageFile, buffer) === "spreadsheet") {
@@ -363,6 +377,26 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
               : "")
           : memo;
     const record = normalizeRecord(aiResult, documentType, memoForRecord);
+
+    // Vercel Blob에 이미지 업로드가 가능하면 data URL 대신 URL만 저장해
+    // GitHub JSON 크기와 Fast Origin Transfer 사용량을 크게 줄인다.
+    if (pendingImageForBlob) {
+      const blobUrl = await uploadRecordImageToBlob(
+        record.id,
+        pendingImageForBlob.buffer,
+        pendingImageForBlob.mime
+      );
+      if (blobUrl) {
+        const nextDetails = {
+          ...(record.details as Record<string, unknown>),
+        };
+        delete nextDetails.imageDataUrl;
+        nextDetails.imageUrl = blobUrl;
+        (record as { details: typeof record.details }).details =
+          nextDetails as typeof record.details;
+      }
+    }
+
     const filePath = DATA_FILE_MAP[documentType];
     const commitMessage = getCommitMessage(documentType, today);
 

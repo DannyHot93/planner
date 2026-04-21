@@ -206,15 +206,24 @@ export async function analyzeCastingScheduleImage(
       },
     ],
     response_format: { type: "json_object" },
-    max_completion_tokens: 4096,
+    max_completion_tokens: 8192,
   });
 
-  const content = response.choices[0]?.message?.content;
+  const content = response.choices[0]?.message?.content?.trim();
   if (!content) {
     throw new Error("AI API에서 응답을 받지 못했습니다.");
   }
 
-  return JSON.parse(content) as CastingAiResult;
+  try {
+    return JSON.parse(content) as CastingAiResult;
+  } catch {
+    const reason = response.choices[0]?.finish_reason;
+    throw new Error(
+      reason === "length"
+        ? "AI 응답이 길이 제한으로 잘렸습니다. 이미지를 더 가깝게 찍거나 일부만 올린 뒤 다시 시도해 주세요."
+        : "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
+    );
+  }
 }
 
 /** 엑셀에서 추출한 표 텍스트로 휴가 일정 분석 */
@@ -234,14 +243,23 @@ export async function analyzeVacationFromText(
       },
     ],
     response_format: { type: "json_object" },
-    max_completion_tokens: 4096,
+    max_completion_tokens: 8192,
   });
 
-  const content = response.choices[0]?.message?.content;
+  const content = response.choices[0]?.message?.content?.trim();
   if (!content) {
     throw new Error("AI API에서 응답을 받지 못했습니다.");
   }
-  return JSON.parse(content) as AiAnalysisResult;
+  try {
+    return JSON.parse(content) as AiAnalysisResult;
+  } catch {
+    const reason = response.choices[0]?.finish_reason;
+    throw new Error(
+      reason === "length"
+        ? "AI 응답이 길이 제한으로 잘렸습니다. 이미지를 더 가깝게 찍거나 일부만 올린 뒤 다시 시도해 주세요."
+        : "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
+    );
+  }
 }
 
 export async function analyzeImage(
@@ -276,14 +294,22 @@ export async function analyzeImage(
       },
     ],
     response_format: { type: "json_object" },
-    max_completion_tokens: 4096,
+    max_completion_tokens: 8192,
   });
 
-  const content = response.choices[0]?.message?.content;
+  const content = response.choices[0]?.message?.content?.trim();
   if (!content) {
     throw new Error("AI API에서 응답을 받지 못했습니다.");
   }
 
-  const parsed = JSON.parse(content) as AiAnalysisResult;
-  return parsed;
+  try {
+    return JSON.parse(content) as AiAnalysisResult;
+  } catch {
+    const reason = response.choices[0]?.finish_reason;
+    throw new Error(
+      reason === "length"
+        ? "AI 응답이 길이 제한으로 잘렸습니다. 이미지를 더 가깝게 찍거나 일부만 올린 뒤 다시 시도해 주세요."
+        : "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
+    );
+  }
 }
