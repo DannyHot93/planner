@@ -59,8 +59,8 @@ async function loadRecords(filename: string): Promise<ScheduleRecord[]> {
 }
 
 /**
- * ISR: 1800초(30분) 캐시. 등록·삭제·수정 시 revalidatePlannerHome()로
- * 태그+경로가 즉시 무효화되므로 주기를 길게 잡아 재빌드 횟수를 줄인다.
+ * ISR: 1800초(30분). 등록·삭제·수정 시 revalidatePlannerHome()가
+ * `planner-records` 데이터 캐시만 무효화해 전 라우트 ISR 쓰기를 피한다.
  */
 export const revalidate = 1800;
 
