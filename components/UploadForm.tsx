@@ -116,6 +116,9 @@ export default function UploadForm() {
   };
 
   const isCasting = documentType === "work-schedule" && workScheduleKind === "casting";
+  /** 사무실·제작 근무표: AI 없이 이미지만 저장 */
+  const isWorkScheduleOfficeOrProd =
+    documentType === "work-schedule" && !isCasting;
 
   const recordingFormReady =
     recordingProgram.trim().length > 0 && recordingDate.trim().length > 0;
@@ -715,14 +718,14 @@ export default function UploadForm() {
             <div className="space-y-2">
               <p className="text-xs text-center text-gray-600 font-medium">
                 {selectedFile
-                  ? documentType === "work-schedule" && selectedFile.type.startsWith("image/")
+                  ? isWorkScheduleOfficeOrProd
                     ? "저장 중..."
-                    : selectedFile.type.startsWith("image/")
+                    : isCasting && selectedFile.type.startsWith("image/")
                       ? "AI 분석 중..."
-                      : "문서 분석 중..."
-                  : documentType === "office-schedule" || documentType === "production-schedule" || documentType === "vacation"
-                    ? "저장 중..."
-                    : "저장 중..."}
+                      : selectedFile.type.startsWith("image/")
+                        ? "AI 분석 중..."
+                        : "문서 분석 중..."
+                  : "저장 중..."}
               </p>
               <div
                 className="relative h-2.5 w-full overflow-hidden rounded-full bg-slate-200"
@@ -744,16 +747,14 @@ export default function UploadForm() {
             className="w-full py-3.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {uploadState === "uploading" ? (
-              "처리 중..."
+              isWorkScheduleOfficeOrProd ? "저장 중..." : "처리 중..."
             ) : (
               selectedFile
                 ? isCasting
                   ? "업로드 및 분석"
-                  : documentType === "work-schedule" && selectedFile.type.startsWith("image/")
+                  : isWorkScheduleOfficeOrProd
                     ? "이미지 업로드"
-                    : documentType === "work-schedule" && !selectedFile.type.startsWith("image/")
-                      ? "문서 업로드 및 분석"
-                      : "업로드 및 분석"
+                    : "업로드 및 분석"
                 : documentType === "office-schedule" || documentType === "production-schedule"
                   ? "일정 등록"
                   : documentType === "vacation"

@@ -4,6 +4,9 @@ import { toSeoulDateYmd } from "./seoul-week";
 
 const GITHUB_API_BASE = "https://api.github.com";
 
+/** 홈 등 읽기 경로용 GitHub fetch 재검증 간격(초). 쓰기 직전은 cacheForWrite()로 no-store. */
+const READ_CACHE_SECONDS = 1800;
+
 interface GitHubContentFile {
   type: string;
   sha: string;
@@ -75,7 +78,7 @@ type GitHubFetchCache =
 
 function cacheForRead(): GitHubFetchCache {
   return {
-    next: { revalidate: 30, tags: [PLANNER_RECORDS_CACHE_TAG] },
+    next: { revalidate: READ_CACHE_SECONDS, tags: [PLANNER_RECORDS_CACHE_TAG] },
   };
 }
 

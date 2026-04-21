@@ -98,12 +98,18 @@ function CastingRecordCard({ record }: { record: ScheduleRecord }) {
         <div className="p-3">
           <VacationTable entries={entries} />
         </div>
-      ) : details.imageDataUrl ? (
+      ) : details.imageUrl || details.imageDataUrl || details.hasImage ? (
         <div className="p-3 bg-gray-50">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={details.imageDataUrl}
+            src={
+              details.imageUrl ??
+              details.imageDataUrl ??
+              `/api/records/${encodeURIComponent(record.id)}/image`
+            }
             alt="주조 근무표"
+            loading="lazy"
+            decoding="async"
             className="w-full rounded-xl object-contain"
           />
         </div>

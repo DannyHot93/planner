@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@vercel/blob": "^2.3.3",
     "jimp": "^1.6.1",
     "next": "16.2.3",
     "openai": "^6.34.0",

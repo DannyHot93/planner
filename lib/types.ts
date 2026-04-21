@@ -19,8 +19,16 @@ export interface WorkScheduleDetails {
   period?: string;
   /** 업로드 시 선택한 근무표 종류 */
   scheduleKind?: WorkScheduleKind;
-  /** 이미지로 업로드한 근무표 원본 (data URL) */
+  /**
+   * 이미지로 업로드한 근무표 원본 (data URL, 레거시).
+   * 홈 초기 응답에서는 제거되며, 클라이언트는 `hasImage`가 true일 때
+   * `/api/records/{id}/image` 경로로 지연 로드한다.
+   */
   imageDataUrl?: string;
+  /** 외부 스토리지(Vercel Blob 등)에 업로드된 이미지 공개 URL (신규 권장) */
+  imageUrl?: string;
+  /** 홈 응답에서 imageDataUrl을 잘라낸 뒤에도 이미지가 존재함을 알림 */
+  hasImage?: boolean;
   /** 미리보기 출처 (PDF는 1페이지만 렌더) */
   imagePreviewSource?: "uploaded-image" | "pdf-first-page";
   entries?: ScheduleEntry[];
@@ -65,8 +73,15 @@ export interface CastingEntry {
 
 export interface CastingScheduleDetails {
   period?: string;
-  /** 업로드된 원본 이미지 (base64 data URL) */
+  /**
+   * 업로드된 원본 이미지 (base64 data URL, 레거시).
+   * 홈 응답에서는 제거되며 `/api/records/{id}/image`로 지연 로드한다.
+   */
   imageDataUrl?: string;
+  /** 외부 스토리지(Vercel Blob 등)에 업로드된 이미지 공개 URL (신규 권장) */
+  imageUrl?: string;
+  /** 이미지 존재 여부 (payload 절감용) */
+  hasImage?: boolean;
   /** AI가 추출한 휴가/대근 정보 */
   entries?: CastingEntry[];
   [key: string]: unknown;
