@@ -1,5 +1,25 @@
 [
   {
+    "id": "ps_1776768734497_a9d9eac4",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-21T10:52:14.498Z",
+    "memo": "오홍택/오승민",
+    "summary": "주말뉴스 · 2026-04-26 18:00-21:00",
+    "details": {
+      "title": "주말뉴스",
+      "program": "주말뉴스",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-04-26",
+          "time": "18:00-21:00",
+          "place": "뉴스센터",
+          "note": "오홍택/오승민"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1776768570957_4a2e8ca6",
     "type": "production-schedule",
     "uploadedAt": "2026-04-21T10:49:30.958Z",
