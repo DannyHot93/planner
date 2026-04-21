@@ -571,7 +571,7 @@ export default function UploadForm() {
                     value={vacationPerson}
                     onChange={(e) => setVacationPerson(e.target.value)}
                     placeholder="예: 홍길동"
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50"
                   />
                 </div>
                 <div>
@@ -612,7 +612,7 @@ export default function UploadForm() {
                     onChange={(e) => setVacationNote(e.target.value)}
                     placeholder="사유 등 추가 안내"
                     rows={3}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50 resize-none"
                   />
                 </div>
               </div>
@@ -636,7 +636,7 @@ export default function UploadForm() {
                     value={recordingProgram}
                     onChange={(e) => setRecordingProgram(e.target.value)}
                     placeholder={isOfficeSchedule ? "예: 편성회의" : "예: 즐거운 오후"}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50"
                   />
                 </div>
                 <div>
@@ -658,7 +658,7 @@ export default function UploadForm() {
                     value={recordingTime}
                     onChange={(e) => setRecordingTime(e.target.value)}
                     placeholder="예: 14:00–16:00"
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -668,7 +668,7 @@ export default function UploadForm() {
                     value={recordingPlace}
                     onChange={(e) => setRecordingPlace(e.target.value)}
                     placeholder="예: 1스튜디오"
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -678,7 +678,7 @@ export default function UploadForm() {
                     onChange={(e) => setRecordingNote(e.target.value)}
                     placeholder="추가 안내가 있으면 입력하세요"
                     rows={3}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50 resize-none"
                   />
                 </div>
               </div>
@@ -698,7 +698,7 @@ export default function UploadForm() {
                 onChange={(e) => setMemo(e.target.value)}
                 placeholder="예: 4/14 14:05 즐거운 오후 녹화 / 또는 이미지 없이 일정만 적어도 됩니다"
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50 resize-none"
               />
             </div>
           )}
