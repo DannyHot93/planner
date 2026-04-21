@@ -34,23 +34,6 @@
     }
   },
   {
-    "id": "os_1776614145992_2ca48b20",
-    "type": "office-schedule",
-    "uploadedAt": "2026-04-19T15:55:46.022Z",
-    "memo": "테스트일정2 · 2026-04-22",
-    "summary": "테스트일정2 · 2026-04-22",
-    "details": {
-      "title": "테스트일정2",
-      "program": "테스트일정2",
-      "scheduleType": "office",
-      "entries": [
-        {
-          "date": "2026-04-22"
-        }
-      ]
-    }
-  },
-  {
     "id": "os_1776612782860_7b2d8efc",
     "type": "office-schedule",
     "uploadedAt": "2026-04-19T15:33:02.891Z",
