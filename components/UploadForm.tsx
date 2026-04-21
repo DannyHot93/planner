@@ -2,6 +2,10 @@
 
 import { useState, useRef, ChangeEvent, FormEvent, useEffect } from "react";
 import { DocumentType, SubmitApiResponse, VacationKind } from "@/lib/types";
+import {
+  compressImageForUploadIfNeeded,
+  looksLikeRasterImageFile,
+} from "@/lib/compress-image-client";
 
 /** 휴가·녹화·주조 등 이미지 전용 업로드 */
 const IMAGE_ACCEPT =
@@ -102,9 +106,7 @@ export default function UploadForm() {
     setResultSummary(null);
     setErrorMessage(null);
 
-    const looksLikeImage =
-      file.type.startsWith("image/") || /\.bmp$/i.test(file.name);
-    if (looksLikeImage) {
+    if (looksLikeRasterImageFile(file)) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);
@@ -160,7 +162,16 @@ export default function UploadForm() {
     try {
       const formData = new FormData();
       if (selectedFile) {
-        formData.append("image", selectedFile);
+        /** 근무표·제작일정·주조 등 모든 이미지 업로드: 비이미지(xlsx 등)는 함수가 그대로 통과 */
+        const imageFile = await compressImageForUploadIfNeeded(selectedFile);
+        if (looksLikeRasterImageFile(selectedFile) && imageFile.size > 4 * 1024 * 1024) {
+          setUploadState("error");
+          setErrorMessage(
+            "이미지가 너무 큽니다(약 4MB 이하 권장). 해상도를 낮추거나 다른 사진으로 시도해 주세요."
+          );
+          return;
+        }
+        formData.append("image", imageFile);
       }
       // 주조 근무표는 실제 API에 casting-schedule 타입으로 전송
       const submitDocType = isCasting ? "casting-schedule" : documentType;
@@ -194,6 +205,14 @@ export default function UploadForm() {
         method: "POST",
         body: formData,
       });
+
+      if (response.status === 413) {
+        setUploadState("error");
+        setErrorMessage(
+          "업로드 크기 한도를 초과했습니다(서버 제한). 다른 사진으로 시도하거나 잠시 후 다시 시도해 주세요."
+        );
+        return;
+      }
 
       const raw = await response.text();
       let result: SubmitApiResponse;
@@ -513,7 +532,7 @@ export default function UploadForm() {
                   <p className="text-sm text-blue-600 font-medium">{selectedFile?.name}</p>
                   <p className="text-xs text-gray-500">클릭하여 다른 파일 선택</p>
                 </div>
-              ) : selectedFile && !selectedFile.type.startsWith("image/") ? (
+              ) : selectedFile && !looksLikeRasterImageFile(selectedFile) ? (
                 <div className="space-y-2">
                   <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto">
                     <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -720,9 +739,9 @@ export default function UploadForm() {
                 {selectedFile
                   ? isWorkScheduleOfficeOrProd
                     ? "저장 중..."
-                    : isCasting && selectedFile.type.startsWith("image/")
+                    : isCasting && looksLikeRasterImageFile(selectedFile)
                       ? "AI 분석 중..."
-                      : selectedFile.type.startsWith("image/")
+                      : looksLikeRasterImageFile(selectedFile)
                         ? "AI 분석 중..."
                         : "문서 분석 중..."
                   : "저장 중..."}
