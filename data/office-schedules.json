@@ -1,5 +1,22 @@
 [
   {
+    "id": "os_1776761445086_0d2b9701",
+    "type": "office-schedule",
+    "uploadedAt": "2026-04-21T08:50:45.169Z",
+    "memo": "테스트일정 · 2026-04-23",
+    "summary": "테스트일정 · 2026-04-23",
+    "details": {
+      "title": "테스트일정",
+      "program": "테스트일정",
+      "scheduleType": "office",
+      "entries": [
+        {
+          "date": "2026-04-23"
+        }
+      ]
+    }
+  },
+  {
     "id": "os_1776614145992_2ca48b20",
     "type": "office-schedule",
     "uploadedAt": "2026-04-19T15:55:46.022Z",
