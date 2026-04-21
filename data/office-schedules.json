@@ -32,23 +32,5 @@
         }
       ]
     }
-  },
-  {
-    "id": "os_1776612741677_f2570ac4",
-    "type": "office-schedule",
-    "uploadedAt": "2026-04-19T15:32:21.706Z",
-    "memo": "테스트입니다",
-    "summary": "테스트일정 월요일 · 2026-04-20",
-    "details": {
-      "title": "테스트일정 월요일",
-      "program": "테스트일정 월요일",
-      "scheduleType": "office",
-      "entries": [
-        {
-          "date": "2026-04-20",
-          "note": "테스트입니다"
-        }
-      ]
-    }
   }
 ]
