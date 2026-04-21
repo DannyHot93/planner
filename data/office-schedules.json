@@ -1,22 +1,5 @@
 [
   {
-    "id": "os_1776762160384_1d8f4a03",
-    "type": "office-schedule",
-    "uploadedAt": "2026-04-21T09:02:40.433Z",
-    "memo": "테스트 · 2026-04-24",
-    "summary": "테스트 · 2026-04-24",
-    "details": {
-      "title": "테스트",
-      "program": "테스트",
-      "scheduleType": "office",
-      "entries": [
-        {
-          "date": "2026-04-24"
-        }
-      ]
-    }
-  },
-  {
     "id": "os_1776612782860_7b2d8efc",
     "type": "office-schedule",
     "uploadedAt": "2026-04-19T15:33:02.891Z",
