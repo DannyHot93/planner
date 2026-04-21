@@ -207,12 +207,15 @@ function EntryCard({
   hideRecordActions,
   inlineEditMode,
   variant = "this-week",
+  accentToday = false,
 }: {
   entry: EntryWithMeta;
   thisWeekMonday: string;
   hideRecordActions?: boolean;
   inlineEditMode?: boolean;
   variant?: "this-week" | "other-week";
+  /** 방송일(열)이 오늘인 경우 제목 강조 */
+  accentToday?: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -252,7 +255,14 @@ function EntryCard({
     variant === "this-week"
       ? "bg-gradient-to-br from-[#323a52]/95 to-[#252b3d]"
       : "bg-gradient-to-br from-[#3d2f3a]/95 to-[#2a222c]";
-  const timeColor = variant === "this-week" ? "text-[#c5d4ff]" : "text-[#f5c4d6]";
+  const timeColor =
+    accentToday && variant === "this-week"
+      ? "text-[#b5ecff] font-semibold"
+      : accentToday && variant === "other-week"
+        ? "text-[#ffc2df] font-semibold"
+        : variant === "this-week"
+          ? "text-[#c5d4ff]"
+          : "text-[#f5c4d6]";
 
   return (
     <div
@@ -263,8 +273,16 @@ function EntryCard({
       <div className={`rounded-xl p-3 cursor-default ${cardSurface}`}>
         <div className="flex items-start justify-between gap-1 mb-0.5">
           <p
-            className={`text-sm font-semibold leading-snug flex-1 min-w-0 tracking-tight ${
-              isThisWeek ? "text-[#f4f6fc]" : "text-[#f0eaed]"
+            className={`text-sm leading-snug flex-1 min-w-0 tracking-tight ${
+              accentToday
+                ? variant === "this-week"
+                  ? "font-bold text-[#74e8ff] [text-shadow:0_0_18px_rgba(96,200,255,0.45),0_1px_2px_rgba(0,20,45,0.85)]"
+                  : "font-bold text-[#ffb8dd] [text-shadow:0_0_16px_rgba(255,140,190,0.4),0_1px_2px_rgba(45,8,25,0.75)]"
+                : `font-semibold ${
+                    isThisWeek
+                      ? "text-[#c8e4ff]"
+                      : "text-[#ffd0e4]"
+                  }`
             }`}
           >
             {headline}
@@ -325,11 +343,13 @@ function EntryCard({
 function OtherWeekMergedGrid({
   dayGroups,
   thisWeekMonday,
+  todayStr,
   hideRecordActions,
   inlineEditMode,
 }: {
   dayGroups: DayGroup[];
   thisWeekMonday: string;
+  todayStr: string;
   hideRecordActions?: boolean;
   inlineEditMode?: boolean;
 }) {
@@ -372,6 +392,7 @@ function OtherWeekMergedGrid({
                         hideRecordActions={hideRecordActions}
                         inlineEditMode={inlineEditMode}
                         variant="other-week"
+                        accentToday={Boolean(ymd && ymd === todayStr)}
                       />
                     </div>
                   );
@@ -489,16 +510,21 @@ function WeekGrid({
             {group.entries.length === 0 ? (
               <p className="text-xs text-gray-600 text-center py-3">일정 없음</p>
             ) : (
-              group.entries.map((entry, i) => (
-                <EntryCard
-                  key={`${entry.recordId}-${group.date}-${i}`}
-                  entry={entry}
-                  thisWeekMonday={thisWeekMonday}
-                  hideRecordActions={hideRecordActions}
-                  inlineEditMode={inlineEditMode}
-                  variant="this-week"
-                />
-              ))
+              group.entries.map((entry, i) => {
+                const ymd = entry.date ? toSeoulDateYmd(entry.date) : "";
+                const accentToday = Boolean(ymd && ymd === todayStr);
+                return (
+                  <EntryCard
+                    key={`${entry.recordId}-${group.date}-${i}`}
+                    entry={entry}
+                    thisWeekMonday={thisWeekMonday}
+                    hideRecordActions={hideRecordActions}
+                    inlineEditMode={inlineEditMode}
+                    variant="this-week"
+                    accentToday={accentToday}
+                  />
+                );
+              })
             )}
           </div>
         );
@@ -637,6 +663,7 @@ export default function RecordingWeekView({
                   <OtherWeekMergedGrid
                     dayGroups={otherWeekByWeekday}
                     thisWeekMonday={calendarThisWeekMonday}
+                    todayStr={todayStr}
                     hideRecordActions={hideRecordActions}
                     inlineEditMode={inlineEditMode}
                   />

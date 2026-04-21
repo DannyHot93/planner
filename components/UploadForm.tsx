@@ -352,8 +352,8 @@ export default function UploadForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* 문서 종류 선택 */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
-              문서 종류 <span className="text-red-500">*</span>
+            <label className="block text-sm font-semibold text-[#f4f6fb] mb-3">
+              문서 종류 <span className="text-red-400">*</span>
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {DOCUMENT_TYPES.map((type) => (
@@ -376,7 +376,7 @@ export default function UploadForm() {
 
           {documentType === "vacation" && (
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
+              <label className="block text-sm font-semibold text-[#f4f6fb] mb-3">
                 휴가 구분 <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -422,7 +422,7 @@ export default function UploadForm() {
 
           {documentType === "work-schedule" && (
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
+              <label className="block text-sm font-semibold text-[#f4f6fb] mb-3">
                 근무표 종류 <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -468,7 +468,7 @@ export default function UploadForm() {
 
           {/* 파일 업로드 */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
+            <label className="block text-sm font-semibold text-[#f4f6fb] mb-3">
               이미지{" "}
               <span className="text-gray-400 font-normal">
                 {isCasting
@@ -560,7 +560,7 @@ export default function UploadForm() {
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  <label className="block text-sm font-semibold text-[#f4f6fb] mb-1.5">
                     휴가자 <span className="text-red-500">*</span>
                     {!selectedFile && (
                       <span className="text-gray-400 font-normal"> (이미지 없을 때 필수)</span>
@@ -575,7 +575,7 @@ export default function UploadForm() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  <label className="block text-sm font-semibold text-[#f4f6fb] mb-1.5">
                     시작일 <span className="text-red-500">*</span>
                     {!selectedFile && (
                       <span className="text-gray-400 font-normal"> (이미지 없을 때 필수)</span>
@@ -587,11 +587,11 @@ export default function UploadForm() {
                     onChange={(e) => {
                       setVacationDateStart(e.target.value);
                     }}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-[#eef3ff] [color-scheme:dark] focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  <label className="block text-sm font-semibold text-[#f4f6fb] mb-1.5">
                     종료일{" "}
                     <span className="text-gray-400 font-normal text-xs">
                       (비우면 시작일 하루만)
@@ -602,11 +602,11 @@ export default function UploadForm() {
                     value={vacationDateEnd}
                     min={vacationDateStart || undefined}
                     onChange={(e) => setVacationDateEnd(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-[#eef3ff] [color-scheme:dark] focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50"
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">비고</label>
+                  <label className="block text-sm font-semibold text-[#f4f6fb] mb-1.5">비고</label>
                   <textarea
                     value={vacationNote}
                     onChange={(e) => setVacationNote(e.target.value)}
@@ -627,7 +627,7 @@ export default function UploadForm() {
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  <label className="block text-sm font-semibold text-[#f4f6fb] mb-1.5">
                     {isOfficeSchedule ? "일정" : "프로그램"} <span className="text-red-500">*</span>
                     {!selectedFile && <span className="text-gray-400 font-normal"> (이미지 없을 때 필수)</span>}
                   </label>
@@ -640,7 +640,7 @@ export default function UploadForm() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  <label className="block text-sm font-semibold text-[#f4f6fb] mb-1.5">
                     날짜 <span className="text-red-500">*</span>
                     {!selectedFile && <span className="text-gray-400 font-normal"> (이미지 없을 때 필수)</span>}
                   </label>
@@ -648,11 +648,11 @@ export default function UploadForm() {
                     type="date"
                     value={recordingDate}
                     onChange={(e) => setRecordingDate(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm bg-[#16161f] border border-[#4361DE]/45 text-[#eef3ff] [color-scheme:dark] focus:outline-none focus:ring-2 focus:ring-[#4361DE] focus:border-[#5A2FB7]/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">시간</label>
+                  <label className="block text-sm font-semibold text-[#f4f6fb] mb-1.5">시간</label>
                   <input
                     type="text"
                     value={recordingTime}
@@ -662,7 +662,7 @@ export default function UploadForm() {
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">장소</label>
+                  <label className="block text-sm font-semibold text-[#f4f6fb] mb-1.5">장소</label>
                   <input
                     type="text"
                     value={recordingPlace}
@@ -672,7 +672,7 @@ export default function UploadForm() {
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">비고</label>
+                  <label className="block text-sm font-semibold text-[#f4f6fb] mb-1.5">비고</label>
                   <textarea
                     value={recordingNote}
                     onChange={(e) => setRecordingNote(e.target.value)}
@@ -687,7 +687,7 @@ export default function UploadForm() {
 
           {!isCasting && documentType !== "office-schedule" && documentType !== "production-schedule" && documentType !== "vacation" && (
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-[#f4f6fb] mb-2">
                 메모{" "}
                 <span className="text-gray-400 font-normal">
                   (선택 · 이미지 없이 메모만 입력해도 등록됩니다)
