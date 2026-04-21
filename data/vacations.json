@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1776768283208_b1ce42ad",
+    "type": "vacation",
+    "uploadedAt": "2026-04-21T10:44:43.235Z",
+    "memo": "연차휴가",
+    "summary": "안대현 · 2026-04-22",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-04-22 ~ 2026-04-22",
+      "entries": [
+        {
+          "date": "2026-04-22",
+          "person": "안대현",
+          "reason": "연차휴가",
+          "note": "연차휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1776765733700_095d7b31",
     "type": "vacation",
     "uploadedAt": "2026-04-21T10:02:13.701Z",
