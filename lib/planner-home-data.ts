@@ -1,6 +1,10 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import type { ScheduleRecord } from "@/lib/types";
+import type {
+  CastingScheduleDetails,
+  ScheduleRecord,
+  WorkScheduleDetails,
+} from "@/lib/types";
 import { readRecordsFromGitHub } from "@/lib/github";
 import {
   filterRecordingsWeeklyCleanup,
@@ -9,21 +13,59 @@ import {
 import { filterPastVacations } from "@/lib/vacation-cleanup";
 
 /**
- * 클라이언트 페이로드 축소를 위해 `details.imageDataUrl`(base64)을 제거하고
- * `hasImage`만 둔다. 이미지는 `imageUrl` 또는 `/api/records/{id}/image`로 로드.
+ * 클라이언트 페이로드 축소: `details.imageDataUrl`(base64) 제거 후 `hasImage` 표시.
+ * 접두어 없이 긴 문자열로만 온 경우도 제거해 `/api/planner-data` 응답이 4.5MB 제한을 넘지 않게 한다.
  */
 export function stripImageDataUrl(records: ScheduleRecord[]): ScheduleRecord[] {
   return records.map((record) => {
     const details = record.details as Record<string, unknown> | undefined;
-    const hasImage =
-      typeof details?.imageDataUrl === "string" &&
-      (details.imageDataUrl as string).startsWith("data:");
-    if (!hasImage) return record;
+    if (!details || typeof details !== "object") return record;
+    const raw = details.imageDataUrl;
+    if (typeof raw !== "string" || raw.length === 0) return record;
+    const looksLikeInlineImage =
+      raw.startsWith("data:") || raw.length > 2000;
+    if (!looksLikeInlineImage) return record;
     const rest: Record<string, unknown> = { ...details };
     delete rest.imageDataUrl;
     rest.hasImage = true;
     return { ...record, details: rest as ScheduleRecord["details"] };
   });
+}
+
+/**
+ * 홈 UI에 필요한 필드만 남겨 JSON 크기를 확실히 줄인다 (근무표 `entries` 등 미사용 대용량 제거).
+ */
+function slimRecordForPlannerApi(record: ScheduleRecord): ScheduleRecord {
+  if (record.type === "work-schedule") {
+    const d = record.details as WorkScheduleDetails;
+    return {
+      ...record,
+      details: {
+        scheduleKind: d.scheduleKind,
+        period: d.period,
+        imageUrl: d.imageUrl,
+        hasImage: d.hasImage,
+        imagePreviewSource: d.imagePreviewSource,
+      },
+    };
+  }
+  if (record.type === "casting-schedule") {
+    const d = record.details as CastingScheduleDetails;
+    return {
+      ...record,
+      details: {
+        period: d.period,
+        imageUrl: d.imageUrl,
+        hasImage: d.hasImage,
+        entries: Array.isArray(d.entries) ? d.entries : [],
+      },
+    };
+  }
+  return record;
+}
+
+export function slimRecordsForPlannerApi(records: ScheduleRecord[]): ScheduleRecord[] {
+  return records.map(slimRecordForPlannerApi);
 }
 
 function loadRecordsFromDisk(filename: string): ScheduleRecord[] {
@@ -85,19 +127,21 @@ export async function getPlannerHomePayload(): Promise<PlannerHomePayload> {
   const productionSchedules = filterRecordingsWeeklyCleanup(rawProductionSchedules);
   const legacyRecordings = filterRecordingsWeeklyCleanup(rawLegacyRecordings);
 
-  const allRecords: ScheduleRecord[] = stripImageDataUrl(
-    [
-      ...workSchedules,
-      ...vacations,
-      ...officeSchedules,
-      ...productionSchedules,
-      ...legacyRecordings,
-    ].sort(
-      (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
-    )
+  const merged = [
+    ...workSchedules,
+    ...vacations,
+    ...officeSchedules,
+    ...productionSchedules,
+    ...legacyRecordings,
+  ].sort(
+    (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
   );
 
-  const castingRecords = stripImageDataUrl(castingSchedules);
+  const allRecords: ScheduleRecord[] = slimRecordsForPlannerApi(
+    stripImageDataUrl(merged)
+  );
+
+  const castingRecords = slimRecordsForPlannerApi(stripImageDataUrl(castingSchedules));
 
   return { allRecords, castingRecords };
 }
