@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1776930477011_adb270e0",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-23T07:47:57.012Z",
+    "memo": "",
+    "summary": "프라임인터뷰의 녹화는 2026-04-28 16:00-17:00에 4층 스튜디오에서 진행되며, 방송일시는 2026-05-23입니다.",
+    "details": {
+      "period": "2026-04-28 ~ 2026-05-23",
+      "title": "프라임인터뷰",
+      "entries": [
+        {
+          "date": "2026-04-28",
+          "time": "16:00-17:00",
+          "place": "4층 스튜디오",
+          "person": "담당PD 민수빈 / 충청대 미용예술과 정의원 / 정태훈 부자",
+          "note": "출연자 2명, 중계처: 스튜디오"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1776921638033_a5ccb34b",
     "type": "production-schedule",
     "uploadedAt": "2026-04-23T05:20:38.034Z",
