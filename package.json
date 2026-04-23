@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "gcal:oauth": "node --env-file=.env.local scripts/gcal-oauth-setup.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.3.3",

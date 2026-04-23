@@ -1,4 +1,4 @@
-import { GoogleAuth } from "google-auth-library";
+import { GoogleAuth, OAuth2Client } from "google-auth-library";
 import type { ScheduleRecord } from "@/lib/types";
 import {
   addDaysYmd,
@@ -25,13 +25,59 @@ type GCalEventItem = {
   end?: GCalDateTime;
 };
 
-function isGoogleCalendarConfigured(): boolean {
-  if (process.env.GOOGLE_CALENDAR_SYNC_ENABLED === "false") return false;
+function isOAuthCalendarConfigured(): boolean {
+  return Boolean(
+    process.env.GOOGLE_CALENDAR_ID?.trim() &&
+      process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_ID?.trim() &&
+      process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET?.trim() &&
+      process.env.GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN?.trim()
+  );
+}
+
+function isServiceAccountCalendarConfigured(): boolean {
   return Boolean(
     process.env.GOOGLE_CALENDAR_ID?.trim() &&
       process.env.GOOGLE_CALENDAR_CLIENT_EMAIL?.trim() &&
       process.env.GOOGLE_CALENDAR_PRIVATE_KEY?.trim()
   );
+}
+
+function isGoogleCalendarConfigured(): boolean {
+  if (process.env.GOOGLE_CALENDAR_SYNC_ENABLED === "false") return false;
+  return isOAuthCalendarConfigured() || isServiceAccountCalendarConfigured();
+}
+
+async function getCalendarAccessToken(): Promise<string | null> {
+  if (isOAuthCalendarConfigured()) {
+    const clientId = process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_ID!.trim();
+    const clientSecret =
+      process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET!.trim();
+    const refreshToken =
+      process.env.GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN!.trim();
+    const oauth2 = new OAuth2Client(clientId, clientSecret);
+    oauth2.setCredentials({ refresh_token: refreshToken });
+    const tok = await oauth2.getAccessToken();
+    return tok?.token ?? null;
+  }
+
+  if (isServiceAccountCalendarConfigured()) {
+    const clientEmail = process.env.GOOGLE_CALENDAR_CLIENT_EMAIL!.trim();
+    const privateKey = normalizePrivateKey(
+      process.env.GOOGLE_CALENDAR_PRIVATE_KEY!.trim()
+    );
+    const auth = new GoogleAuth({
+      credentials: {
+        client_email: clientEmail,
+        private_key: privateKey,
+      },
+      scopes: [CAL_SCOPE],
+    });
+    const client = await auth.getClient();
+    const tok = await client.getAccessToken();
+    return tok?.token ?? null;
+  }
+
+  return null;
 }
 
 function normalizePrivateKey(raw: string): string {
@@ -206,8 +252,13 @@ async function fetchCalendarEventPages(
 
 /**
  * 서버에서만 호출. 환경 변수가 없거나 실패하면 빈 배열.
- * `GOOGLE_CALENDAR_ID`, `GOOGLE_CALENDAR_CLIENT_EMAIL`, `GOOGLE_CALENDAR_PRIVATE_KEY` 필요.
- * 캘린더를 서비스 계정 이메일과 공유(조회 권한)해야 함.
+ *
+ * **권장(조직에서 서비스 계정 키 차단 시):** OAuth 리프레시 토큰
+ * `GOOGLE_CALENDAR_ID`, `GOOGLE_CALENDAR_OAUTH_CLIENT_ID`,
+ * `GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET`, `GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN`
+ *
+ * **대안:** 서비스 계정 + `GOOGLE_CALENDAR_CLIENT_EMAIL`, `GOOGLE_CALENDAR_PRIVATE_KEY`
+ * (캘린더를 서비스 계정에 공유)
  */
 export async function fetchGoogleCalendarOfficeRecords(): Promise<
   ScheduleRecord[]
@@ -215,10 +266,6 @@ export async function fetchGoogleCalendarOfficeRecords(): Promise<
   if (!isGoogleCalendarConfigured()) return [];
 
   const calendarId = process.env.GOOGLE_CALENDAR_ID!.trim();
-  const clientEmail = process.env.GOOGLE_CALENDAR_CLIENT_EMAIL!.trim();
-  const privateKey = normalizePrivateKey(
-    process.env.GOOGLE_CALENDAR_PRIVATE_KEY!.trim()
-  );
 
   const allowed = thisAndNextWeekSeoulDays();
   const todayYmd = getTodaySeoulYmd();
@@ -230,16 +277,7 @@ export async function fetchGoogleCalendarOfficeRecords(): Promise<
   const timeMax = `${rangeEndExclusive}T00:00:00+09:00`;
 
   try {
-    const auth = new GoogleAuth({
-      credentials: {
-        client_email: clientEmail,
-        private_key: privateKey,
-      },
-      scopes: [CAL_SCOPE],
-    });
-    const client = await auth.getClient();
-    const tok = await client.getAccessToken();
-    const accessToken = tok?.token;
+    const accessToken = await getCalendarAccessToken();
     if (!accessToken) {
       console.warn("Google Calendar: 액세스 토큰을 받지 못했습니다.");
       return [];
