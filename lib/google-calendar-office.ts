@@ -36,20 +36,30 @@ function isApiKeyCalendarConfigured(): boolean {
   );
 }
 
+/** 캘린더 목록에서 `summary`와 정확히 일치하는 부캘만 사용 (예: MBC충북) */
+function subcalendarSummaryFilter(): string | null {
+  const s = process.env.GOOGLE_CALENDAR_SUBCALENDAR_SUMMARY?.trim();
+  return s || null;
+}
+
 function isOAuthCalendarConfigured(): boolean {
+  if (
+    !process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_ID?.trim() ||
+    !process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET?.trim() ||
+    !process.env.GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN?.trim()
+  ) {
+    return false;
+  }
   return Boolean(
-    process.env.GOOGLE_CALENDAR_ID?.trim() &&
-      process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_ID?.trim() &&
-      process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET?.trim() &&
-      process.env.GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN?.trim()
+    process.env.GOOGLE_CALENDAR_ID?.trim() || subcalendarSummaryFilter()
   );
 }
 
 function isServiceAccountCalendarConfigured(): boolean {
   return Boolean(
-    process.env.GOOGLE_CALENDAR_ID?.trim() &&
-      process.env.GOOGLE_CALENDAR_CLIENT_EMAIL?.trim() &&
-      process.env.GOOGLE_CALENDAR_PRIVATE_KEY?.trim()
+    process.env.GOOGLE_CALENDAR_CLIENT_EMAIL?.trim() &&
+      process.env.GOOGLE_CALENDAR_PRIVATE_KEY?.trim() &&
+      (process.env.GOOGLE_CALENDAR_ID?.trim() || subcalendarSummaryFilter())
   );
 }
 
@@ -144,7 +154,8 @@ function expandAllDayYmds(startYmd: string, endExclusiveYmd: string): string[] {
 
 function eventToRecordSlices(
   ev: GCalEventItem,
-  allowed: Set<string>
+  allowed: Set<string>,
+  recordMemo: string
 ): ScheduleRecord[] {
   const eid = ev.id?.trim();
   if (!eid) return [];
@@ -171,12 +182,12 @@ function eventToRecordSlices(
         id: safeGcalRecordId(`${eid}:${ymd}:allday`),
         type: "office-schedule",
         uploadedAt: `${ymd}T12:00:00+09:00`,
-        memo: "Google Calendar",
+        memo: recordMemo,
         summary,
         details: {
           title: summary,
           program: summary,
-          period: `${ymd} · Google Calendar`,
+          period: `${ymd} · ${recordMemo}`,
           entries: [
             {
               date: ymd,
@@ -198,12 +209,12 @@ function eventToRecordSlices(
       id: safeGcalRecordId(`${eid}:${ymd}:timed`),
       type: "office-schedule",
       uploadedAt: start.dateTime,
-      memo: "Google Calendar",
+      memo: recordMemo,
       summary,
       details: {
         title: summary,
         program: summary,
-        period: `${ymd} · Google Calendar`,
+        period: `${ymd} · ${recordMemo}`,
         entries: [
           {
             date: ymd,
@@ -277,17 +288,105 @@ async function fetchCalendarEventPages(
   return items;
 }
 
+type CalendarListItem = { id?: string; summary?: string };
+
+async function fetchCalendarListAll(
+  accessToken: string
+): Promise<CalendarListItem[]> {
+  const out: CalendarListItem[] = [];
+  let pageToken: string | undefined;
+  do {
+    const u = new URL(
+      "https://www.googleapis.com/calendar/v3/users/me/calendarList"
+    );
+    u.searchParams.set("maxResults", "250");
+    if (pageToken) u.searchParams.set("pageToken", pageToken);
+    const res = await fetch(u.toString(), {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      next: { revalidate: 0 },
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(
+        `Google Calendar calendarList ${res.status}: ${text.slice(0, 200)}`
+      );
+    }
+    const data = (await res.json()) as {
+      items?: CalendarListItem[];
+      nextPageToken?: string;
+    };
+    if (Array.isArray(data.items)) out.push(...data.items);
+    pageToken = data.nextPageToken;
+  } while (pageToken);
+  return out;
+}
+
+async function findCalendarIdBySummary(
+  accessToken: string,
+  wantedSummary: string
+): Promise<string | null> {
+  const wanted = wantedSummary.trim();
+  const items = await fetchCalendarListAll(accessToken);
+  const summariesSeen: string[] = [];
+  for (const item of items) {
+    const sum = item.summary?.trim();
+    if (sum) summariesSeen.push(sum);
+    if (sum === wanted && item.id) return item.id;
+  }
+  console.warn(
+    `Google Calendar: "${wanted}" 이름의 캘린더를 찾지 못했습니다. 목록 요약 예: ${summariesSeen.slice(0, 25).join(", ")}`
+  );
+  return null;
+}
+
+/**
+ * 기본(주) 캘린더에 쓰는 ID 형태(이메일)인지 추정.
+ * 부캘은 보통 `...@group.calendar.google.com`.
+ */
+function looksLikePrimaryStyleCalendarId(calendarId: string): boolean {
+  const s = calendarId.trim();
+  if (s.includes("@group.calendar.google.com")) return false;
+  return s.includes("@");
+}
+
+async function resolveTargetCalendarId(opts: {
+  accessToken: string | null;
+  explicitCalendarId: string | undefined;
+  bySubcalendarSummary: string | null;
+  authKind: "bearer" | "apiKey";
+}): Promise<string | null> {
+  const { accessToken, explicitCalendarId, bySubcalendarSummary, authKind } =
+    opts;
+
+  if (authKind === "bearer" && accessToken) {
+    if (bySubcalendarSummary) {
+      return findCalendarIdBySummary(accessToken, bySubcalendarSummary);
+    }
+    const id = explicitCalendarId?.trim();
+    return id || null;
+  }
+
+  const id = explicitCalendarId?.trim();
+  if (!id) return null;
+  return id;
+}
+
 /**
  * 서버에서만 호출. 환경 변수가 없거나 실패하면 빈 배열.
  *
- * **우선순위:** `GOOGLE_CALENDAR_API_KEY`(공개 캘린더만) → OAuth → 서비스 계정
+ * **인증:** OAuth/서비스 계정이 있으면 API 키보다 우선(부캘 이름 → calendarList로 ID 해석).
+ * API 키만 있으면 `GOOGLE_CALENDAR_ID`에 읽을 캘린더 ID를 직접 넣어야 함.
  */
 export async function fetchGoogleCalendarOfficeRecords(): Promise<
   ScheduleRecord[]
 > {
   if (!isGoogleCalendarConfigured()) return [];
 
-  const calendarId = process.env.GOOGLE_CALENDAR_ID!.trim();
+  const nameFilter = subcalendarSummaryFilter();
+  const explicitId = process.env.GOOGLE_CALENDAR_ID?.trim();
+  const recordMemo = nameFilter
+    ? `Google Calendar · ${nameFilter}`
+    : "Google Calendar";
 
   const allowed = thisAndNextWeekSeoulDays();
   const todayYmd = getTodaySeoulYmd();
@@ -299,21 +398,51 @@ export async function fetchGoogleCalendarOfficeRecords(): Promise<
   const timeMax = `${rangeEndExclusive}T00:00:00+09:00`;
 
   try {
-    let calendarAuth: CalendarAuth | null = null;
+    const hasBearer =
+      isOAuthCalendarConfigured() || isServiceAccountCalendarConfigured();
+    const hasApiKey = isApiKeyCalendarConfigured();
 
-    if (isApiKeyCalendarConfigured()) {
+    if (!hasBearer && !hasApiKey) return [];
+
+    if (
+      !hasBearer &&
+      hasApiKey &&
+      nameFilter &&
+      explicitId &&
+      looksLikePrimaryStyleCalendarId(explicitId)
+    ) {
+      console.error(
+        `Google Calendar: "${nameFilter}" 부캘만 쓰려면 (1) OAuth 리프레시 토큰을 설정하거나, (2) Google 캘린더 → 해당 캘린더 설정 → 통합 캘린더의 캘린더 ID를 GOOGLE_CALENDAR_ID에 넣으세요. 지금은 기본 캘린더(이메일) ID라 부캘 일정을 가져올 수 없습니다.`
+      );
+      return [];
+    }
+
+    let calendarAuth: CalendarAuth;
+    let accessToken: string | null = null;
+
+    if (hasBearer) {
+      const token = await getCalendarAccessToken();
+      if (!token) {
+        console.warn("Google Calendar: 액세스 토큰을 받지 못했습니다.");
+        return [];
+      }
+      accessToken = token;
+      calendarAuth = { kind: "bearer", token };
+    } else {
       calendarAuth = {
         kind: "apiKey",
         key: process.env.GOOGLE_CALENDAR_API_KEY!.trim(),
       };
-    } else {
-      const accessToken = await getCalendarAccessToken();
-      if (!accessToken) {
-        console.warn("Google Calendar: 액세스 토큰을 받지 못했습니다.");
-        return [];
-      }
-      calendarAuth = { kind: "bearer", token: accessToken };
     }
+
+    const calendarId = await resolveTargetCalendarId({
+      accessToken,
+      explicitCalendarId: explicitId,
+      bySubcalendarSummary: nameFilter,
+      authKind: hasBearer ? "bearer" : "apiKey",
+    });
+
+    if (!calendarId) return [];
 
     const raw = await fetchCalendarEventPages(
       calendarId,
@@ -324,7 +453,7 @@ export async function fetchGoogleCalendarOfficeRecords(): Promise<
 
     const out: ScheduleRecord[] = [];
     for (const ev of raw) {
-      out.push(...eventToRecordSlices(ev, allowed));
+      out.push(...eventToRecordSlices(ev, allowed, recordMemo));
     }
     return out;
   } catch (e) {
