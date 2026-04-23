@@ -25,6 +25,17 @@ type GCalEventItem = {
   end?: GCalDateTime;
 };
 
+/**
+ * API 키는 **공개로 설정된 캘린더**만 읽을 수 있습니다(비공개 Gmail 기본 캘린더는 403).
+ * 캘린더 설정 → 액세스 권한에서 "전체 일정 세부정보 공개" 등으로 공개 필요.
+ */
+function isApiKeyCalendarConfigured(): boolean {
+  return Boolean(
+    process.env.GOOGLE_CALENDAR_ID?.trim() &&
+      process.env.GOOGLE_CALENDAR_API_KEY?.trim()
+  );
+}
+
 function isOAuthCalendarConfigured(): boolean {
   return Boolean(
     process.env.GOOGLE_CALENDAR_ID?.trim() &&
@@ -44,7 +55,11 @@ function isServiceAccountCalendarConfigured(): boolean {
 
 function isGoogleCalendarConfigured(): boolean {
   if (process.env.GOOGLE_CALENDAR_SYNC_ENABLED === "false") return false;
-  return isOAuthCalendarConfigured() || isServiceAccountCalendarConfigured();
+  return (
+    isApiKeyCalendarConfigured() ||
+    isOAuthCalendarConfigured() ||
+    isServiceAccountCalendarConfigured()
+  );
 }
 
 async function getCalendarAccessToken(): Promise<string | null> {
@@ -205,11 +220,15 @@ function eventToRecordSlices(
   return records;
 }
 
+type CalendarAuth =
+  | { kind: "bearer"; token: string }
+  | { kind: "apiKey"; key: string };
+
 async function fetchCalendarEventPages(
   calendarId: string,
   timeMin: string,
   timeMax: string,
-  accessToken: string
+  auth: CalendarAuth
 ): Promise<GCalEventItem[]> {
   const items: GCalEventItem[] = [];
   let pageToken: string | undefined;
@@ -226,9 +245,17 @@ async function fetchCalendarEventPages(
     u.searchParams.set("timeMax", timeMax);
     u.searchParams.set("maxResults", "250");
     if (pageToken) u.searchParams.set("pageToken", pageToken);
+    if (auth.kind === "apiKey") {
+      u.searchParams.set("key", auth.key);
+    }
+
+    const headers: Record<string, string> = {};
+    if (auth.kind === "bearer") {
+      headers.Authorization = `Bearer ${auth.token}`;
+    }
 
     const res = await fetch(u.toString(), {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers,
       next: { revalidate: 0 },
     });
 
@@ -253,12 +280,7 @@ async function fetchCalendarEventPages(
 /**
  * 서버에서만 호출. 환경 변수가 없거나 실패하면 빈 배열.
  *
- * **권장(조직에서 서비스 계정 키 차단 시):** OAuth 리프레시 토큰
- * `GOOGLE_CALENDAR_ID`, `GOOGLE_CALENDAR_OAUTH_CLIENT_ID`,
- * `GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET`, `GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN`
- *
- * **대안:** 서비스 계정 + `GOOGLE_CALENDAR_CLIENT_EMAIL`, `GOOGLE_CALENDAR_PRIVATE_KEY`
- * (캘린더를 서비스 계정에 공유)
+ * **우선순위:** `GOOGLE_CALENDAR_API_KEY`(공개 캘린더만) → OAuth → 서비스 계정
  */
 export async function fetchGoogleCalendarOfficeRecords(): Promise<
   ScheduleRecord[]
@@ -277,17 +299,27 @@ export async function fetchGoogleCalendarOfficeRecords(): Promise<
   const timeMax = `${rangeEndExclusive}T00:00:00+09:00`;
 
   try {
-    const accessToken = await getCalendarAccessToken();
-    if (!accessToken) {
-      console.warn("Google Calendar: 액세스 토큰을 받지 못했습니다.");
-      return [];
+    let calendarAuth: CalendarAuth | null = null;
+
+    if (isApiKeyCalendarConfigured()) {
+      calendarAuth = {
+        kind: "apiKey",
+        key: process.env.GOOGLE_CALENDAR_API_KEY!.trim(),
+      };
+    } else {
+      const accessToken = await getCalendarAccessToken();
+      if (!accessToken) {
+        console.warn("Google Calendar: 액세스 토큰을 받지 못했습니다.");
+        return [];
+      }
+      calendarAuth = { kind: "bearer", token: accessToken };
     }
 
     const raw = await fetchCalendarEventPages(
       calendarId,
       timeMin,
       timeMax,
-      accessToken
+      calendarAuth
     );
 
     const out: ScheduleRecord[] = [];
