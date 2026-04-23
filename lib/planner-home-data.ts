@@ -11,6 +11,7 @@ import {
   getTodaySeoulYmd,
 } from "@/lib/recording-cleanup";
 import { filterPastVacations } from "@/lib/vacation-cleanup";
+import { fetchGoogleCalendarOfficeRecords } from "@/lib/google-calendar-office";
 
 /**
  * 클라이언트 페이로드 축소: `details.imageDataUrl`(base64) 제거 후 `hasImage` 표시.
@@ -127,12 +128,15 @@ export async function getPlannerHomePayload(): Promise<PlannerHomePayload> {
   const productionSchedules = filterRecordingsWeeklyCleanup(rawProductionSchedules);
   const legacyRecordings = filterRecordingsWeeklyCleanup(rawLegacyRecordings);
 
+  const gcalOffice = await fetchGoogleCalendarOfficeRecords();
+
   const merged = [
     ...workSchedules,
     ...vacations,
     ...officeSchedules,
     ...productionSchedules,
     ...legacyRecordings,
+    ...gcalOffice,
   ].sort(
     (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
   );

@@ -48,6 +48,8 @@ interface EntryWithMeta extends ScheduleEntry {
   uploadedAt: string;
   /** details.title / details.program */
   programTitle?: string;
+  /** Google Calendar 등 API에서만 합쳐진 일정 — 삭제·인라인 수정 없음 */
+  readonlyFromCalendar?: boolean;
 }
 
 interface DayGroup {
@@ -87,6 +89,7 @@ function flattenRecordingEntries(records: ScheduleRecord[]): EntryWithMeta[] {
     };
     const programTitle = details.title ?? details.program;
     const entries = Array.isArray(details.entries) ? details.entries : [];
+    const readonlyFromCalendar = record.id.startsWith("gcal_");
 
     if (entries.length === 0) {
       const date = extractDate({}, record);
@@ -97,6 +100,7 @@ function flattenRecordingEntries(records: ScheduleRecord[]): EntryWithMeta[] {
         uploadedAt: record.uploadedAt,
         date,
         programTitle,
+        readonlyFromCalendar,
       });
     } else {
       for (const entry of entries) {
@@ -109,6 +113,7 @@ function flattenRecordingEntries(records: ScheduleRecord[]): EntryWithMeta[] {
           recordMemo: record.memo,
           uploadedAt: record.uploadedAt,
           programTitle,
+          readonlyFromCalendar,
         });
       }
     }
@@ -228,7 +233,7 @@ function EntryCard({
     : thisWeekMonday;
   const isThisWeek = entryWeekMonday === thisWeekMonday;
 
-  if (inlineEditMode) {
+  if (inlineEditMode && !entry.readonlyFromCalendar) {
     const entryDateYmd = entry.date ? toSeoulDateYmd(entry.date) : "";
     const initialTitle =
       (entry.programTitle && String(entry.programTitle).trim()) ||
@@ -279,7 +284,7 @@ function EntryCard({
           >
             {headline}
           </p>
-          {!hideRecordActions && (
+          {!hideRecordActions && !entry.readonlyFromCalendar && (
             <DeleteRecordButton recordId={entry.recordId} className="shrink-0" />
           )}
         </div>
