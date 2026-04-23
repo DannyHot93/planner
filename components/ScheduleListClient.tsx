@@ -15,14 +15,8 @@ const REMOVED_TOMBSTONE_TTL_MS = 10 * 60 * 1000;
 /** 백그라운드에서 주기적 갱신(새로고침 대신) */
 const POLL_INTERVAL_MS = 90_000;
 
-/** 서울 달력 기준 이번 달 Google Calendar 월간 뷰 */
-function googleCalendarMonthUrlSeoul(): string {
-  const ymd = new Intl.DateTimeFormat("sv-SE", {
-    timeZone: "Asia/Seoul",
-  }).format(new Date());
-  const [y, m] = ymd.split("-").map(Number);
-  return `https://calendar.google.com/calendar/u/0/r/month/${y}/${m}`;
-}
+/** Google 캘린더 기본 진입(계정·뷰는 로그인 세션에 맡김) */
+const GOOGLE_CALENDAR_WEB_URL = "https://calendar.google.com/calendar";
 
 const UI_STATE_STORAGE = "planner_home_ui_v1";
 
@@ -347,11 +341,11 @@ export default function ScheduleListClient() {
           {activeTab === "schedule" && (
             <>
               <a
-                href={googleCalendarMonthUrlSeoul()}
+                href={GOOGLE_CALENDAR_WEB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex shrink-0 items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2 py-1 sm:px-2.5 text-xs sm:text-sm font-semibold text-gray-100 hover:bg-white/10 transition-colors"
-                aria-label="Google 캘린더 월간 보기 (새 탭)"
+                aria-label="Google 캘린더 (새 탭)"
               >
                 <svg
                   className="h-3.5 w-3.5 shrink-0"
