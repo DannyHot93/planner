@@ -124,6 +124,18 @@ interface MergedVacationPerson {
   rows: VacationFlatEntry[];
 }
 
+function mergedVacationIncludesToday(
+  merged: MergedVacationPerson,
+  todayStr: string
+): boolean {
+  if (merged.dateYmds.includes(todayStr)) return true;
+  for (const r of merged.rows) {
+    const cr = r.consecutiveRange;
+    if (cr && todayStr >= cr.startYmd && todayStr <= cr.endYmd) return true;
+  }
+  return false;
+}
+
 interface TodayVacationRow {
   displayName: string;
   /** 사무실·제작 삭제·편집용 */
@@ -409,7 +421,9 @@ function TodayVacationBox({
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="min-w-0 flex flex-wrap items-baseline gap-x-2 gap-y-0">
-                  <span className="text-sm font-semibold text-white whitespace-nowrap">{r.displayName}</span>
+                  <span className="text-sm font-semibold text-yellow-300 whitespace-nowrap">
+                    {r.displayName}
+                  </span>
                   <span className="text-xs text-gray-300 leading-snug whitespace-nowrap">{r.dateLabel}</span>
                 </div>
                 {r.recordIds && r.recordIds.length > 0 && !hideDeleteButtons && !inlineEditMode && (
@@ -452,6 +466,7 @@ function MergedVacationPersonCard({
   hideDeleteButtons,
   inlineEditMode,
   recordById,
+  todayStr,
 }: {
   merged: MergedVacationPerson;
   /** sidebar: 연일은 ~ 한 줄 / tab: 날짜마다 모두 표시 */
@@ -459,8 +474,15 @@ function MergedVacationPersonCard({
   hideDeleteButtons?: boolean;
   inlineEditMode?: boolean;
   recordById?: Map<string, { summary: string; memo: string }>;
+  /** 오늘 포함 시 이름 노란색 */
+  todayStr?: string;
 }) {
   const recordIds = uniqueRecordIds(merged.rows);
+  const nameIsToday =
+    Boolean(todayStr) && mergedVacationIncludesToday(merged, todayStr!);
+  const nameClass = nameIsToday
+    ? "text-sm font-semibold text-yellow-300 whitespace-nowrap"
+    : "text-sm font-semibold text-white whitespace-nowrap";
   const dateLine =
     dateMode === "sidebar"
       ? formatSidebarMergedDateLine(merged)
@@ -474,12 +496,14 @@ function MergedVacationPersonCard({
         <div className="min-w-0 flex-1">
           {dateMode === "sidebar" ? (
             <div className="min-w-0 flex flex-wrap items-baseline gap-x-2 gap-y-0">
-              <span className="text-sm font-semibold text-white whitespace-nowrap">{merged.displayName}</span>
+              <span className={nameClass}>{merged.displayName}</span>
               <span className="text-xs text-gray-400 leading-snug whitespace-nowrap">{dateLine}</span>
             </div>
           ) : (
             <>
-              <p className="text-sm font-semibold text-white">{merged.displayName}</p>
+              <p className={nameIsToday ? "text-sm font-semibold text-yellow-300" : "text-sm font-semibold text-white"}>
+                {merged.displayName}
+              </p>
               <div className="mt-2 space-y-3">
                 {tabSegments.map((seg) => (
                   <div key={seg.recordId} className="border-l-2 border-[#CD366D]/70 pl-2.5">
@@ -540,6 +564,7 @@ function PersonGroupedVacationSection({
   hideDeleteButtons,
   inlineEditMode,
   recordById,
+  todayStr,
 }: {
   title: string;
   color: string;
@@ -548,6 +573,7 @@ function PersonGroupedVacationSection({
   hideDeleteButtons?: boolean;
   inlineEditMode?: boolean;
   recordById?: Map<string, { summary: string; memo: string }>;
+  todayStr?: string;
 }) {
   if (merged.length === 0) {
     return (
@@ -570,6 +596,7 @@ function PersonGroupedVacationSection({
             hideDeleteButtons={hideDeleteButtons}
             inlineEditMode={inlineEditMode}
             recordById={recordById}
+            todayStr={todayStr}
           />
         ))}
       </div>
@@ -664,6 +691,7 @@ export default function VacationWeekView({
             hideDeleteButtons={hideDeleteButtons}
             inlineEditMode={inlineEditMode}
             recordById={recordById}
+            todayStr={todayStr}
           />
         </div>
       )}

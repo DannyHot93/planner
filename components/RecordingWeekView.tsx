@@ -278,8 +278,10 @@ function EntryCard({
       <div className={`rounded-xl p-3 cursor-default ${cardSurface}`}>
         <div className="flex items-start justify-between gap-1 mb-0.5">
           <p
-            className={`text-sm leading-snug flex-1 min-w-0 tracking-tight text-white ${
-              accentToday ? "font-bold" : "font-semibold"
+            className={`text-sm leading-snug flex-1 min-w-0 tracking-tight ${
+              accentToday
+                ? "font-bold text-yellow-300"
+                : "font-semibold text-white"
             }`}
           >
             {headline}

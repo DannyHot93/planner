@@ -15,6 +15,15 @@ const REMOVED_TOMBSTONE_TTL_MS = 10 * 60 * 1000;
 /** 백그라운드에서 주기적 갱신(새로고침 대신) */
 const POLL_INTERVAL_MS = 90_000;
 
+/** 서울 달력 기준 이번 달 Google Calendar 월간 뷰 */
+function googleCalendarMonthUrlSeoul(): string {
+  const ymd = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Seoul",
+  }).format(new Date());
+  const [y, m] = ymd.split("-").map(Number);
+  return `https://calendar.google.com/calendar/u/0/r/month/${y}/${m}`;
+}
+
 const UI_STATE_STORAGE = "planner_home_ui_v1";
 
 interface PersistedUiState {
@@ -336,12 +345,36 @@ export default function ScheduleListClient() {
 
         <div className="flex shrink-0 items-center gap-1.5">
           {activeTab === "schedule" && (
-            <button
-              type="button"
-              onClick={() => setEditMode((v) => !v)}
-              className={editButtonClass(editMode)}
-              aria-pressed={editMode}
-            >
+            <>
+              <a
+                href={googleCalendarMonthUrlSeoul()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex shrink-0 items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2 py-1 sm:px-2.5 text-xs sm:text-sm font-semibold text-gray-100 hover:bg-white/10 transition-colors"
+                aria-label="Google 캘린더 월간 보기 (새 탭)"
+              >
+                <svg
+                  className="h-3.5 w-3.5 shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  aria-hidden
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                캘린더
+              </a>
+              <button
+                type="button"
+                onClick={() => setEditMode((v) => !v)}
+                className={editButtonClass(editMode)}
+                aria-pressed={editMode}
+              >
               <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -351,7 +384,8 @@ export default function ScheduleListClient() {
                 />
               </svg>
               {editMode ? "완료" : "편집"}
-            </button>
+              </button>
+            </>
           )}
           <a href="/submit" className={uploadButtonClass}>
             <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
