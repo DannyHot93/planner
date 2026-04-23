@@ -39,23 +39,6 @@
     }
   },
   {
-    "id": "ps_1776770244813_765e5a1a",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-21T11:17:24.814Z",
-    "memo": "테스트일정 · 2026-04-24",
-    "summary": "테스트일정 · 2026-04-24",
-    "details": {
-      "title": "테스트일정",
-      "program": "테스트일정",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-04-24"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1776768734497_a9d9eac4",
     "type": "production-schedule",
     "uploadedAt": "2026-04-21T10:52:14.498Z",
