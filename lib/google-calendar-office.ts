@@ -10,6 +10,21 @@ import { getTodaySeoulYmd } from "@/lib/recording-cleanup";
 
 const CAL_SCOPE = "https://www.googleapis.com/auth/calendar.readonly";
 
+/** Vercel 등에서 값을 따옴표로 감싸 넣은 경우 제거 */
+function envTrim(name: string): string {
+  const v = process.env[name];
+  if (v == null || v === "") return "";
+  let t = v.trim();
+  if (t.length >= 2) {
+    const a = t[0];
+    const b = t[t.length - 1];
+    if ((a === '"' && b === '"') || (a === "'" && b === "'")) {
+      t = t.slice(1, -1).trim();
+    }
+  }
+  return t;
+}
+
 type GCalDateTime = {
   date?: string;
   dateTime?: string;
@@ -30,36 +45,31 @@ type GCalEventItem = {
  * 캘린더 설정 → 액세스 권한에서 "전체 일정 세부정보 공개" 등으로 공개 필요.
  */
 function isApiKeyCalendarConfigured(): boolean {
-  return Boolean(
-    process.env.GOOGLE_CALENDAR_ID?.trim() &&
-      process.env.GOOGLE_CALENDAR_API_KEY?.trim()
-  );
+  return Boolean(envTrim("GOOGLE_CALENDAR_ID") && envTrim("GOOGLE_CALENDAR_API_KEY"));
 }
 
 /** 캘린더 목록에서 `summary`와 정확히 일치하는 부캘만 사용 (예: MBC충북) */
 function subcalendarSummaryFilter(): string | null {
-  const s = process.env.GOOGLE_CALENDAR_SUBCALENDAR_SUMMARY?.trim();
+  const s = envTrim("GOOGLE_CALENDAR_SUBCALENDAR_SUMMARY");
   return s || null;
 }
 
 function isOAuthCalendarConfigured(): boolean {
   if (
-    !process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_ID?.trim() ||
-    !process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET?.trim() ||
-    !process.env.GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN?.trim()
+    !envTrim("GOOGLE_CALENDAR_OAUTH_CLIENT_ID") ||
+    !envTrim("GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET") ||
+    !envTrim("GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN")
   ) {
     return false;
   }
-  return Boolean(
-    process.env.GOOGLE_CALENDAR_ID?.trim() || subcalendarSummaryFilter()
-  );
+  return Boolean(envTrim("GOOGLE_CALENDAR_ID") || subcalendarSummaryFilter());
 }
 
 function isServiceAccountCalendarConfigured(): boolean {
   return Boolean(
-    process.env.GOOGLE_CALENDAR_CLIENT_EMAIL?.trim() &&
-      process.env.GOOGLE_CALENDAR_PRIVATE_KEY?.trim() &&
-      (process.env.GOOGLE_CALENDAR_ID?.trim() || subcalendarSummaryFilter())
+    envTrim("GOOGLE_CALENDAR_CLIENT_EMAIL") &&
+      envTrim("GOOGLE_CALENDAR_PRIVATE_KEY") &&
+      (envTrim("GOOGLE_CALENDAR_ID") || subcalendarSummaryFilter())
   );
 }
 
@@ -73,33 +83,36 @@ function isGoogleCalendarConfigured(): boolean {
 }
 
 async function getCalendarAccessToken(): Promise<string | null> {
-  if (isOAuthCalendarConfigured()) {
-    const clientId = process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_ID!.trim();
-    const clientSecret =
-      process.env.GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET!.trim();
-    const refreshToken =
-      process.env.GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN!.trim();
-    const oauth2 = new OAuth2Client(clientId, clientSecret);
-    oauth2.setCredentials({ refresh_token: refreshToken });
-    const tok = await oauth2.getAccessToken();
-    return tok?.token ?? null;
-  }
+  try {
+    if (isOAuthCalendarConfigured()) {
+      const clientId = envTrim("GOOGLE_CALENDAR_OAUTH_CLIENT_ID");
+      const clientSecret = envTrim("GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET");
+      const refreshToken = envTrim("GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN");
+      const oauth2 = new OAuth2Client(clientId, clientSecret);
+      oauth2.setCredentials({ refresh_token: refreshToken });
+      const tok = await oauth2.getAccessToken();
+      return tok?.token ?? null;
+    }
 
-  if (isServiceAccountCalendarConfigured()) {
-    const clientEmail = process.env.GOOGLE_CALENDAR_CLIENT_EMAIL!.trim();
-    const privateKey = normalizePrivateKey(
-      process.env.GOOGLE_CALENDAR_PRIVATE_KEY!.trim()
-    );
-    const auth = new GoogleAuth({
-      credentials: {
-        client_email: clientEmail,
-        private_key: privateKey,
-      },
-      scopes: [CAL_SCOPE],
-    });
-    const client = await auth.getClient();
-    const tok = await client.getAccessToken();
-    return tok?.token ?? null;
+    if (isServiceAccountCalendarConfigured()) {
+      const clientEmail = envTrim("GOOGLE_CALENDAR_CLIENT_EMAIL");
+      const privateKey = normalizePrivateKey(
+        envTrim("GOOGLE_CALENDAR_PRIVATE_KEY")
+      );
+      const auth = new GoogleAuth({
+        credentials: {
+          client_email: clientEmail,
+          private_key: privateKey,
+        },
+        scopes: [CAL_SCOPE],
+      });
+      const client = await auth.getClient();
+      const tok = await client.getAccessToken();
+      return tok?.token ?? null;
+    }
+  } catch (e) {
+    console.error("Google Calendar getAccessToken:", e);
+    return null;
   }
 
   return null;
@@ -383,7 +396,7 @@ export async function fetchGoogleCalendarOfficeRecords(): Promise<
   if (!isGoogleCalendarConfigured()) return [];
 
   const nameFilter = subcalendarSummaryFilter();
-  const explicitId = process.env.GOOGLE_CALENDAR_ID?.trim();
+  const explicitId = envTrim("GOOGLE_CALENDAR_ID");
   const recordMemo = nameFilter
     ? `Google Calendar · ${nameFilter}`
     : "Google Calendar";
@@ -431,7 +444,7 @@ export async function fetchGoogleCalendarOfficeRecords(): Promise<
     } else {
       calendarAuth = {
         kind: "apiKey",
-        key: process.env.GOOGLE_CALENDAR_API_KEY!.trim(),
+        key: envTrim("GOOGLE_CALENDAR_API_KEY"),
       };
     }
 
@@ -460,4 +473,86 @@ export async function fetchGoogleCalendarOfficeRecords(): Promise<
     console.error("Google Calendar 동기화 실패:", e);
     return [];
   }
+}
+
+export type GoogleCalendarHealthSnapshot = {
+  syncDisabled: boolean;
+  integrationConfigured: boolean;
+  authMode: "oauth" | "service_account" | "api_key" | "none";
+  subcalendarSummary: string | null;
+  calendarIdConfigured: boolean;
+  tokenRefresh: "ok" | "fail" | "skipped";
+  tokenError?: string;
+  hint?: string;
+};
+
+/** 배포 진단용 — 비밀값은 노출하지 않음 */
+export async function getGoogleCalendarHealthSnapshot(): Promise<GoogleCalendarHealthSnapshot> {
+  const syncDisabled = process.env.GOOGLE_CALENDAR_SYNC_ENABLED === "false";
+  const sub = subcalendarSummaryFilter();
+  const calId = envTrim("GOOGLE_CALENDAR_ID");
+  const integrationConfigured = isGoogleCalendarConfigured();
+
+  const oauth = isOAuthCalendarConfigured();
+  const sa = isServiceAccountCalendarConfigured();
+  const api = isApiKeyCalendarConfigured();
+
+  let authMode: GoogleCalendarHealthSnapshot["authMode"] = "none";
+  if (oauth) authMode = "oauth";
+  else if (sa) authMode = "service_account";
+  else if (api) authMode = "api_key";
+
+  let tokenRefresh: GoogleCalendarHealthSnapshot["tokenRefresh"] = "skipped";
+  let tokenError: string | undefined;
+
+  if (!syncDisabled && oauth) {
+    try {
+      const clientId = envTrim("GOOGLE_CALENDAR_OAUTH_CLIENT_ID");
+      const clientSecret = envTrim("GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET");
+      const refreshToken = envTrim("GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN");
+      const oauth2 = new OAuth2Client(clientId, clientSecret);
+      oauth2.setCredentials({ refresh_token: refreshToken });
+      const tok = await oauth2.getAccessToken();
+      if (tok?.token) tokenRefresh = "ok";
+      else {
+        tokenRefresh = "fail";
+        tokenError = "getAccessToken 결과가 비었습니다.";
+      }
+    } catch (e) {
+      tokenRefresh = "fail";
+      tokenError =
+        e instanceof Error ? e.message.slice(0, 280) : String(e).slice(0, 280);
+    }
+  }
+
+  let hint: string | undefined;
+  if (syncDisabled) {
+    hint = "GOOGLE_CALENDAR_SYNC_ENABLED=false 이면 연동이 꺼져 있습니다.";
+  } else if (!integrationConfigured) {
+    hint = "Google Calendar 환경 변수가 없습니다.";
+  } else if (
+    !oauth &&
+    !sa &&
+    api &&
+    sub &&
+    calId &&
+    looksLikePrimaryStyleCalendarId(calId)
+  ) {
+    hint =
+      "OAuth(리프레시 토큰)이 없어 API 키만 사용 중입니다. 부캘 이름만으로는 기본 캘린더 ID로 조회할 수 없습니다. Vercel에 GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN·CLIENT_ID·CLIENT_SECRET을 Production에 넣거나, GOOGLE_CALENDAR_ID를 부캘의 캘린더 ID로 바꾸세요.";
+  } else if (oauth && tokenRefresh === "fail") {
+    hint =
+      "OAuth 토큰 갱신 실패 — 값에 따옴표가 들어갔는지, Production 환경에 동일 변수가 있는지 확인하세요.";
+  }
+
+  return {
+    syncDisabled,
+    integrationConfigured,
+    authMode,
+    subcalendarSummary: sub,
+    calendarIdConfigured: Boolean(calId),
+    tokenRefresh,
+    tokenError,
+    hint,
+  };
 }
