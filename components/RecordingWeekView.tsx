@@ -148,6 +148,26 @@ function formatRangeLabel(weekDays: string[]): string {
   return `${weekDays[0]} ~ ${weekDays[6]}`;
 }
 
+/**
+ * Asia/Seoul 달력 날짜(YYYY-MM-DD)가 금요일이면서, 그 달의 둘째·넷째 금요일인지.
+ * (가족의 날/반일 등 4.5일 근무 안내용)
+ */
+function isSecondOrFourthFriday(ymd: string): boolean {
+  const [y, m, d] = ymd.split("-").map(Number);
+  if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) return false;
+  if (new Date(Date.UTC(y, m - 1, d)).getUTCDay() !== 5) return false;
+  let firstFriday = 0;
+  for (let day = 1; day <= 7; day++) {
+    if (new Date(Date.UTC(y, m - 1, day)).getUTCDay() === 5) {
+      firstFriday = day;
+      break;
+    }
+  }
+  if (firstFriday === 0) return false;
+  const n = Math.floor((d - firstFriday) / 7) + 1;
+  return n === 2 || n === 4;
+}
+
 /** YYYY-MM-DD → 월~일 열 인덱스 (월=0 … 일=6) */
 function weekdayColumnIndex(ymd: string): number {
   const [y, m, d] = ymd.split("-").map(Number);
@@ -480,29 +500,36 @@ function WeekGrid({
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between px-1">
-                <span
-                  className={`text-xs font-bold ${
-                    isToday
-                      ? "text-[#9ab0ff]"
-                      : isWeekend
-                        ? "text-[#f7a7c1]"
-                        : "text-gray-200"
-                  }`}
-                >
-                  {dayLabel}
-                </span>
-                <span
-                  className={`text-xs ${
-                    isToday
-                      ? "text-[#9ab0ff] font-semibold"
-                      : isWeekend
-                        ? "text-[#f7a7c1]/80"
-                        : "text-gray-500"
-                  }`}
-                >
-                  {pad2(mo)}/{pad2(da)}
-                </span>
+              <div className="px-1">
+                <div className="flex items-center justify-between">
+                  <span
+                    className={`text-xs font-bold ${
+                      isToday
+                        ? "text-[#9ab0ff]"
+                        : isWeekend
+                          ? "text-[#f7a7c1]"
+                          : "text-gray-200"
+                    }`}
+                  >
+                    {dayLabel}
+                  </span>
+                  <span
+                    className={`text-xs ${
+                      isToday
+                        ? "text-[#9ab0ff] font-semibold"
+                        : isWeekend
+                          ? "text-[#f7a7c1]/80"
+                          : "text-gray-500"
+                    }`}
+                  >
+                    {pad2(mo)}/{pad2(da)}
+                  </span>
+                </div>
+                {idx === 4 && isSecondOrFourthFriday(group.date) && (
+                  <p className="text-[10px] font-semibold text-amber-300/90 mt-0.5 text-right">
+                    4.5일
+                  </p>
+                )}
               </div>
             )}
 
