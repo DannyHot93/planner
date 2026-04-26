@@ -21,65 +21,6 @@
     }
   },
   {
-    "id": "ps_1776921638033_a5ccb34b",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-23T05:20:38.034Z",
-    "memo": "더빙 · 2026-04-24",
-    "summary": "더빙 · 2026-04-24 10:30",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-04-24",
-          "time": "10:30"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1776768734497_a9d9eac4",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-21T10:52:14.498Z",
-    "memo": "오홍택/오승민",
-    "summary": "주말뉴스 · 2026-04-26 18:00-21:00",
-    "details": {
-      "title": "주말뉴스",
-      "program": "주말뉴스",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-04-26",
-          "time": "18:00-21:00",
-          "place": "뉴스센터",
-          "note": "오홍택/오승민"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1776756010675_eff99091",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-21T07:20:10.676Z",
-    "memo": "",
-    "summary": "정오의 희망곡의 심쿵 라이브 녹화 및 방송 일정으로, 4월 22일 12:00부터 14:00까지 녹음A 스튜디오에서 진행됩니다.",
-    "details": {
-      "period": "2020-04-22 ~ 2020-04-22",
-      "title": "정오의 희망곡",
-      "entries": [
-        {
-          "date": "2026-04-22",
-          "time": "12:00-14:00",
-          "place": "녹음A 스튜디오",
-          "person": "담당PD 최다원, 가수 이광석, 문의 황영은 작가님",
-          "note": "방송일시: 2020-04-22 12:00 (120분간), 녹화내용: 심쿵 라이브, 구성 및 요청 장비는 별도 전달"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1776612431210_3467cd22",
     "type": "production-schedule",
     "uploadedAt": "2026-04-19T15:27:11.211Z",
@@ -116,69 +57,6 @@
           "place": "4층 뉴스룸",
           "person": "담당PD 설경철 / 패널 4명 출연",
           "note": "6.3 지방선거 D-30, 충북도지사와 교육감 전망 / 패널 4명 출연 / 좌 2명, 우 2명"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1776612292751_fdb07d71",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-19T15:24:52.751Z",
-    "memo": "",
-    "summary": "프로그램 '충북 시사토론 창'의 4월 월간뉴스분석 녹화가 4월 21일 오후 2시 20분부터 3시 30분까지 4층 뉴스룸에서 진행된다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-04-21",
-          "time": "14:20-15:30",
-          "place": "4층 뉴스룸",
-          "person": "담당PD 설경철 / 패널 4명 출연",
-          "note": "녹화내용: 4월 월간뉴스분석, 좌 2명·우 2명"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1776612183050_20491890",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-19T15:23:03.051Z",
-    "memo": "",
-    "summary": "국민의힘 충북도지사 경선 비전 토론회 녹화 일정으로, 4월 20일 오후 5시 30분부터 7시 5분까지 지하1층 스튜디오에서 진행됩니다.",
-    "details": {
-      "period": null,
-      "title": "국민의힘 충북도지사 경선 비전 토론회",
-      "entries": [
-        {
-          "date": "2026-04-20",
-          "time": "17:30-19:05",
-          "place": "지하1층 스튜디오",
-          "person": "담당PD 신병관 / 사회자 1명 / 출연자 2명",
-          "note": "녹화내용: 국민의힘 충북도지사 경선 비전 토론회. 오후 3시 30분 스탭 리허설, 오후 5시 출연자 리허설. 스탭 회의: 2020-04-15 14:00, 5층 편성국 회의실."
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1776612103289_6fb1b2c2",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-19T15:21:43.290Z",
-    "memo": "",
-    "summary": "프로그램 '프라임인터뷰'의 2026년 5월 9일, 16일 방송분을 위한 녹화 일정표로, 2026년 4월 14일과 4월 21일 16:10~17:00에 4층 스튜디오에서 녹화가 진행됩니다.",
-    "details": {
-      "period": "2026-05-09 ~ 2026-05-16",
-      "title": "프라임인터뷰",
-      "entries": [
-        {
-          "date": "2026-04-21",
-          "time": "16:10-17:00",
-          "place": "4층 스튜디오",
-          "person": "허성수 대표",
-          "note": "단양 만종리 극장 허성수 대표(5월 16일 방송)"
         }
       ],
       "scheduleType": "production"
