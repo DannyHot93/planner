@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1777270531078_aaceb611",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-27T06:15:31.079Z",
+    "memo": "",
+    "summary": "정오의 희망곡 프로그램의 '심쿵 라이브' 코너 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "정오의 희망곡",
+      "entries": [
+        {
+          "date": "2026-05-06",
+          "time": "12:00-14:00",
+          "place": "녹음A 스튜디오",
+          "person": "담당PD: 최다원, 출연: 가수 Bro 브로",
+          "note": "방송일시: 2020-05-06 12:00 (120분 간). 심쿵 라이브 코너. MR 진행. 구성 및 요청 장비는 별도로 전달 예정. 문의: 황영은 작가님. 중계차: 스튜디오, ENG."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1777253738291_cc5fb198",
     "type": "production-schedule",
     "uploadedAt": "2026-04-27T01:35:38.291Z",
