@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1777280220428_86e95fc1",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-27T08:57:00.429Z",
+    "memo": "",
+    "summary": "신입 아나운서 라디오 운용교육 실시 협조 요청에 대한 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "신입 아나운서 라디오 운용교육",
+      "entries": [
+        {
+          "date": "2026-04-29",
+          "time": "10:00",
+          "place": "4층 라디오 스튜디오",
+          "person": "이황주, 박서영",
+          "note": "신입 아나운서 대상 교육; 기술국 참석 예정."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1777270531078_aaceb611",
     "type": "production-schedule",
     "uploadedAt": "2026-04-27T06:15:31.079Z",
