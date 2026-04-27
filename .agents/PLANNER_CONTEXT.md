@@ -9,7 +9,7 @@
 
 - **Next.js 16** App Router. 공식 API는 `node_modules/next/dist/docs/` 기준 (AGENTS.md).
 - **데이터:** GitHub에 JSON (`data/work-schedules.json`, `vacations.json`, `recordings.json`, `casting-schedules.json`). `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO` 필수.
-- **Gemini 연동 시** 사용자 규칙: 모델 `gemini-2.5-flash` (이 저장소는 주로 OpenAI 사용).
+- **Gemini:** `lib/ai.ts` — `GEMINI_MODEL` 기본 `gemini-3-flash-preview`, 실패·비 JSON 시 `GEMINI_FALLBACK_MODEL` 기본 `gemini-2.5-flash`.
 - **Submit `/api/submit`:** `sharp` / `pdf-parse` / vision 전처리는 **해당 분기에서만** `import()` — 이미지 없는 녹화·휴가·메모 제출이 네이티브 모듈 로드로 500 HTML 나지 않게.
 
 ---

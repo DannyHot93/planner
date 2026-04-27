@@ -1,6 +1,6 @@
 # 일정 플래너 (Planner)
 
-근무·휴가·사무실·제작 일정을 **이미지 업로드** 또는 **폼 입력**으로 등록하면, 서버에서 OpenAI Vision으로 분석하고 결과를 JSON으로 만든 뒤 **GitHub 저장소**에 커밋합니다. [Vercel](https://vercel.com)에 연결해 두면 `main` 푸시 시 자동 배포되고, 공개 홈에서 최신 일정을 볼 수 있습니다.
+근무·휴가·사무실·제작 일정을 **이미지 업로드** 또는 **폼 입력**으로 등록하면, 서버에서 **Google Gemini**로 분석하고 결과를 JSON으로 만든 뒤 **GitHub 저장소**에 커밋합니다. [Vercel](https://vercel.com)에 연결해 두면 `main` 푸시 시 자동 배포되고, 공개 홈에서 최신 일정을 볼 수 있습니다.
 
 ## 주요 기능
 
@@ -15,13 +15,13 @@
 
 - Next.js 16 (App Router), React 19, TypeScript  
 - Tailwind CSS 4  
-- OpenAI API (`gpt-4o` 등, Vision + 구조화 응답)  
+- Google Gen AI (Gemini, `application/json` 구조화 응답)  
 - GitHub REST API (Contents: 읽기·쓰기·커밋)
 
 ## 사전 요구 사항
 
 - Node.js 20 이상 권장  
-- [OpenAI API 키](https://platform.openai.com/)  
+- [Google AI Studio API 키](https://aistudio.google.com/apikey)  
 - GitHub 저장소 및 [Personal Access Token (classic)](https://github.com/settings/tokens) — `repo` 권한  
 
 ## 로컬 실행
@@ -42,7 +42,9 @@ cp .env.example .env.local
 
 | 변수 | 설명 |
 |------|------|
-| `OPENAI_API_KEY` | OpenAI API 키 |
+| `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/apikey) API 키 |
+| `GEMINI_MODEL` | (선택) 기본 `gemini-3-flash-preview` |
+| `GEMINI_FALLBACK_MODEL` | (선택) 1차 실패·JSON 오류 시 사용, 기본 `gemini-2.5-flash` |
 | `GITHUB_TOKEN` | GitHub PAT (`repo` 권한) |
 | `GITHUB_OWNER` | GitHub 사용자 또는 조직 이름 |
 | `GITHUB_REPO` | 저장소 이름 |

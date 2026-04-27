@@ -1,15 +1,124 @@
-import OpenAI from "openai";
 import { DocumentType, AiAnalysisResult, WorkScheduleKind, CastingEntry } from "./types";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function requireGeminiKey(): string {
+  const k = process.env.GEMINI_API_KEY?.trim();
+  if (!k) {
+    throw new Error(
+      "GEMINI_API_KEY가 설정되지 않았습니다. .env.local 또는 Vercel 환경 변수를 확인하세요."
+    );
+  }
+  return k;
+}
 
-/** Chat Completions 기본 모델. `OPENAI_MODEL`로 변경 가능. */
-const CHAT_MODEL = process.env.OPENAI_MODEL?.trim() || "gpt-5.4";
+function primaryModel(): string {
+  return process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
+}
 
-/** 주조 근무표 이미지 분석. 미지정 시 `CHAT_MODEL`과 동일 (`OPENAI_CASTING_MODEL`로만 분리 지정 가능). */
-const CASTING_MODEL = process.env.OPENAI_CASTING_MODEL?.trim() || CHAT_MODEL;
+function fallbackModel(): string {
+  const fb = process.env.GEMINI_FALLBACK_MODEL?.trim();
+  if (fb && fb !== primaryModel()) return fb;
+  return "gemini-2.5-flash";
+}
+
+function castingPrimaryModel(): string {
+  return process.env.GEMINI_CASTING_MODEL?.trim() || primaryModel();
+}
+
+type GeminiPart =
+  | { text: string }
+  | { inlineData: { mimeType: string; data: string } };
+
+interface GeminiResponse {
+  candidates?: {
+    content?: { parts?: { text?: string }[] };
+    finishReason?: string;
+  }[];
+  error?: { message?: string; status?: string };
+}
+
+async function callGeminiApi(
+  apiKey: string,
+  model: string,
+  parts: GeminiPart[]
+): Promise<string> {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  const body = {
+    contents: [{ parts }],
+    generationConfig: {
+      responseMimeType: "application/json",
+      maxOutputTokens: 8192,
+    },
+  };
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    next: { revalidate: 0 },
+  });
+
+  if (!res.ok) {
+    const errText = await res.text().catch(() => "");
+    throw new Error(
+      `Gemini API 오류 (${model}) ${res.status}: ${errText.slice(0, 200)}`
+    );
+  }
+
+  const data = (await res.json()) as GeminiResponse;
+
+  if (data.error?.message) {
+    throw new Error(`Gemini API 오류: ${data.error.message}`);
+  }
+
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? "";
+  const finishReason = data.candidates?.[0]?.finishReason;
+
+  if (!text) {
+    if (finishReason === "MAX_TOKENS") {
+      throw new Error(
+        "AI 응답이 길이 제한으로 잘렸습니다. 이미지를 더 가깝게 찍거나 일부만 올린 뒤 다시 시도해 주세요."
+      );
+    }
+    throw new Error("AI API에서 응답이 비어 있습니다.");
+  }
+
+  return text;
+}
+
+/**
+ * 1) primary 모델 시도
+ * 2) 예외 또는 JSON 파싱 실패 시 fallback 모델 한 번 더
+ */
+async function generateJsonWithFallback(
+  parts: GeminiPart[],
+  primary: string
+): Promise<string> {
+  const apiKey = requireGeminiKey();
+  const secondary = fallbackModel();
+  const models = primary === secondary ? [primary] : [primary, secondary];
+  let lastError: Error | null = null;
+
+  for (const model of models) {
+    try {
+      const text = await callGeminiApi(apiKey, model, parts);
+      JSON.parse(text);
+      return text;
+    } catch (e) {
+      lastError = e instanceof Error ? e : new Error(String(e));
+    }
+  }
+
+  const msg = lastError?.message ?? "AI API에서 응답을 받지 못했습니다.";
+  const isJson =
+    lastError instanceof SyntaxError ||
+    (lastError?.name === "SyntaxError") ||
+    msg.toLowerCase().includes("json");
+  throw new Error(
+    isJson
+      ? "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
+      : msg
+  );
+}
 
 const OFFICE_WORK_PROMPT = `이 자료는 사무실 근무표입니다. 표에서 근무 일정 정보를 추출하여 아래 JSON 형식으로만 응답하세요.
 
@@ -185,43 +294,16 @@ export async function analyzeCastingScheduleImage(
   imageBase64: string,
   mimeType: string
 ): Promise<CastingAiResult> {
-  const response = await openai.chat.completions.create({
-    model: CASTING_MODEL,
-    messages: [
-      {
-        role: "user",
-        content: [
-          {
-            type: "image_url",
-            image_url: {
-              url: `data:${mimeType};base64,${imageBase64}`,
-              detail: "high",
-            },
-          },
-          {
-            type: "text",
-            text: CASTING_SCHEDULE_PROMPT,
-          },
-        ],
-      },
-    ],
-    response_format: { type: "json_object" },
-    max_completion_tokens: 8192,
-  });
-
-  const content = response.choices[0]?.message?.content?.trim();
-  if (!content) {
-    throw new Error("AI API에서 응답을 받지 못했습니다.");
-  }
-
+  const parts: GeminiPart[] = [
+    { inlineData: { mimeType, data: imageBase64 } },
+    { text: CASTING_SCHEDULE_PROMPT },
+  ];
+  const content = await generateJsonWithFallback(parts, castingPrimaryModel());
   try {
     return JSON.parse(content) as CastingAiResult;
   } catch {
-    const reason = response.choices[0]?.finish_reason;
     throw new Error(
-      reason === "length"
-        ? "AI 응답이 길이 제한으로 잘렸습니다. 이미지를 더 가깝게 찍거나 일부만 올린 뒤 다시 시도해 주세요."
-        : "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
+      "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
     );
   }
 }
@@ -234,30 +316,15 @@ export async function analyzeVacationFromText(
     "이 이미지는 휴가 일정입니다. 이미지에서 휴가 정보를 추출하여",
     "아래는 엑셀(표)에서 추출한 텍스트입니다. 열 이름과 행을 맥락으로 이해하고 휴가 정보를 추출하여"
   );
-  const response = await openai.chat.completions.create({
-    model: CHAT_MODEL,
-    messages: [
-      {
-        role: "user",
-        content: `${base}\n\n--- 문서에서 추출한 텍스트 ---\n${rawText}`,
-      },
-    ],
-    response_format: { type: "json_object" },
-    max_completion_tokens: 8192,
-  });
-
-  const content = response.choices[0]?.message?.content?.trim();
-  if (!content) {
-    throw new Error("AI API에서 응답을 받지 못했습니다.");
-  }
+  const content = await generateJsonWithFallback(
+    [{ text: `${base}\n\n--- 문서에서 추출한 텍스트 ---\n${rawText}` }],
+    primaryModel()
+  );
   try {
     return JSON.parse(content) as AiAnalysisResult;
   } catch {
-    const reason = response.choices[0]?.finish_reason;
     throw new Error(
-      reason === "length"
-        ? "AI 응답이 길이 제한으로 잘렸습니다. 이미지를 더 가깝게 찍거나 일부만 올린 뒤 다시 시도해 주세요."
-        : "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
+      "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
     );
   }
 }
@@ -273,43 +340,16 @@ export async function analyzeImage(
     prompt = buildWorkSchedulePrompt(options.workScheduleKind);
   }
 
-  const response = await openai.chat.completions.create({
-    model: CHAT_MODEL,
-    messages: [
-      {
-        role: "user",
-        content: [
-          {
-            type: "image_url",
-            image_url: {
-              url: `data:${mimeType};base64,${imageBase64}`,
-              detail: "high",
-            },
-          },
-          {
-            type: "text",
-            text: prompt,
-          },
-        ],
-      },
-    ],
-    response_format: { type: "json_object" },
-    max_completion_tokens: 8192,
-  });
-
-  const content = response.choices[0]?.message?.content?.trim();
-  if (!content) {
-    throw new Error("AI API에서 응답을 받지 못했습니다.");
-  }
-
+  const parts: GeminiPart[] = [
+    { inlineData: { mimeType, data: imageBase64 } },
+    { text: prompt },
+  ];
+  const content = await generateJsonWithFallback(parts, primaryModel());
   try {
     return JSON.parse(content) as AiAnalysisResult;
   } catch {
-    const reason = response.choices[0]?.finish_reason;
     throw new Error(
-      reason === "length"
-        ? "AI 응답이 길이 제한으로 잘렸습니다. 이미지를 더 가깝게 찍거나 일부만 올린 뒤 다시 시도해 주세요."
-        : "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
+      "AI 응답을 JSON으로 읽을 수 없습니다. 잠시 후 다시 시도해 주세요."
     );
   }
 }

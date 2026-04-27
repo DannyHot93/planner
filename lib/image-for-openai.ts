@@ -2,8 +2,8 @@ import sharp from "sharp";
 import { Jimp, JimpMime } from "jimp";
 import { ValidationError } from "./validate";
 
-/** OpenAI Vision API가 받는 이미지 타입 (문서 기준) */
-const OPENAI_VISION_MIMES = new Set([
+/** Gemini 멀티모달이 자주 받는 이미지 타입(그 외는 아래에서 PNG로 변환) */
+const VISION_MIMES = new Set([
   "image/png",
   "image/jpeg",
   "image/gif",
@@ -16,7 +16,7 @@ async function toPngBufferWithJimp(buffer: Buffer): Promise<Buffer> {
 }
 
 /**
- * Vision API에 넘기기 전에 포맷을 맞춥니다.
+ * AI 이미지 분석에 넘기기 전에 포맷을 맞춥니다.
  * BMP 등은 PNG로 변환합니다(원본 버퍼는 바꾸지 않음).
  * Sharp가 디코딩하지 못하는 BMP는 Jimp로 재시도합니다.
  */
@@ -25,7 +25,7 @@ export async function toOpenAiVisionInput(
   mimeType: string
 ): Promise<{ base64: string; mimeType: string }> {
   const normalized = mimeType.toLowerCase().trim();
-  if (OPENAI_VISION_MIMES.has(normalized)) {
+  if (VISION_MIMES.has(normalized)) {
     return { base64: buffer.toString("base64"), mimeType: normalized };
   }
 

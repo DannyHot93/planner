@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  analyzeImage,
-  analyzeCastingScheduleImage,
-} from "@/lib/ai";
-import {
   validateAiResult,
   validateImageFile,
   validateDocumentType,
@@ -205,6 +201,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
       const { base64: visionBase64, mimeType: visionMime } =
         await toOpenAiVisionInput(buffer, mimeType);
 
+      const { analyzeCastingScheduleImage } = await import("@/lib/ai");
       const castingRaw = await analyzeCastingScheduleImage(visionBase64, visionMime);
 
       const imageDataUrl = `data:${mimeType};base64,${buffer.toString("base64")}`;
@@ -315,6 +312,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
       const { base64: visionBase64, mimeType: visionMime } =
         await toOpenAiVisionInput(buffer, mimeType);
 
+      const { analyzeImage } = await import("@/lib/ai");
       const aiRawResult = await analyzeImage(
         visionBase64,
         visionMime,
@@ -343,6 +341,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
       const { base64: visionBase64, mimeType: visionMime } =
         await toOpenAiVisionInput(buffer, mimeType);
 
+      const { analyzeImage } = await import("@/lib/ai");
       const aiRawResult = await analyzeImage(
         visionBase64,
         visionMime,
