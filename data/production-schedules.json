@@ -42,27 +42,6 @@
     }
   },
   {
-    "id": "ps_1777253738291_cc5fb198",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-27T01:35:38.291Z",
-    "memo": "",
-    "summary": "전국시대 프로그램의 2024년 5월 7일 공개홀 스튜디오 녹화 일정입니다.",
-    "details": {
-      "period": "2024-05-07 ~ 2024-05-07",
-      "title": "전국시대",
-      "entries": [
-        {
-          "date": "2024-05-07",
-          "time": "10:30-11:30",
-          "place": "공개홀",
-          "person": "장세일 (담당 PD), 박서영 (진행 아나운서)",
-          "note": "전국시대 스튜디오 녹화"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1777252805447_729f352f",
     "type": "production-schedule",
     "uploadedAt": "2026-04-27T01:20:05.448Z",
