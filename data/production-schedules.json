@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1777426126386_ff07bdda",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-29T01:28:46.386Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 2020년 5월 12일 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-05-12",
+          "time": "10:00-11:10",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철, 패널 4명",
+          "note": "녹화 내용: 정책 제안; 특기사항: 패널 4명 출연 (좌 2명, 우 2명); 중계차: 스튜디오 사용"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1777280220428_86e95fc1",
     "type": "production-schedule",
     "uploadedAt": "2026-04-27T08:57:00.429Z",
