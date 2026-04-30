@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1777510768479_51bbebe7",
+    "type": "production-schedule",
+    "uploadedAt": "2026-04-30T00:59:28.480Z",
+    "memo": "",
+    "summary": "녹화 의뢰서에 따르면, 5월 15일 충북 시사토론 창의 녹화가 4층 뉴스룸에서 진행될 예정이며, 담당 PD는 설경철입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2024-05-15",
+          "time": "10:00-11:10",
+          "place": "4층 뉴스룸",
+          "person": "설경철 (담당PD)",
+          "note": "녹화 내용: 충북 도내 균형발전. 특이사항: 패널 4명 출연 (좌 2명, 우 2명). 중계차: 스튜디오 이용."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1777471965913_50777802",
     "type": "production-schedule",
     "uploadedAt": "2026-04-29T14:12:45.916Z",
