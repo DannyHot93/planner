@@ -1,5 +1,25 @@
 [
   {
+    "id": "ps_1777632568023_a34aa63d",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-01T10:49:28.053Z",
+    "memo": "초청외",
+    "summary": "충주시장 후보자 토론회 · 2026-05-27 12:25~13:35",
+    "details": {
+      "title": "충주시장 후보자 토론회",
+      "program": "충주시장 후보자 토론회",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-05-27",
+          "time": "12:25~13:35",
+          "place": "공개홀",
+          "note": "초청외"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1777632506582_71893213",
     "type": "production-schedule",
     "uploadedAt": "2026-05-01T10:48:26.612Z",
