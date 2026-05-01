@@ -1,5 +1,25 @@
 [
   {
+    "id": "ps_1777632410632_6dfdce24",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-01T10:46:50.670Z",
+    "memo": "초청외 토론회",
+    "summary": "충북 교육감 후보자 토론회 · 2026-05-28 12:35~13:25",
+    "details": {
+      "title": "충북 교육감 후보자 토론회",
+      "program": "충북 교육감 후보자 토론회",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-05-28",
+          "time": "12:35~13:25",
+          "place": "공개홀",
+          "note": "초청외 토론회"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1777632293727_3292e0ba",
     "type": "production-schedule",
     "uploadedAt": "2026-05-01T10:44:53.757Z",
