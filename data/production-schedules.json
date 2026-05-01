@@ -1,5 +1,25 @@
 [
   {
+    "id": "ps_1777632756984_bdab0379",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-01T10:52:37.014Z",
+    "memo": "초청",
+    "summary": "진천군수 후보자 토론회 · 2026-05-26 23:00~24:20",
+    "details": {
+      "title": "진천군수 후보자 토론회",
+      "program": "진천군수 후보자 토론회",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-05-26",
+          "time": "23:00~24:20",
+          "place": "공개홀",
+          "note": "초청"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1777632706891_a43711aa",
     "type": "production-schedule",
     "uploadedAt": "2026-05-01T10:51:46.920Z",
