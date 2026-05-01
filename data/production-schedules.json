@@ -1,5 +1,25 @@
 [
   {
+    "id": "ps_1777632658198_585f6653",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-01T10:50:58.229Z",
+    "memo": "초청외",
+    "summary": "옥천군수 후보자 연설회 · 2026-05-21 10:00~11:00",
+    "details": {
+      "title": "옥천군수 후보자 연설회",
+      "program": "옥천군수 후보자 연설회",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-05-21",
+          "time": "10:00~11:00",
+          "place": "뉴스센터",
+          "note": "초청외"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1777632617480_6a1cb4d1",
     "type": "production-schedule",
     "uploadedAt": "2026-05-01T10:50:17.512Z",
