@@ -1,5 +1,24 @@
 [
   {
+    "id": "ps_1777798341076_8f5e6973",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-03T08:52:21.076Z",
+    "memo": "청주시장 후보자 토론회 · 2026-05-14",
+    "summary": "청주시장 후보자 토론회 · 2026-05-14 18:00~19:00",
+    "details": {
+      "title": "청주시장 후보자 토론회",
+      "program": "청주시장 후보자 토론회",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-05-14",
+          "time": "18:00~19:00",
+          "place": "공개홀"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1777633786688_5ed0fb2e",
     "type": "production-schedule",
     "uploadedAt": "2026-05-01T11:09:46.722Z",
