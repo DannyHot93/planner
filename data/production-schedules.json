@@ -1,5 +1,24 @@
 [
   {
+    "id": "ps_1777798379107_77fe087a",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-03T08:52:59.136Z",
+    "memo": "제천시장 후보자 토론회 · 2026-05-18",
+    "summary": "제천시장 후보자 토론회 · 2026-05-18 18:00~19:00",
+    "details": {
+      "title": "제천시장 후보자 토론회",
+      "program": "제천시장 후보자 토론회",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-05-18",
+          "time": "18:00~19:00",
+          "place": "공개홀"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1777798341076_8f5e6973",
     "type": "production-schedule",
     "uploadedAt": "2026-05-03T08:52:21.076Z",
