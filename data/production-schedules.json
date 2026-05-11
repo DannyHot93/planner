@@ -108,26 +108,6 @@
     }
   },
   {
-    "id": "ps_1777632978789_7f2cca71",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-01T10:56:18.818Z",
-    "memo": "초청외",
-    "summary": "괴산군수 후보자 토론회 · 2026-05-22 09:45~10:45",
-    "details": {
-      "title": "괴산군수 후보자 토론회",
-      "program": "괴산군수 후보자 토론회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-05-22",
-          "time": "09:45~10:45",
-          "place": "공개홀",
-          "note": "초청외"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1777632893970_0f2776f4",
     "type": "production-schedule",
     "uploadedAt": "2026-05-01T10:54:54.001Z",
