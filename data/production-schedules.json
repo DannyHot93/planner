@@ -188,26 +188,6 @@
     }
   },
   {
-    "id": "ps_1777632706891_a43711aa",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-01T10:51:46.920Z",
-    "memo": "초청외",
-    "summary": "옥천군수 후보자 토론회 · 2026-05-22 00:10~01:10",
-    "details": {
-      "title": "옥천군수 후보자 토론회",
-      "program": "옥천군수 후보자 토론회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-05-22",
-          "time": "00:10~01:10",
-          "place": "공개홀",
-          "note": "초청외"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1777632617480_6a1cb4d1",
     "type": "production-schedule",
     "uploadedAt": "2026-05-01T10:50:17.512Z",
