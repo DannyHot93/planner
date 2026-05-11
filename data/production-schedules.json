@@ -128,26 +128,6 @@
     }
   },
   {
-    "id": "ps_1777632940490_3df767c7",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-01T10:55:40.524Z",
-    "memo": "초청외",
-    "summary": "진천군수 후보자 연설회 · 2026-05-22 09:45~10:45",
-    "details": {
-      "title": "진천군수 후보자 연설회",
-      "program": "진천군수 후보자 연설회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-05-22",
-          "time": "09:45~10:45",
-          "place": "뉴스센터",
-          "note": "초청외"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1777632893970_0f2776f4",
     "type": "production-schedule",
     "uploadedAt": "2026-05-01T10:54:54.001Z",
