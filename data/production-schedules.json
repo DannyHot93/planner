@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1778568893406_93cb3eda",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-12T06:54:53.407Z",
+    "memo": "",
+    "summary": "이 문서는 '충북 시사토론 창' 프로그램의 녹화 의뢰서로, 2020년 5월 29일 오전 10시부터 11시 10분까지 4층 뉴스룸에서 '5월 월간뉴스분석'을 녹화하며, 담당 PD는 설경철이고 패널 4명이 출연할 예정이다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-05-29",
+          "time": "10:00-11:10",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철",
+          "note": "5월 월간뉴스분석; 패널 4명 출연 (좌 2명, 우 2명)"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1778568795503_ddb9fd75",
     "type": "production-schedule",
     "uploadedAt": "2026-05-12T06:53:15.504Z",
