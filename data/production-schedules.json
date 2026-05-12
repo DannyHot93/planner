@@ -1,5 +1,24 @@
 [
   {
+    "id": "ps_1778546145540_812db997",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-12T00:35:45.541Z",
+    "memo": "스탭회의 · 2026-05-12",
+    "summary": "스탭회의 · 2026-05-12 14:00",
+    "details": {
+      "title": "스탭회의",
+      "program": "스탭회의",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-05-12",
+          "time": "14:00",
+          "place": "편성 회의실"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1778048009896_1987a247",
     "type": "production-schedule",
     "uploadedAt": "2026-05-06T06:13:29.897Z",
