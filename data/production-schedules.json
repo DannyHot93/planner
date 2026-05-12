@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1778568559352_2b6bc7fd",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-12T06:49:19.352Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 5월 월간뉴스분석 녹화 일정.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2024-05-29",
+          "time": "10:00-11:10",
+          "place": "4층 뉴스룸",
+          "person": "설경철 (담당PD), 패널 4명",
+          "note": "5월 월간뉴스분석. 패널 배치: 좌 2명, 우 2명."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1778546145540_812db997",
     "type": "production-schedule",
     "uploadedAt": "2026-05-12T00:35:45.541Z",
