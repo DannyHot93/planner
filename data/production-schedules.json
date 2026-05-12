@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1778569462159_f9af5393",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-12T07:04:22.160Z",
+    "memo": "중소기업 사전답사 · 2026-05-14",
+    "summary": "중소기업 사전답사 · 2026-05-14 10:00",
+    "details": {
+      "title": "중소기업 사전답사",
+      "program": "중소기업 사전답사",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-05-14",
+          "time": "10:00"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1778568893406_93cb3eda",
     "type": "production-schedule",
     "uploadedAt": "2026-05-12T06:54:53.407Z",
