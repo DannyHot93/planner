@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1778719619420_34e849a6",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-14T00:46:59.420Z",
+    "memo": "",
+    "summary": "이 문서는 '충북 시사토론 창' 프로그램의 2020년 5월 15일 녹화 일정에 대한 의뢰서입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-05-15",
+          "time": "10:00-11:10",
+          "place": "4층 뉴스룸",
+          "person": "설경철 (담당PD)",
+          "note": "녹화 내용: 충북 도내 균형발전. 특기사항: 패널 4명 출연 (좌 2명, 우 2명)."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1778719481485_5fbe9e08",
     "type": "production-schedule",
     "uploadedAt": "2026-05-14T00:44:41.486Z",
