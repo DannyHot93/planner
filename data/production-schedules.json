@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1778819442287_db187056",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-15T04:30:42.288Z",
+    "memo": "",
+    "summary": "전국시대 프로그램의 스튜디오 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-05-19",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일 (담당PD), 박서영 (아나운서)",
+          "note": "전국시대 스튜디오 녹화"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1778746604445_c70a991e",
     "type": "production-schedule",
     "uploadedAt": "2026-05-14T08:16:44.446Z",
