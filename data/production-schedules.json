@@ -21,27 +21,6 @@
     }
   },
   {
-    "id": "ps_1778719619420_34e849a6",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-14T00:46:59.420Z",
-    "memo": "",
-    "summary": "이 문서는 '충북 시사토론 창' 프로그램의 2020년 5월 15일 녹화 일정에 대한 의뢰서입니다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-05-15",
-          "time": "10:00-11:10",
-          "place": "4층 뉴스룸",
-          "person": "설경철 (담당PD)",
-          "note": "녹화 내용: 충북 도내 균형발전. 특기사항: 패널 4명 출연 (좌 2명, 우 2명)."
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1778568893406_93cb3eda",
     "type": "production-schedule",
     "uploadedAt": "2026-05-12T06:54:53.407Z",
@@ -84,25 +63,6 @@
     }
   },
   {
-    "id": "ps_1778546145540_812db997",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-12T00:35:45.541Z",
-    "memo": "스탭회의 · 2026-05-12",
-    "summary": "스탭회의 · 2026-05-12 14:00",
-    "details": {
-      "title": "스탭회의",
-      "program": "스탭회의",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-05-12",
-          "time": "14:00",
-          "place": "편성 회의실"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1778048009896_1987a247",
     "type": "production-schedule",
     "uploadedAt": "2026-05-06T06:13:29.897Z",
@@ -124,55 +84,6 @@
     }
   },
   {
-    "id": "ps_1778047857729_74ba4736",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-06T06:10:57.730Z",
-    "memo": "",
-    "summary": "2020년 5월 13일 정오의 희망곡 프로그램의 '심쿵 라이브' 코너 녹화 일정표입니다. 녹화는 녹음A 스튜디오에서 12시부터 14시까지 진행되며, 마멜레이드 키친이 출연하고 최다원 PD가 담당합니다.",
-    "details": {
-      "period": null,
-      "title": "정오의 희망곡",
-      "entries": [
-        {
-          "date": "2026-05-13",
-          "time": "12:00-14:00",
-          "place": "녹음A 스튜디오",
-          "person": "담당PD: 최다원, 출연: 마멜레이드 키친",
-          "note": "코너: 심쿵 라이브. 방송일시: 5월 13일 12시 00분 (120분). 구성 및 요청 장비는 별도로 전달 예정. 문의: 황영은 작가님. 중계차 사용: 스튜디오, ENG."
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1777878154302_9c700754",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-04T07:02:34.302Z",
-    "memo": "",
-    "summary": "프라임 인터뷰 프로그램의 녹화 의뢰서로, 2026년 5월 11일과 12일에 4층 스튜디오에서 두 편의 인터뷰를 녹화하며, 각각 5월 30일과 6월 6일에 방송될 예정이다.",
-    "details": {
-      "period": "2026-05-11 ~ 2026-06-06",
-      "title": "프라임 인터뷰",
-      "entries": [
-        {
-          "date": "2026-05-11",
-          "time": "16:00-17:00",
-          "place": "4층 스튜디오",
-          "person": "출연: 개그맨 최재원 / 담당PD: 민수빈",
-          "note": "2026-05-30 방송 예정"
-        },
-        {
-          "date": "2026-05-12",
-          "time": "16:00-17:00",
-          "place": "4층 스튜디오",
-          "person": "출연: 박만순 대표 / 담당PD: 민수빈",
-          "note": "2026-06-06 방송 예정"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1777798379107_77fe087a",
     "type": "production-schedule",
     "uploadedAt": "2026-05-03T08:52:59.136Z",
@@ -185,25 +96,6 @@
       "entries": [
         {
           "date": "2026-05-18",
-          "time": "18:00~19:00",
-          "place": "공개홀"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1777798341076_8f5e6973",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-03T08:52:21.076Z",
-    "memo": "청주시장 후보자 토론회 · 2026-05-14",
-    "summary": "청주시장 후보자 토론회 · 2026-05-14 18:00~19:00",
-    "details": {
-      "title": "청주시장 후보자 토론회",
-      "program": "청주시장 후보자 토론회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-05-14",
           "time": "18:00~19:00",
           "place": "공개홀"
         }
@@ -328,27 +220,6 @@
           "note": "충청북도 교육감 초청 토론회"
         }
       ]
-    }
-  },
-  {
-    "id": "ps_1777426126386_ff07bdda",
-    "type": "production-schedule",
-    "uploadedAt": "2026-04-29T01:28:46.386Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 2020년 5월 12일 녹화 일정입니다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-05-12",
-          "time": "10:00-11:10",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철, 패널 4명",
-          "note": "녹화 내용: 정책 제안; 특기사항: 패널 4명 출연 (좌 2명, 우 2명); 중계차: 스튜디오 사용"
-        }
-      ],
-      "scheduleType": "production"
     }
   }
 ]
