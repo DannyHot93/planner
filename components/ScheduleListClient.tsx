@@ -19,6 +19,7 @@ const DISPLAY_POLL_INTERVAL_MS = 120_000;
 const GOOGLE_CALENDAR_WEB_URL = "https://calendar.google.com/calendar";
 
 const UI_STATE_STORAGE = "planner_home_ui_v1";
+const DISPLAY_MODE_STORAGE = "planner_display_mode";
 
 interface PersistedUiState {
   activeTab: TabValue;
@@ -165,6 +166,15 @@ export default function ScheduleListClient() {
   useEffect(() => {
     const isDisplayMode =
       new URLSearchParams(window.location.search).get("display") === "1";
+    try {
+      if (isDisplayMode) {
+        sessionStorage.setItem(DISPLAY_MODE_STORAGE, "1");
+      } else {
+        sessionStorage.removeItem(DISPLAY_MODE_STORAGE);
+      }
+    } catch {
+      /* private 모드 등 */
+    }
     setDisplayMode(isDisplayMode);
     setTombstones(readTombstones());
     const ui = readUiState();

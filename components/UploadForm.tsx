@@ -23,11 +23,30 @@ type UploadState = "idle" | "uploading" | "success" | "error";
 type WorkScheduleKind = "office" | "production" | "casting";
 
 const UPLOAD_OK_STORAGE = "planner_upload_ok";
+const DISPLAY_MODE_STORAGE = "planner_display_mode";
+
+function isDisplayModeUpload(): boolean {
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("display") === "1") {
+    try {
+      sessionStorage.setItem(DISPLAY_MODE_STORAGE, "1");
+    } catch {
+      /* private 모드 등 */
+    }
+    return true;
+  }
+  try {
+    return sessionStorage.getItem(DISPLAY_MODE_STORAGE) === "1";
+  } catch {
+    return false;
+  }
+}
 
 function submitUrl(extraParams: Record<string, string> = {}): string {
   if (typeof window === "undefined") return "/submit";
   const params = new URLSearchParams();
-  if (new URLSearchParams(window.location.search).get("display") === "1") {
+  if (isDisplayModeUpload()) {
     params.set("display", "1");
   }
   for (const [key, value] of Object.entries(extraParams)) {
@@ -77,6 +96,7 @@ export default function UploadForm() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    isDisplayModeUpload();
     const params = new URLSearchParams(window.location.search);
     if (params.get("ok") !== "1") return;
     if (uploadOkHydratedRef.current) return;

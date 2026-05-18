@@ -2,6 +2,26 @@
 
 import { useEffect, useState } from "react";
 
+const DISPLAY_MODE_STORAGE = "planner_display_mode";
+
+function isDisplayModeReturn(): boolean {
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("display") === "1") {
+    try {
+      sessionStorage.setItem(DISPLAY_MODE_STORAGE, "1");
+    } catch {
+      /* private 모드 등 */
+    }
+    return true;
+  }
+  try {
+    return sessionStorage.getItem(DISPLAY_MODE_STORAGE) === "1";
+  } catch {
+    return false;
+  }
+}
+
 /**
  * 홈(/)으로 갈 때 Next 소프트 네비게이션 대신 전체 로드를 사용해
  * 일정·캐시가 예전 상태로 남는 현상을 줄입니다.
@@ -17,9 +37,7 @@ export default function NavigateHomeLink({
   const [href, setHref] = useState("/");
 
   useEffect(() => {
-    const isDisplayMode =
-      new URLSearchParams(window.location.search).get("display") === "1";
-    setHref(isDisplayMode ? "/?display=1" : "/");
+    setHref(isDisplayModeReturn() ? "/?display=1" : "/");
   }, []);
 
   return (
@@ -28,9 +46,7 @@ export default function NavigateHomeLink({
       className={className}
       onClick={(e) => {
         e.preventDefault();
-        const isDisplayMode =
-          new URLSearchParams(window.location.search).get("display") === "1";
-        window.location.replace(isDisplayMode ? "/?display=1" : "/");
+        window.location.replace(isDisplayModeReturn() ? "/?display=1" : "/");
       }}
     >
       {children}
