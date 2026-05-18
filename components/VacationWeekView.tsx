@@ -495,9 +495,9 @@ function MergedVacationPersonCard({
       <div className="flex items-center justify-between gap-2 px-2.5 py-1.5">
         <div className="min-w-0 flex-1">
           {dateMode === "sidebar" ? (
-            <div className="min-w-0 flex flex-wrap items-baseline gap-x-2 gap-y-0">
+            <div className="min-w-0 flex flex-nowrap items-baseline gap-x-1.5 overflow-hidden">
               <span className={nameClass}>{merged.displayName}</span>
-              <span className="text-xs text-gray-400 leading-snug whitespace-nowrap">{dateLine}</span>
+              <span className="min-w-0 truncate text-xs text-gray-400 leading-snug whitespace-nowrap">{dateLine}</span>
             </div>
           ) : (
             <>

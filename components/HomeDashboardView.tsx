@@ -83,7 +83,7 @@ export default function HomeDashboardView({
     ? "w-full rounded-lg border-2 border-[#CD366D]/70 bg-[#140b12] p-2"
     : "w-full rounded-2xl border-2 border-[#CD366D]/70 bg-gradient-to-br from-[#CD366D]/20 via-[#CD366D]/10 to-black p-2 sm:p-3 shadow-lg shadow-[#CD366D]/20 ring-1 ring-[#CD366D]/30";
   const asideClass = displayMode
-    ? "w-[260px] shrink-0 border-l border-white/10 pl-2"
+    ? "w-[210px] shrink-0 border-l border-white/10 pl-2"
     : "w-full shrink-0 lg:ml-0 lg:w-[min(100%,168px)] lg:shrink-0 lg:border-l lg:border-white/10 lg:pl-3";
   const vacationWrapClass = displayMode
     ? ""
