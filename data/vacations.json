@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1779063230228_8482d5a3",
+    "type": "vacation",
+    "uploadedAt": "2026-05-18T00:13:50.228Z",
+    "memo": "구분: 휴가",
+    "summary": "이기성 · 2026-05-18",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-05-18 ~ 2026-05-18",
+      "entries": [
+        {
+          "date": "2026-05-18",
+          "person": "이기성",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1778575213655_65d4b095",
     "type": "vacation",
     "uploadedAt": "2026-05-12T08:40:13.656Z",
