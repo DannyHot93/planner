@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ScheduleRecord } from "@/lib/types";
 import { RecordRemoveProvider } from "./RecordDeleteContext";
 import HomeDashboardView from "./HomeDashboardView";
@@ -12,8 +12,8 @@ const REMOVED_IDS_STORAGE = "planner_removed_ids_v1";
 /** GitHub/Next 캐시가 따라잡지 못한 짧은 창 동안 삭제 묘비 유지 */
 const REMOVED_TOMBSTONE_TTL_MS = 10 * 60 * 1000;
 
-/** 백그라운드에서 주기적 갱신(새로고침 대신) */
-const POLL_INTERVAL_MS = 90_000;
+/** 상시 모니터 모드(?display=1)에서만 주기적 갱신 */
+const DISPLAY_POLL_INTERVAL_MS = 120_000;
 
 /** Google 캘린더 기본 진입(계정·뷰는 로그인 세션에 맡김) */
 const GOOGLE_CALENDAR_WEB_URL = "https://calendar.google.com/calendar";
@@ -149,6 +149,8 @@ export default function ScheduleListClient() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [records, setRecords] = useState<ScheduleRecord[]>([]);
   const [castingRecords, setCastingRecords] = useState<ScheduleRecord[]>([]);
+  const refreshInFlightRef = useRef(false);
+  const [displayMode, setDisplayMode] = useState(false);
 
   const [activeTab, setActiveTab] = useState<TabValue>("schedule");
   const [editMode, setEditMode] = useState(false);
@@ -161,6 +163,9 @@ export default function ScheduleListClient() {
   const [uiHydrated, setUiHydrated] = useState(false);
 
   useEffect(() => {
+    const isDisplayMode =
+      new URLSearchParams(window.location.search).get("display") === "1";
+    setDisplayMode(isDisplayMode);
     setTombstones(readTombstones());
     const ui = readUiState();
     if (ui) {
@@ -195,28 +200,35 @@ export default function ScheduleListClient() {
     };
   }, [applyPayload]);
 
-  /** 탭 복귀·주기 폴링으로 다른 기기의 업로드 반영(F5 의존 완화) */
+  /** 일반 화면은 탭 복귀 시, 상시 모니터(?display=1)는 2분마다 갱신 */
   useEffect(() => {
     if (loadStatus !== "ok") return;
 
     const run = () => {
+      if (refreshInFlightRef.current) return;
+      refreshInFlightRef.current = true;
       fetchPlannerData()
         .then(applyPayload)
         .catch(() => {
           /* 조용히 무시, 다음 폴링에서 재시도 */
+        })
+        .finally(() => {
+          refreshInFlightRef.current = false;
         });
     };
 
-    const id = window.setInterval(run, POLL_INTERVAL_MS);
+    const intervalId = displayMode
+      ? window.setInterval(run, DISPLAY_POLL_INTERVAL_MS)
+      : null;
     const onVis = () => {
       if (document.visibilityState === "visible") run();
     };
     document.addEventListener("visibilitychange", onVis);
     return () => {
-      window.clearInterval(id);
+      if (intervalId !== null) window.clearInterval(intervalId);
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, [loadStatus, applyPayload]);
+  }, [loadStatus, applyPayload, displayMode]);
 
   useEffect(() => {
     if (!uiHydrated) return;
@@ -271,6 +283,9 @@ export default function ScheduleListClient() {
   );
   const workScheduleRecords = visibleRecords.filter((r) => r.type === "work-schedule");
   const vacationRecords = visibleRecords.filter((r) => r.type === "vacation");
+  const headerClass = displayMode
+    ? "sticky top-0 z-40 mb-2 -mx-2 sm:-mx-3 lg:-mx-4 xl:-mx-5 2xl:-mx-6 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-[#5A2FB7]/50 bg-[#351878] px-3 py-2 shadow-md"
+    : "sticky top-0 z-40 mb-2 -mx-2 sm:-mx-3 lg:-mx-4 xl:-mx-5 2xl:-mx-6 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-[#5A2FB7]/40 bg-gradient-to-r from-[#5A2FB7] via-[#5A2FB7]/90 to-[#4361DE]/60 px-3 py-2 shadow-md shadow-[#5A2FB7]/25 backdrop-blur";
 
   if (loadStatus === "loading") {
     return (
@@ -306,9 +321,7 @@ export default function ScheduleListClient() {
 
   return (
     <RecordRemoveProvider value={markRecordRemoved}>
-      <header
-        className="sticky top-0 z-40 mb-2 -mx-2 sm:-mx-3 lg:-mx-4 xl:-mx-5 2xl:-mx-6 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-[#5A2FB7]/40 bg-gradient-to-r from-[#5A2FB7] via-[#5A2FB7]/90 to-[#4361DE]/60 px-3 py-2 shadow-md shadow-[#5A2FB7]/25 backdrop-blur"
-      >
+      <header className={headerClass}>
         <h1 className="text-base font-bold text-white sm:text-lg lg:shrink-0 drop-shadow">
           일정 플래너
         </h1>
@@ -381,7 +394,7 @@ export default function ScheduleListClient() {
               </button>
             </>
           )}
-          <a href="/submit" className={uploadButtonClass}>
+          <a href={displayMode ? "/submit?display=1" : "/submit"} className={uploadButtonClass}>
             <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
@@ -403,6 +416,7 @@ export default function ScheduleListClient() {
               productionRecords={productionRecords}
               vacationRecords={vacationRecords}
               editMode={editMode}
+              displayMode={displayMode}
             />
           </section>
         ) : activeTab === "office-schedule" ? (

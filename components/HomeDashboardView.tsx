@@ -38,20 +38,38 @@ export default function HomeDashboardView({
   productionRecords,
   vacationRecords,
   editMode,
+  displayMode = false,
 }: {
   officeRecords: ScheduleRecord[];
   productionRecords: ScheduleRecord[];
   vacationRecords: ScheduleRecord[];
   editMode: boolean;
+  displayMode?: boolean;
 }) {
+  const rootClass = displayMode
+    ? "flex flex-col gap-2"
+    : "flex flex-col gap-2 lg:flex-row lg:items-stretch lg:gap-3";
+  const thisWeekSectionClass = displayMode
+    ? "w-full rounded-xl border-2 border-[#4361DE]/70 bg-[#0b1020] p-2"
+    : "w-full rounded-2xl border-2 border-[#4361DE]/70 bg-gradient-to-br from-[#4361DE]/20 via-[#4361DE]/10 to-black p-2 sm:p-3 shadow-lg shadow-[#4361DE]/20 ring-1 ring-[#4361DE]/30";
+  const otherWeekSectionClass = displayMode
+    ? "w-full rounded-xl border-2 border-[#CD366D]/70 bg-[#140b12] p-2"
+    : "w-full rounded-2xl border-2 border-[#CD366D]/70 bg-gradient-to-br from-[#CD366D]/20 via-[#CD366D]/10 to-black p-2 sm:p-3 shadow-lg shadow-[#CD366D]/20 ring-1 ring-[#CD366D]/30";
+  const asideClass = displayMode
+    ? "w-full shrink-0 border-t border-white/10 pt-2"
+    : "w-full shrink-0 lg:ml-0 lg:w-[min(100%,168px)] lg:shrink-0 lg:border-l lg:border-white/10 lg:pl-3";
+  const vacationWrapClass = displayMode
+    ? ""
+    : "lg:sticky lg:top-10 lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto lg:pr-1";
+
   return (
     <>
-      <div className="flex flex-col gap-2 lg:flex-row lg:items-stretch lg:gap-3">
+      <div className={rootClass}>
         <div className="min-w-0 flex flex-1 flex-col gap-2">
           {/* 사무실·제작 — 이번 주 */}
           <section
             aria-labelledby="dash-this-week-heading"
-            className="w-full rounded-2xl border-2 border-[#4361DE]/70 bg-gradient-to-br from-[#4361DE]/20 via-[#4361DE]/10 to-black p-2 sm:p-3 shadow-lg shadow-[#4361DE]/20 ring-1 ring-[#4361DE]/30"
+            className={thisWeekSectionClass}
           >
             <h2 id="dash-this-week-heading" className="sr-only">
               이번 주 사무실·제작 일정
@@ -70,6 +88,7 @@ export default function HomeDashboardView({
                     embedded
                     hideRecordActions
                     inlineEditMode={editMode}
+                    displayMode={displayMode}
                   />
                 </div>
               </div>
@@ -86,6 +105,7 @@ export default function HomeDashboardView({
                     embedded
                     hideRecordActions
                     inlineEditMode={editMode}
+                    displayMode={displayMode}
                   />
                 </div>
               </div>
@@ -95,7 +115,7 @@ export default function HomeDashboardView({
           {/* 사무실·제작 — 이번 주 외 */}
           <section
             aria-labelledby="dash-other-week-heading"
-            className="w-full rounded-2xl border-2 border-[#CD366D]/70 bg-gradient-to-br from-[#CD366D]/20 via-[#CD366D]/10 to-black p-2 sm:p-3 shadow-lg shadow-[#CD366D]/20 ring-1 ring-[#CD366D]/30"
+            className={otherWeekSectionClass}
           >
             <h2 id="dash-other-week-heading" className="sr-only">
               이번 주 외 사무실·제작 일정
@@ -114,6 +134,7 @@ export default function HomeDashboardView({
                     embedded
                     hideRecordActions
                     inlineEditMode={editMode}
+                    displayMode={displayMode}
                   />
                 </div>
               </div>
@@ -130,6 +151,7 @@ export default function HomeDashboardView({
                     embedded
                     hideRecordActions
                     inlineEditMode={editMode}
+                    displayMode={displayMode}
                   />
                 </div>
               </div>
@@ -137,14 +159,15 @@ export default function HomeDashboardView({
           </section>
         </div>
 
-        <aside className="w-full shrink-0 lg:ml-0 lg:w-[min(100%,168px)] lg:shrink-0 lg:border-l lg:border-white/10 lg:pl-3">
-          <div className="lg:sticky lg:top-10 lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto lg:pr-1">
+        <aside className={asideClass}>
+          <div className={vacationWrapClass}>
             <VacationWeekView
               vacationRecords={vacationRecords}
               variant="sidebar"
               hideTitle
               hideDeleteButtons
               inlineEditMode={editMode}
+              displayMode={displayMode}
             />
           </div>
         </aside>

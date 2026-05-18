@@ -233,6 +233,7 @@ function EntryCard({
   inlineEditMode,
   variant = "this-week",
   accentToday = false,
+  displayMode = false,
 }: {
   entry: EntryWithMeta;
   thisWeekMonday: string;
@@ -241,6 +242,7 @@ function EntryCard({
   variant?: "this-week" | "other-week";
   /** 방송일(열)이 오늘인 경우 제목 강조 */
   accentToday?: boolean;
+  displayMode?: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -277,7 +279,11 @@ function EntryCard({
   }
 
   const cardSurface =
-    variant === "this-week"
+    displayMode
+      ? variant === "this-week"
+        ? "bg-[#252b3d]"
+        : "bg-[#2a222c]"
+      : variant === "this-week"
       ? "bg-gradient-to-br from-[#323a52]/95 to-[#252b3d]"
       : "bg-gradient-to-br from-[#3d2f3a]/95 to-[#2a222c]";
   const timeColor =
@@ -292,13 +298,17 @@ function EntryCard({
   return (
     <div
       className="relative group"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={() => {
+        if (!displayMode) setOpen(true);
+      }}
+      onMouseLeave={() => {
+        if (!displayMode) setOpen(false);
+      }}
     >
       <div className={`rounded-xl p-3 cursor-default ${cardSurface}`}>
         <div className="flex items-start justify-between gap-1 mb-0.5">
           <p
-            className={`text-sm leading-snug flex-1 min-w-0 tracking-tight ${
+            className={`text-sm leading-snug flex-1 min-w-0 break-words tracking-tight ${
               accentToday
                 ? "font-bold text-yellow-300"
                 : "font-semibold text-white"
@@ -365,15 +375,24 @@ function OtherWeekMergedGrid({
   todayStr,
   hideRecordActions,
   inlineEditMode,
+  displayMode = false,
 }: {
   dayGroups: DayGroup[];
   thisWeekMonday: string;
   todayStr: string;
   hideRecordActions?: boolean;
   inlineEditMode?: boolean;
+  displayMode?: boolean;
 }) {
+  const gridClass = displayMode
+    ? "grid w-full grid-cols-6 gap-2 pb-1"
+    : "grid w-full min-w-0 grid-cols-6 gap-2 overflow-x-auto pb-1";
+  const columnClass = displayMode
+    ? "rounded-lg border border-[#CD366D]/25 bg-[#100b10] p-2 flex flex-col gap-2"
+    : "min-w-0 rounded-xl border border-[#CD366D]/20 bg-black/40 p-2 flex flex-col gap-2";
+
   return (
-    <div className="grid w-full min-w-0 grid-cols-6 gap-2 overflow-x-auto pb-1">
+    <div className={gridClass}>
       {dayGroups.map((group, idx) => {
         const isWeekendCol = idx === 5;
         const dayLabel = isWeekendCol ? "주말" : DAY_LABELS[idx];
@@ -382,7 +401,7 @@ function OtherWeekMergedGrid({
         return (
           <div
             key={group.date}
-            className="min-w-0 rounded-xl border border-[#CD366D]/20 bg-black/40 p-2 flex flex-col gap-2"
+            className={columnClass}
           >
             <div className="flex items-center justify-center px-1 py-0.5">
               <span
@@ -412,6 +431,7 @@ function OtherWeekMergedGrid({
                         inlineEditMode={inlineEditMode}
                         variant="other-week"
                         accentToday={Boolean(ymd && ymd === todayStr)}
+                        displayMode={displayMode}
                       />
                     </div>
                   );
@@ -432,6 +452,7 @@ function WeekGrid({
   weekDays,
   hideRecordActions,
   inlineEditMode,
+  displayMode = false,
 }: {
   dayGroups: DayGroup[];
   todayStr: string;
@@ -440,12 +461,16 @@ function WeekGrid({
   weekDays: string[];
   hideRecordActions?: boolean;
   inlineEditMode?: boolean;
+  displayMode?: boolean;
 }) {
   const satYmd = weekDays[5] ?? "";
   const sunYmd = weekDays[6] ?? "";
+  const gridClass = displayMode
+    ? "grid w-full grid-cols-6 gap-2 pb-1"
+    : "grid w-full min-w-0 grid-cols-6 gap-2 overflow-x-auto pb-1";
 
   return (
-    <div className="grid w-full min-w-0 grid-cols-6 gap-2 overflow-x-auto pb-1">
+    <div className={gridClass}>
       {dayGroups.map((group, idx) => {
         const isWeekendCol = idx === 5;
         const isToday = isWeekendCol
@@ -461,7 +486,9 @@ function WeekGrid({
         return (
           <div
             key={group.date}
-            className={`min-w-0 rounded-xl border p-2 flex flex-col gap-2 ${
+            className={`rounded-xl border p-2 flex flex-col gap-2 ${
+              displayMode ? "" : "min-w-0"
+            } ${
               isToday
                 ? "border-[#4361DE] bg-[#4361DE]/20"
                 : "border-[#4361DE]/20 bg-black/40"
@@ -548,6 +575,7 @@ function WeekGrid({
                     inlineEditMode={inlineEditMode}
                     variant="this-week"
                     accentToday={accentToday}
+                    displayMode={displayMode}
                   />
                 );
               })
@@ -565,6 +593,7 @@ export default function RecordingWeekView({
   embedded = false,
   hideRecordActions = false,
   inlineEditMode = false,
+  displayMode = false,
 }: {
   records: ScheduleRecord[];
   /** both: 이번 주 + 이번 주 외. 대시보드에서는 열마다 분리 */
@@ -575,6 +604,8 @@ export default function RecordingWeekView({
   hideRecordActions?: boolean;
   /** true면 카드 안에서 요약·메모 수정(대시보드) */
   inlineEditMode?: boolean;
+  /** true면 Samsung Flip Pro/Tizen 내장 브라우저용 단순 표시 클래스 사용 */
+  displayMode?: boolean;
 }) {
   const todayStr = getTodaySeoul();
   /** 오늘이 속한 주의 월요일 — 제목 색(빨강) 기준 */
@@ -603,10 +634,14 @@ export default function RecordingWeekView({
   const showOther = sections === "both" || sections === "other-week";
 
   const thisWeekSectionClass = embedded
-    ? "rounded-xl border border-[#4361DE]/40 bg-[#0e0e14]/80 p-3"
+    ? displayMode
+      ? "rounded-lg border border-[#4361DE]/40 bg-[#0e0e14] p-2"
+      : "rounded-xl border border-[#4361DE]/40 bg-[#0e0e14]/80 p-3"
     : "rounded-2xl border border-[#4361DE]/40 bg-gradient-to-b from-[#4361DE]/15 to-[#0e0e14]/95 p-4";
   const otherWeekSectionClass = embedded
-    ? "rounded-xl border border-[#CD366D]/40 bg-[#0e0e14]/80 p-3"
+    ? displayMode
+      ? "rounded-lg border border-[#CD366D]/40 bg-[#0e0e14] p-2"
+      : "rounded-xl border border-[#CD366D]/40 bg-[#0e0e14]/80 p-3"
     : "rounded-2xl border border-[#CD366D]/40 bg-gradient-to-b from-[#CD366D]/15 to-[#0e0e14]/95 p-4";
 
   const emptyBlock = (
@@ -671,6 +706,7 @@ export default function RecordingWeekView({
                     weekDays={thisWeekDays}
                     hideRecordActions={hideRecordActions}
                     inlineEditMode={inlineEditMode}
+                    displayMode={displayMode}
                   />
                 </section>
               )}
@@ -692,6 +728,7 @@ export default function RecordingWeekView({
                     todayStr={todayStr}
                     hideRecordActions={hideRecordActions}
                     inlineEditMode={inlineEditMode}
+                    displayMode={displayMode}
                   />
                 </section>
               ) : (

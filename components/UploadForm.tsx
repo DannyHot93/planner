@@ -24,6 +24,19 @@ type WorkScheduleKind = "office" | "production" | "casting";
 
 const UPLOAD_OK_STORAGE = "planner_upload_ok";
 
+function submitUrl(extraParams: Record<string, string> = {}): string {
+  if (typeof window === "undefined") return "/submit";
+  const params = new URLSearchParams();
+  if (new URLSearchParams(window.location.search).get("display") === "1") {
+    params.set("display", "1");
+  }
+  for (const [key, value] of Object.entries(extraParams)) {
+    params.set(key, value);
+  }
+  const query = params.toString();
+  return query ? `/submit?${query}` : "/submit";
+}
+
 interface StoredUploadSuccess {
   summary: string;
   hadImage: boolean;
@@ -94,7 +107,7 @@ export default function UploadForm() {
       setResultSummary("저장이 완료되었습니다.");
     }
     setUploadState("success");
-    window.history.replaceState(null, "", "/submit");
+    window.history.replaceState(null, "", submitUrl());
   }, []);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -247,7 +260,7 @@ export default function UploadForm() {
         } catch {
           /* private 모드 등 */
         }
-        window.location.replace("/submit?ok=1");
+        window.location.replace(submitUrl({ ok: "1" }));
         return;
       } else {
         setUploadState("error");

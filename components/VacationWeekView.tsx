@@ -610,6 +610,7 @@ export default function VacationWeekView({
   hideTitle = false,
   hideDeleteButtons = false,
   inlineEditMode = false,
+  displayMode = false,
 }: {
   vacationRecords: ScheduleRecord[];
   /** sidebar: 우측 열 — 세로 스택, 스크롤 영역 */
@@ -619,6 +620,8 @@ export default function VacationWeekView({
   hideDeleteButtons?: boolean;
   /** true면 카드 안에서 요약·메모 수정(대시보드) */
   inlineEditMode?: boolean;
+  /** true면 상시 디스플레이 URL 파라미터를 유지 */
+  displayMode?: boolean;
 }) {
   const todayStr = getTodaySeoul();
 
@@ -667,7 +670,10 @@ export default function VacationWeekView({
         <div className={`text-center text-gray-500 ${variant === "sidebar" ? "py-8" : "py-12"}`}>
           <p className="text-sm">등록된 휴가가 없습니다.</p>
           <p className="text-xs mt-1">
-            <a href="/submit" className="text-[#9ab0ff] hover:underline">
+            <a
+              href={displayMode ? "/submit?display=1" : "/submit"}
+              className="text-[#9ab0ff] hover:underline"
+            >
               일정 업로드
             </a>
             에서 휴가를 등록해 주세요.
