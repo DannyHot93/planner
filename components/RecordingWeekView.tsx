@@ -294,6 +294,23 @@ function EntryCard({
         : variant === "this-week"
           ? "text-gray-300"
           : "text-gray-300";
+  const cardClass = displayMode
+    ? `rounded-lg p-3 cursor-default ${cardSurface}`
+    : `rounded-xl p-3 cursor-default ${cardSurface}`;
+  const headlineClass = displayMode
+    ? `text-[28px] leading-tight flex-1 min-w-0 break-words ${
+        accentToday
+          ? "font-bold text-yellow-300"
+          : "font-semibold text-white"
+      }`
+    : `text-sm leading-snug flex-1 min-w-0 break-words tracking-tight ${
+        accentToday
+          ? "font-bold text-yellow-300"
+          : "font-semibold text-white"
+      }`;
+  const timeClass = displayMode
+    ? `text-[22px] leading-tight font-semibold mt-2 ${timeColor}`
+    : `text-xs font-medium mt-1 ${timeColor}`;
 
   return (
     <div
@@ -305,15 +322,9 @@ function EntryCard({
         if (!displayMode) setOpen(false);
       }}
     >
-      <div className={`rounded-xl p-3 cursor-default ${cardSurface}`}>
+      <div className={cardClass}>
         <div className="flex items-start justify-between gap-1 mb-0.5">
-          <p
-            className={`text-sm leading-snug flex-1 min-w-0 break-words tracking-tight ${
-              accentToday
-                ? "font-bold text-yellow-300"
-                : "font-semibold text-white"
-            }`}
-          >
+          <p className={headlineClass}>
             {headline}
           </p>
           {!hideRecordActions && !entry.readonlyFromCalendar && (
@@ -321,7 +332,7 @@ function EntryCard({
           )}
         </div>
         {entry.time && (
-          <p className={`text-xs font-medium mt-1 ${timeColor}`}>{entry.time}</p>
+          <p className={timeClass}>{entry.time}</p>
         )}
       </div>
 
@@ -388,8 +399,15 @@ function OtherWeekMergedGrid({
     ? "grid w-full grid-cols-6 gap-2 pb-1"
     : "grid w-full min-w-0 grid-cols-6 gap-2 overflow-x-auto pb-1";
   const columnClass = displayMode
-    ? "rounded-lg border border-[#CD366D]/25 bg-[#100b10] p-2 flex flex-col gap-2"
+    ? "rounded-lg border border-[#CD366D]/25 bg-[#100b10] p-2 flex flex-col gap-2 min-h-[260px]"
     : "min-w-0 rounded-xl border border-[#CD366D]/20 bg-black/40 p-2 flex flex-col gap-2";
+  const dayLabelClass = displayMode ? "text-xl" : "text-xs";
+  const emptyClass = displayMode
+    ? "text-lg text-gray-600 text-center py-3"
+    : "text-xs text-gray-600 text-center py-3";
+  const entryDateClass = displayMode
+    ? "text-lg font-semibold text-[#f7a7c1]/75 leading-tight px-0.5"
+    : "text-[10px] font-semibold text-[#f7a7c1]/70 leading-tight px-0.5";
 
   return (
     <div className={gridClass}>
@@ -405,7 +423,7 @@ function OtherWeekMergedGrid({
           >
             <div className="flex items-center justify-center px-1 py-0.5">
               <span
-                className={`text-xs font-bold ${
+                className={`${dayLabelClass} font-bold ${
                   isWeekend ? "text-[#f7a7c1]" : "text-gray-200"
                 }`}
               >
@@ -414,14 +432,14 @@ function OtherWeekMergedGrid({
             </div>
 
             {group.entries.length === 0 ? (
-              <p className="text-xs text-gray-600 text-center py-3">일정 없음</p>
+              <p className={emptyClass}>일정 없음</p>
             ) : (
               <div className="flex flex-col gap-2">
                 {group.entries.map((entry, i) => {
                   const ymd = entry.date ? toSeoulDateYmd(entry.date) : "";
                   return (
                     <div key={`${entry.recordId}-${ymd}-${i}`} className="flex flex-col gap-1">
-                      <p className="text-[10px] font-semibold text-[#f7a7c1]/70 leading-tight px-0.5">
+                      <p className={entryDateClass}>
                         {formatEntryDateLine(ymd)}
                       </p>
                       <EntryCard
@@ -468,6 +486,17 @@ function WeekGrid({
   const gridClass = displayMode
     ? "grid w-full grid-cols-6 gap-2 pb-1"
     : "grid w-full min-w-0 grid-cols-6 gap-2 overflow-x-auto pb-1";
+  const dayLabelClass = displayMode ? "text-xl" : "text-xs";
+  const dateLabelClass = displayMode ? "text-xl" : "text-xs";
+  const weekendDateClass = displayMode
+    ? "flex flex-col gap-0.5 text-lg leading-tight"
+    : "flex flex-col gap-0.5 text-[10px] leading-tight";
+  const fridayNoteClass = displayMode
+    ? "text-base font-semibold text-amber-300/90 mt-0.5 text-right"
+    : "text-[10px] font-semibold text-amber-300/90 mt-0.5 text-right";
+  const emptyClass = displayMode
+    ? "text-lg text-gray-600 text-center py-3"
+    : "text-xs text-gray-600 text-center py-3";
 
   return (
     <div className={gridClass}>
@@ -498,14 +527,14 @@ function WeekGrid({
               <div className="flex flex-col gap-1 px-0.5">
                 <div className="flex items-center justify-between">
                   <span
-                    className={`text-xs font-bold ${
+                    className={`${dayLabelClass} font-bold ${
                       isToday ? "text-[#9ab0ff]" : "text-[#f7a7c1]"
                     }`}
                   >
                     {dayLabel}
                   </span>
                 </div>
-                <div className="flex flex-col gap-0.5 text-[10px] leading-tight">
+                <div className={weekendDateClass}>
                   <span
                     className={
                       todayStr === satYmd
@@ -530,7 +559,7 @@ function WeekGrid({
               <div className="px-1">
                 <div className="flex items-center justify-between">
                   <span
-                    className={`text-xs font-bold ${
+                    className={`${dayLabelClass} font-bold ${
                       isToday
                         ? "text-[#9ab0ff]"
                         : isWeekend
@@ -541,7 +570,7 @@ function WeekGrid({
                     {dayLabel}
                   </span>
                   <span
-                    className={`text-xs ${
+                    className={`${dateLabelClass} ${
                       isToday
                         ? "text-[#9ab0ff] font-semibold"
                         : isWeekend
@@ -553,7 +582,7 @@ function WeekGrid({
                   </span>
                 </div>
                 {idx === 4 && isSecondOrFourthFriday(group.date) && (
-                  <p className="text-[10px] font-semibold text-amber-300/90 mt-0.5 text-right">
+                  <p className={fridayNoteClass}>
                     4.5일
                   </p>
                 )}
@@ -561,7 +590,7 @@ function WeekGrid({
             )}
 
             {group.entries.length === 0 ? (
-              <p className="text-xs text-gray-600 text-center py-3">일정 없음</p>
+              <p className={emptyClass}>일정 없음</p>
             ) : (
               group.entries.map((entry, i) => {
                 const ymd = entry.date ? toSeoulDateYmd(entry.date) : "";
