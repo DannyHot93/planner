@@ -439,9 +439,9 @@ export default function ScheduleListClient({
             />
           </section>
         ) : activeTab === "office-schedule" ? (
-          <RecordingWeekView records={officeRecords} />
+          <RecordingWeekView records={officeRecords} calendarMode includeNextMonthCalendar />
         ) : activeTab === "production-schedule" ? (
-          <RecordingWeekView records={productionRecords} />
+          <RecordingWeekView records={productionRecords} calendarMode includeNextMonthCalendar />
         ) : activeTab === "work-schedule" ? (
           <WorkScheduleWeekView records={workScheduleRecords} castingRecords={castingRecords} />
         ) : (

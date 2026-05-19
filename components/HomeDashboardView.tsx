@@ -1,16 +1,55 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ScheduleRecord } from "@/lib/types";
+import { useEffect, useMemo, useState } from "react";
+import { ScheduleEntry, ScheduleRecord } from "@/lib/types";
+import { toSeoulDateYmd } from "@/lib/seoul-week";
 import RecordingWeekView from "./RecordingWeekView";
 import VacationWeekView from "./VacationWeekView";
 
-type DisplaySlide = "this-week" | "other-week";
+type DisplaySlide = "this-week" | "this-month" | "next-month";
 
 const DISPLAY_SLIDE_MS: Record<DisplaySlide, number> = {
   "this-week": 30_000,
-  "other-week": 10_000,
+  "this-month": 10_000,
+  "next-month": 10_000,
 };
+
+function getTodaySeoul(): string {
+  return new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(
+    new Date()
+  );
+}
+
+function pad2(n: number): string {
+  return n < 10 ? `0${n}` : `${n}`;
+}
+
+function addMonthsToMonthKey(ymd: string, offset: number): string {
+  const [year, month] = ymd.split("-").map(Number);
+  const d = new Date(Date.UTC(year, month - 1 + offset, 1));
+  return `${d.getUTCFullYear()}-${pad2(d.getUTCMonth() + 1)}`;
+}
+
+function recordEntryDates(record: ScheduleRecord): string[] {
+  const details = record.details as { entries?: ScheduleEntry[]; period?: string | null };
+  const entries = Array.isArray(details.entries) ? details.entries : [];
+  if (entries.length > 0) {
+    return entries
+      .map((entry) => (entry.date ? toSeoulDateYmd(entry.date) : ""))
+      .filter(Boolean);
+  }
+  if (details.period) {
+    const match = String(details.period).match(/\d{4}-\d{2}-\d{2}/);
+    if (match) return [match[0]];
+  }
+  return [toSeoulDateYmd(record.uploadedAt) || record.uploadedAt.slice(0, 10)];
+}
+
+function hasRecordsInMonth(records: ScheduleRecord[], monthKey: string): boolean {
+  return records.some((record) =>
+    recordEntryDates(record).some((date) => date.startsWith(`${monthKey}-`))
+  );
+}
 
 /** 한 글자씩 세로로 쌓아 라벨 폭을 최소화 */
 function VerticalTypeLabel({
@@ -55,8 +94,19 @@ export default function HomeDashboardView({
   displayMode?: boolean;
 }) {
   const [displaySlide, setDisplaySlide] = useState<DisplaySlide>("this-week");
+  const displayMonthSlides = useMemo<DisplaySlide[]>(() => {
+    if (!displayMode) return ["this-week", "this-month"];
+    const today = getTodaySeoul();
+    const nextMonthKey = addMonthsToMonthKey(today, 1);
+    const scheduleRecords = [...officeRecords, ...productionRecords];
+    return hasRecordsInMonth(scheduleRecords, nextMonthKey)
+      ? ["this-week", "this-month", "next-month"]
+      : ["this-week", "this-month"];
+  }, [displayMode, officeRecords, productionRecords]);
   const showThisWeek = !displayMode || displaySlide === "this-week";
-  const showOtherWeek = !displayMode || displaySlide === "other-week";
+  const showSecondarySchedule =
+    !displayMode || displaySlide === "this-month" || displaySlide === "next-month";
+  const calendarMonthOffset = displaySlide === "next-month" ? 1 : 0;
 
   useEffect(() => {
     if (!displayMode) {
@@ -64,14 +114,20 @@ export default function HomeDashboardView({
       return;
     }
 
+    if (!displayMonthSlides.includes(displaySlide)) {
+      setDisplaySlide(displayMonthSlides[0]);
+      return;
+    }
+
     const timeoutId = window.setTimeout(() => {
-      setDisplaySlide((current) =>
-        current === "this-week" ? "other-week" : "this-week"
-      );
+      setDisplaySlide((current) => {
+        const idx = displayMonthSlides.indexOf(current);
+        return displayMonthSlides[(idx + 1) % displayMonthSlides.length];
+      });
     }, DISPLAY_SLIDE_MS[displaySlide]);
 
     return () => window.clearTimeout(timeoutId);
-  }, [displayMode, displaySlide]);
+  }, [displayMode, displayMonthSlides, displaySlide]);
 
   const rootClass = displayMode
     ? "flex flex-row items-stretch gap-2"
@@ -141,14 +197,14 @@ export default function HomeDashboardView({
             </section>
           )}
 
-          {/* 사무실·제작 — 이번 주 외 */}
-          {showOtherWeek && (
+          {/* 일반 화면: 이번 주 외 전체 / display 화면: 월간 달력 로테이션 */}
+          {showSecondarySchedule && (
             <section
               aria-labelledby="dash-other-week-heading"
               className={otherWeekSectionClass}
             >
               <h2 id="dash-other-week-heading" className="sr-only">
-                이번 주 외 사무실·제작 일정
+                월간 사무실·제작 일정
               </h2>
               <div className="flex min-w-0 flex-col gap-2">
                 <div className="flex min-w-0 flex-row items-stretch gap-2 sm:gap-2.5">
@@ -165,6 +221,9 @@ export default function HomeDashboardView({
                       hideRecordActions
                       inlineEditMode={editMode}
                       displayMode={displayMode}
+                      calendarMode
+                      displayCalendarMonthOffset={calendarMonthOffset}
+                      includeNextMonthCalendar={!displayMode}
                     />
                   </div>
                 </div>
@@ -182,6 +241,9 @@ export default function HomeDashboardView({
                       hideRecordActions
                       inlineEditMode={editMode}
                       displayMode={displayMode}
+                      calendarMode
+                      displayCalendarMonthOffset={calendarMonthOffset}
+                      includeNextMonthCalendar={!displayMode}
                     />
                   </div>
                 </div>

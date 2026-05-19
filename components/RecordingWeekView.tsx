@@ -57,6 +57,16 @@ interface DayGroup {
   entries: EntryWithMeta[];
 }
 
+interface MonthCalendarCell {
+  date: string | null;
+  entries: EntryWithMeta[];
+}
+
+interface MonthCalendar {
+  label: string;
+  cells: MonthCalendarCell[];
+}
+
 /** entries[].date가 없으면 period 첫 날짜, 없으면 업로드일(서울 달력) */
 function extractDate(entry: ScheduleEntry, record: ScheduleRecord): string {
   if (entry.date) {
@@ -184,6 +194,15 @@ function formatEntryDateLine(ymd: string): string {
   return `${mo}/${d} (${wd})`;
 }
 
+function formatMonthTitle(ymd: string): string {
+  const [y, m] = ymd.split("-").map(Number);
+  return `${y}년 ${m}월`;
+}
+
+function hasCalendarEntries(calendar: MonthCalendar): boolean {
+  return calendar.cells.some((cell) => cell.entries.length > 0);
+}
+
 /**
  * 이번 주 제외 일정을 요일 7칸으로 묶음.
  * 월~토에는 지난주 이전(과거) 일정을 숨겨 사용자가 보기에 "월요일부터 지난주가 깔끔히 사라진" 상태를 만든다.
@@ -224,6 +243,109 @@ function buildOtherWeekByWeekdayGroups(
     { date: "other-weekday-4", entries: buckets[4] },
     { date: "other-weekend", entries: weekendMerged },
   ];
+}
+
+function addMonthsToMonthKey(ymd: string, offset: number): string {
+  const [year, month] = ymd.split("-").map(Number);
+  const d = new Date(Date.UTC(year, month - 1 + offset, 1));
+  return `${d.getUTCFullYear()}-${pad2(d.getUTCMonth() + 1)}`;
+}
+
+function buildMonthCalendar(
+  flat: EntryWithMeta[],
+  todayYmd: string,
+  monthOffset: number
+): MonthCalendar {
+  const monthKey = addMonthsToMonthKey(todayYmd, monthOffset);
+  const [year, month] = monthKey.split("-").map(Number);
+  const firstDate = `${monthKey}-01`;
+  const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const leadingBlanks = weekdayColumnIndex(firstDate);
+  const byDate = new Map<string, EntryWithMeta[]>();
+
+  for (const e of flat) {
+    const d = e.date ? toSeoulDateYmd(e.date) : "";
+    if (!d || !d.startsWith(`${monthKey}-`)) continue;
+    const entries = byDate.get(d) ?? [];
+    entries.push({ ...e, date: d });
+    byDate.set(d, entries);
+  }
+
+  const cells: MonthCalendarCell[] = [];
+  for (let i = 0; i < leadingBlanks; i++) {
+    cells.push({ date: null, entries: [] });
+  }
+  for (let day = 1; day <= lastDay; day++) {
+    const date = `${monthKey}-${pad2(day)}`;
+    cells.push({
+      date,
+      entries: (byDate.get(date) ?? []).sort(
+        (a, b) => parseStartMinutes(a.time) - parseStartMinutes(b.time)
+      ),
+    });
+  }
+  while (cells.length % 7 !== 0) {
+    cells.push({ date: null, entries: [] });
+  }
+
+  return {
+    label: formatMonthTitle(firstDate),
+    cells,
+  };
+}
+
+function EntryDetailPopover({
+  entry,
+  timeColor,
+}: {
+  entry: EntryWithMeta;
+  timeColor: string;
+}) {
+  return (
+    <div className="absolute z-50 left-0 top-full mt-1 w-72 rounded-xl bg-gradient-to-br from-[#323a52] to-[#252b3d] p-4 text-xs text-gray-200 space-y-1.5 shadow-xl shadow-black/40 ring-1 ring-white/10">
+      {entry.programTitle && (
+        <p className="font-semibold text-sm text-white">
+          {entry.programTitle}
+        </p>
+      )}
+      <p className="text-gray-300">{entry.recordSummary}</p>
+      {entry.date && (
+        <p>
+          <span className="text-gray-400">날짜</span>{" "}
+          <span className="font-medium text-gray-100">{formatEntryDateLine(toSeoulDateYmd(entry.date) || entry.date)}</span>
+        </p>
+      )}
+      {entry.time && (
+        <p>
+          <span className="text-gray-400">시간</span>{" "}
+          <span className={`font-medium ${timeColor}`}>{entry.time}</span>
+        </p>
+      )}
+      {entry.place && (
+        <p>
+          <span className="text-gray-400">장소</span> {entry.place}
+        </p>
+      )}
+      {entry.person && (
+        <p>
+          <span className="text-gray-400">담당</span> {entry.person}
+        </p>
+      )}
+      {entry.note && (
+        <p>
+          <span className="text-gray-400">메모</span> {entry.note}
+        </p>
+      )}
+      {entry.recordMemo && (
+        <p>
+          <span className="text-gray-400">비고</span> {entry.recordMemo}
+        </p>
+      )}
+      <p className="text-gray-500 pt-1 border-t border-white/10">
+        업로드: {entry.uploadedAt.slice(0, 10)}
+      </p>
+    </div>
+  );
 }
 
 function EntryCard({
@@ -316,11 +438,25 @@ function EntryCard({
     <div
       className="relative group"
       onMouseEnter={() => {
-        if (!displayMode) setOpen(true);
+        setOpen(true);
       }}
       onMouseLeave={() => {
-        if (!displayMode) setOpen(false);
+        setOpen(false);
       }}
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest("button,a")) return;
+        setOpen((v) => !v);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          setOpen((v) => !v);
+        } else if (e.key === "Escape") {
+          setOpen(false);
+        }
+      }}
+      role="button"
+      tabIndex={0}
     >
       <div className={cardClass}>
         <div className="flex items-start justify-between gap-1 mb-0.5">
@@ -336,45 +472,7 @@ function EntryCard({
         )}
       </div>
 
-      {open && (
-        <div className="absolute z-50 left-0 top-full mt-1 w-64 rounded-xl bg-gradient-to-br from-[#323a52] to-[#252b3d] p-4 text-xs text-gray-200 space-y-1.5">
-          {entry.programTitle && (
-            <p className="font-semibold text-sm text-white">
-              {entry.programTitle}
-            </p>
-          )}
-          <p className="text-gray-300">{entry.recordSummary}</p>
-          {entry.time && (
-            <p>
-              <span className="text-gray-400">시간</span>{" "}
-              <span className={`font-medium ${timeColor}`}>{entry.time}</span>
-            </p>
-          )}
-          {entry.place && (
-            <p>
-              <span className="text-gray-400">장소</span> {entry.place}
-            </p>
-          )}
-          {entry.person && (
-            <p>
-              <span className="text-gray-400">담당</span> {entry.person}
-            </p>
-          )}
-          {entry.note && (
-            <p>
-              <span className="text-gray-400">메모</span> {entry.note}
-            </p>
-          )}
-          {entry.recordMemo && (
-            <p>
-              <span className="text-gray-400">비고</span> {entry.recordMemo}
-            </p>
-          )}
-          <p className="text-gray-500 pt-1 border-t border-white/10">
-            업로드: {entry.uploadedAt.slice(0, 10)}
-          </p>
-        </div>
-      )}
+      {open && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
     </div>
   );
 }
@@ -459,6 +557,148 @@ function OtherWeekMergedGrid({
           </div>
         );
       })}
+    </div>
+  );
+}
+
+function MonthCalendarMiniEntry({
+  entry,
+  accentToday,
+}: {
+  entry: EntryWithMeta;
+  accentToday: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const headline = entry.programTitle ?? entry.note ?? entry.recordSummary;
+  const timeColor = accentToday
+    ? "text-yellow-100 font-semibold"
+    : "text-gray-300";
+  return (
+    <div
+      className={`relative rounded px-1.5 py-1 cursor-default ${
+        accentToday ? "bg-yellow-300/20" : "bg-[#2a222c]"
+      }`}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onClick={() => setOpen((v) => !v)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          setOpen((v) => !v);
+        } else if (e.key === "Escape") {
+          setOpen(false);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
+      <p
+        className={`truncate text-[12px] font-semibold leading-tight ${
+          accentToday ? "text-yellow-200" : "text-white"
+        }`}
+      >
+        {headline}
+      </p>
+      {entry.time && (
+        <p className="mt-0.5 truncate text-[11px] font-medium leading-tight text-gray-300">
+          {entry.time}
+        </p>
+      )}
+      {open && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
+    </div>
+  );
+}
+
+function OtherWeekCurrentMonthCalendarGrid({
+  calendar,
+  todayStr,
+}: {
+  calendar: MonthCalendar;
+  todayStr: string;
+}) {
+  const entryCount = calendar.cells.reduce((sum, cell) => sum + cell.entries.length, 0);
+  return (
+    <div className="rounded-lg border border-[#CD366D]/25 bg-[#100b10] p-2">
+      <div className="mb-1.5 flex items-center justify-between">
+        <h5 className="text-base font-bold text-[#f7a7c1]">{calendar.label}</h5>
+        <span className="text-[11px] font-semibold text-[#f7a7c1]/70">
+          전체 {entryCount}건
+        </span>
+      </div>
+      <div className="grid grid-cols-7 gap-1">
+        {DAY_LABELS.map((label, idx) => (
+          <div
+            key={label}
+            className={`rounded border border-white/5 bg-black/35 py-0.5 text-center text-[11px] font-bold ${
+              idx >= 5 ? "text-[#f7a7c1]" : "text-gray-300"
+            }`}
+          >
+            {label}
+          </div>
+        ))}
+        {calendar.cells.map((cell, idx) => {
+          const isToday = cell.date === todayStr;
+          const day = cell.date ? Number(cell.date.slice(8, 10)) : null;
+          return (
+            <div
+              key={`${cell.date ?? "blank"}-${idx}`}
+              className={`min-h-[70px] rounded border p-1 ${
+                cell.date
+                  ? isToday
+                    ? "border-yellow-300/70 bg-yellow-300/10"
+                    : "border-[#CD366D]/20 bg-black/30"
+                  : "border-white/5 bg-black/10"
+              }`}
+            >
+              {cell.date && (
+                <>
+                  <p
+                    className={`mb-0.5 text-[12px] font-bold leading-tight ${
+                      isToday ? "text-yellow-300" : "text-[#f7a7c1]/80"
+                    }`}
+                  >
+                    {day}
+                  </p>
+                  <div className="flex flex-col gap-1">
+                    {cell.entries.slice(0, 2).map((entry, i) => (
+                      <MonthCalendarMiniEntry
+                        key={`${entry.recordId}-${cell.date}-${i}`}
+                        entry={entry}
+                        accentToday={isToday}
+                      />
+                    ))}
+                    {cell.entries.length > 2 && (
+                      <p className="rounded bg-white/5 px-1.5 py-0.5 text-[11px] font-semibold leading-tight text-gray-300">
+                        +{cell.entries.length - 2}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function MonthCalendarStack({
+  calendars,
+  todayStr,
+}: {
+  calendars: MonthCalendar[];
+  todayStr: string;
+}) {
+  return (
+    <div className="space-y-3">
+      {calendars.map((calendar) => (
+        <OtherWeekCurrentMonthCalendarGrid
+          key={calendar.label}
+          calendar={calendar}
+          todayStr={todayStr}
+        />
+      ))}
     </div>
   );
 }
@@ -623,6 +863,9 @@ export default function RecordingWeekView({
   hideRecordActions = false,
   inlineEditMode = false,
   displayMode = false,
+  calendarMode = false,
+  displayCalendarMonthOffset = 0,
+  includeNextMonthCalendar = false,
 }: {
   records: ScheduleRecord[];
   /** both: 이번 주 + 이번 주 외. 대시보드에서는 열마다 분리 */
@@ -635,6 +878,12 @@ export default function RecordingWeekView({
   inlineEditMode?: boolean;
   /** true면 Samsung Flip Pro/Tizen 내장 브라우저용 단순 표시 클래스 사용 */
   displayMode?: boolean;
+  /** true면 이번 주 외 영역을 월간 달력으로 표시 */
+  calendarMode?: boolean;
+  /** displayMode 월간 달력에서 오늘 기준 몇 개월 뒤를 표시할지 */
+  displayCalendarMonthOffset?: number;
+  /** true면 월간 달력 모드에서 다음달 일정이 있을 때 다음달 달력도 함께 표시 */
+  includeNextMonthCalendar?: boolean;
 }) {
   const todayStr = getTodaySeoul();
   /** 오늘이 속한 주의 월요일 — 제목 색(빨강) 기준 */
@@ -646,8 +895,22 @@ export default function RecordingWeekView({
     () => buildOtherWeekByWeekdayGroups(flat, calendarThisWeekMonday, todayStr),
     [flat, calendarThisWeekMonday, todayStr]
   );
+  const displayMonthCalendar = useMemo(
+    () => buildMonthCalendar(flat, todayStr, displayCalendarMonthOffset),
+    [flat, todayStr, displayCalendarMonthOffset]
+  );
+  const nextMonthCalendar = useMemo(
+    () => buildMonthCalendar(flat, todayStr, 1),
+    [flat, todayStr]
+  );
 
   const hasOtherWeekAny = otherWeekByWeekday.some((g) => g.entries.length > 0);
+  const calendarList = useMemo(() => {
+    if (!includeNextMonthCalendar || !hasCalendarEntries(nextMonthCalendar)) {
+      return [displayMonthCalendar];
+    }
+    return [displayMonthCalendar, nextMonthCalendar];
+  }, [displayMonthCalendar, includeNextMonthCalendar, nextMonthCalendar]);
 
   const thisWeekDays = sevenDaysFromMonday(calendarThisWeekMonday);
   const thisWeekGroups = useMemo(() => {
@@ -661,6 +924,7 @@ export default function RecordingWeekView({
   const showBoth = sections === "both";
   const showThis = sections === "both" || sections === "this-week";
   const showOther = sections === "both" || sections === "other-week";
+  const showCalendar = displayMode || calendarMode;
 
   const thisWeekSectionClass = embedded
     ? displayMode
@@ -744,21 +1008,32 @@ export default function RecordingWeekView({
 
           {showOther && (
             <>
-              {hasOtherWeekAny ? (
+              {showCalendar || hasOtherWeekAny ? (
                 <section className={otherWeekSectionClass}>
                   {!embedded && (
                     <div className="mb-3">
                       <h4 className="text-sm font-bold text-[#f7a7c1]">이번 주 외 일정</h4>
                     </div>
                   )}
-                  <OtherWeekMergedGrid
-                    dayGroups={otherWeekByWeekday}
-                    thisWeekMonday={calendarThisWeekMonday}
-                    todayStr={todayStr}
-                    hideRecordActions={hideRecordActions}
-                    inlineEditMode={inlineEditMode}
-                    displayMode={displayMode}
-                  />
+                  {showCalendar ? (
+                    <MonthCalendarStack
+                      calendars={calendarList}
+                      todayStr={todayStr}
+                    />
+                  ) : hasOtherWeekAny ? (
+                    <OtherWeekMergedGrid
+                      dayGroups={otherWeekByWeekday}
+                      thisWeekMonday={calendarThisWeekMonday}
+                      todayStr={todayStr}
+                      hideRecordActions={hideRecordActions}
+                      inlineEditMode={inlineEditMode}
+                      displayMode={displayMode}
+                    />
+                  ) : (
+                    <div className="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-center">
+                      <p className="text-xs text-gray-400">이번 주 외로 잡힌 일정이 없습니다.</p>
+                    </div>
+                  )}
                 </section>
               ) : (
                 sections !== "both" && (
