@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { ScheduleRecord, ScheduleEntry } from "@/lib/types";
 import {
   isSundayYmd,
@@ -65,6 +72,11 @@ interface MonthCalendarCell {
 interface MonthCalendar {
   label: string;
   cells: MonthCalendarCell[];
+}
+
+interface DisplayDetailState {
+  activeDetailKey: string | null;
+  setActiveDetailKey: Dispatch<SetStateAction<string | null>>;
 }
 
 function useHoverPinnedDisclosure() {
@@ -401,6 +413,8 @@ function EntryCard({
   variant = "this-week",
   accentToday = false,
   displayMode = false,
+  detailKey,
+  displayDetailState,
 }: {
   entry: EntryWithMeta;
   thisWeekMonday: string;
@@ -410,6 +424,8 @@ function EntryCard({
   /** 방송일(열)이 오늘인 경우 제목 강조 */
   accentToday?: boolean;
   displayMode?: boolean;
+  detailKey?: string;
+  displayDetailState?: DisplayDetailState;
 }) {
   const disclosure = useHoverPinnedDisclosure();
 
@@ -478,22 +494,49 @@ function EntryCard({
   const timeClass = displayMode
     ? `text-[22px] leading-tight font-semibold mt-2 ${timeColor}`
     : `text-xs font-medium mt-1 ${timeColor}`;
+  const displayDetailOpen =
+    displayMode &&
+    Boolean(detailKey) &&
+    displayDetailState?.activeDetailKey === detailKey;
+  const detailOpen = displayMode ? displayDetailOpen : disclosure.open;
+  const toggleDisplayDetail = () => {
+    if (!detailKey || !displayDetailState) return;
+    displayDetailState.setActiveDetailKey((current) =>
+      current === detailKey ? null : detailKey
+    );
+  };
+  const closeDisplayDetail = () => {
+    if (!displayDetailState) return;
+    displayDetailState.setActiveDetailKey(null);
+  };
 
   return (
     <div
       ref={disclosure.rootRef}
       className="relative group"
-      onMouseEnter={disclosure.onMouseEnter}
-      onMouseLeave={disclosure.onMouseLeave}
+      onMouseEnter={displayMode ? undefined : disclosure.onMouseEnter}
+      onMouseLeave={displayMode ? undefined : disclosure.onMouseLeave}
       onClick={(e) => {
         if ((e.target as HTMLElement).closest("button,a")) return;
+        if (displayMode) {
+          toggleDisplayDetail();
+          return;
+        }
         disclosure.togglePinned();
       }}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
+          if (displayMode) {
+            toggleDisplayDetail();
+            return;
+          }
           disclosure.togglePinned();
         } else if (e.key === "Escape") {
+          if (displayMode) {
+            closeDisplayDetail();
+            return;
+          }
           disclosure.close();
         }
       }}
@@ -514,7 +557,7 @@ function EntryCard({
         )}
       </div>
 
-      {disclosure.open && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
+      {detailOpen && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
     </div>
   );
 }
@@ -527,6 +570,7 @@ function OtherWeekMergedGrid({
   hideRecordActions,
   inlineEditMode,
   displayMode = false,
+  displayDetailState,
 }: {
   dayGroups: DayGroup[];
   thisWeekMonday: string;
@@ -534,6 +578,7 @@ function OtherWeekMergedGrid({
   hideRecordActions?: boolean;
   inlineEditMode?: boolean;
   displayMode?: boolean;
+  displayDetailState?: DisplayDetailState;
 }) {
   const gridClass = displayMode
     ? "grid w-full grid-cols-6 gap-2 pb-1"
@@ -590,6 +635,8 @@ function OtherWeekMergedGrid({
                         variant="other-week"
                         accentToday={Boolean(ymd && ymd === todayStr)}
                         displayMode={displayMode}
+                        detailKey={`other:${group.date}:${entry.recordId}:${ymd}:${i}`}
+                        displayDetailState={displayDetailState}
                       />
                     </div>
                   );
@@ -606,29 +653,63 @@ function OtherWeekMergedGrid({
 function MonthCalendarMiniEntry({
   entry,
   accentToday,
+  detailKey,
+  displayMode = false,
+  displayDetailState,
 }: {
   entry: EntryWithMeta;
   accentToday: boolean;
+  detailKey: string;
+  displayMode?: boolean;
+  displayDetailState?: DisplayDetailState;
 }) {
   const disclosure = useHoverPinnedDisclosure();
   const headline = entry.programTitle ?? entry.note ?? entry.recordSummary;
   const timeColor = accentToday
     ? "text-yellow-100 font-semibold"
     : "text-gray-300";
+  const displayDetailOpen =
+    displayMode && displayDetailState?.activeDetailKey === detailKey;
+  const detailOpen = displayMode ? displayDetailOpen : disclosure.open;
+  const toggleDisplayDetail = () => {
+    if (!displayDetailState) return;
+    displayDetailState.setActiveDetailKey((current) =>
+      current === detailKey ? null : detailKey
+    );
+  };
+  const closeDisplayDetail = () => {
+    if (!displayDetailState) return;
+    displayDetailState.setActiveDetailKey(null);
+  };
+
   return (
     <div
       ref={disclosure.rootRef}
       className={`relative rounded px-1.5 py-1 cursor-default ${
         accentToday ? "bg-yellow-300/20" : "bg-[#2a222c]"
       }`}
-      onMouseEnter={disclosure.onMouseEnter}
-      onMouseLeave={disclosure.onMouseLeave}
-      onClick={disclosure.togglePinned}
+      onMouseEnter={displayMode ? undefined : disclosure.onMouseEnter}
+      onMouseLeave={displayMode ? undefined : disclosure.onMouseLeave}
+      onClick={() => {
+        if (displayMode) {
+          toggleDisplayDetail();
+          return;
+        }
+        disclosure.togglePinned();
+      }}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
+          if (displayMode) {
+            toggleDisplayDetail();
+            return;
+          }
           disclosure.togglePinned();
         } else if (e.key === "Escape") {
+          if (displayMode) {
+            closeDisplayDetail();
+            return;
+          }
           disclosure.close();
         }
       }}
@@ -647,7 +728,7 @@ function MonthCalendarMiniEntry({
           {entry.time}
         </p>
       )}
-      {disclosure.open && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
+      {detailOpen && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
     </div>
   );
 }
@@ -655,28 +736,55 @@ function MonthCalendarMiniEntry({
 function MonthCalendarOverflowButton({
   entries,
   accentToday,
+  detailKey,
+  displayMode = false,
+  displayDetailState,
 }: {
   entries: EntryWithMeta[];
   accentToday: boolean;
+  detailKey: string;
+  displayMode?: boolean;
+  displayDetailState?: DisplayDetailState;
 }) {
   const disclosure = useHoverPinnedDisclosure();
+  const displayDetailOpen =
+    displayMode && displayDetailState?.activeDetailKey === detailKey;
+  const detailOpen = displayMode ? displayDetailOpen : disclosure.open;
+  const toggleDisplayDetail = () => {
+    if (!displayDetailState) return;
+    displayDetailState.setActiveDetailKey((current) =>
+      current === detailKey ? null : detailKey
+    );
+  };
+  const closeDisplayDetail = () => {
+    if (!displayDetailState) return;
+    displayDetailState.setActiveDetailKey(null);
+  };
 
   return (
     <div
       ref={disclosure.rootRef}
       className="relative"
-      onMouseEnter={disclosure.onMouseEnter}
-      onMouseLeave={disclosure.onMouseLeave}
+      onMouseEnter={displayMode ? undefined : disclosure.onMouseEnter}
+      onMouseLeave={displayMode ? undefined : disclosure.onMouseLeave}
     >
       <button
         type="button"
         className="w-full rounded bg-white/10 px-1.5 py-0.5 text-left text-[11px] font-semibold leading-tight text-gray-200 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#f7a7c1]/70"
         onClick={(e) => {
           e.stopPropagation();
+          if (displayMode) {
+            toggleDisplayDetail();
+            return;
+          }
           disclosure.togglePinned();
         }}
         onKeyDown={(e) => {
           if (e.key === "Escape") {
+            if (displayMode) {
+              closeDisplayDetail();
+              return;
+            }
             disclosure.close();
           }
         }}
@@ -684,7 +792,7 @@ function MonthCalendarOverflowButton({
         +{entries.length}
       </button>
 
-      {disclosure.open && (
+      {detailOpen && (
         <div className="absolute z-[90] left-0 top-full mt-1 w-80 rounded-xl border border-white/10 bg-[#202638] p-3 text-xs text-gray-200 shadow-2xl shadow-black/60">
           <p className="mb-2 text-[12px] font-bold text-white">
             숨겨진 일정 {entries.length}건
@@ -734,9 +842,13 @@ function MonthCalendarOverflowButton({
 function OtherWeekCurrentMonthCalendarGrid({
   calendar,
   todayStr,
+  displayMode = false,
+  displayDetailState,
 }: {
   calendar: MonthCalendar;
   todayStr: string;
+  displayMode?: boolean;
+  displayDetailState?: DisplayDetailState;
 }) {
   const entryCount = calendar.cells.reduce((sum, cell) => sum + cell.entries.length, 0);
   return (
@@ -787,12 +899,18 @@ function OtherWeekCurrentMonthCalendarGrid({
                         key={`${entry.recordId}-${cell.date}-${i}`}
                         entry={entry}
                         accentToday={isToday}
+                        detailKey={`month:${calendar.label}:${cell.date}:${entry.recordId}:${i}`}
+                        displayMode={displayMode}
+                        displayDetailState={displayDetailState}
                       />
                     ))}
                     {cell.entries.length > 3 && (
                       <MonthCalendarOverflowButton
                         entries={cell.entries.slice(3)}
                         accentToday={isToday}
+                        detailKey={`month-overflow:${calendar.label}:${cell.date}`}
+                        displayMode={displayMode}
+                        displayDetailState={displayDetailState}
                       />
                     )}
                   </div>
@@ -809,9 +927,13 @@ function OtherWeekCurrentMonthCalendarGrid({
 function MonthCalendarStack({
   calendars,
   todayStr,
+  displayMode = false,
+  displayDetailState,
 }: {
   calendars: MonthCalendar[];
   todayStr: string;
+  displayMode?: boolean;
+  displayDetailState?: DisplayDetailState;
 }) {
   return (
     <div className="space-y-3">
@@ -820,6 +942,8 @@ function MonthCalendarStack({
           key={calendar.label}
           calendar={calendar}
           todayStr={todayStr}
+          displayMode={displayMode}
+          displayDetailState={displayDetailState}
         />
       ))}
     </div>
@@ -834,6 +958,7 @@ function WeekGrid({
   hideRecordActions,
   inlineEditMode,
   displayMode = false,
+  displayDetailState,
 }: {
   dayGroups: DayGroup[];
   todayStr: string;
@@ -843,6 +968,7 @@ function WeekGrid({
   hideRecordActions?: boolean;
   inlineEditMode?: boolean;
   displayMode?: boolean;
+  displayDetailState?: DisplayDetailState;
 }) {
   const satYmd = weekDays[5] ?? "";
   const sunYmd = weekDays[6] ?? "";
@@ -971,6 +1097,8 @@ function WeekGrid({
                       variant="this-week"
                       accentToday={accentToday}
                       displayMode={displayMode}
+                      detailKey={`week:${group.date}:${entry.recordId}:${ymd}:${i}`}
+                      displayDetailState={displayDetailState}
                     />
                   );
                 })
@@ -1013,6 +1141,7 @@ export default function RecordingWeekView({
   includeNextMonthCalendar?: boolean;
 }) {
   const todayStr = getTodaySeoul();
+  const [activeDetailKey, setActiveDetailKey] = useState<string | null>(null);
   /** 오늘이 속한 주의 월요일 — 제목 색(빨강) 기준 */
   const calendarThisWeekMonday = mondayOfWeekContaining(todayStr);
 
@@ -1052,6 +1181,14 @@ export default function RecordingWeekView({
   const showThis = sections === "both" || sections === "this-week";
   const showOther = sections === "both" || sections === "other-week";
   const showCalendar = displayMode || calendarMode;
+  const displayDetailState = displayMode
+    ? { activeDetailKey, setActiveDetailKey }
+    : undefined;
+
+  useEffect(() => {
+    if (!displayMode) return;
+    setActiveDetailKey(null);
+  }, [displayMode, displayCalendarMonthOffset, records, sections]);
 
   const thisWeekSectionClass = embedded
     ? displayMode
@@ -1127,6 +1264,7 @@ export default function RecordingWeekView({
                     hideRecordActions={hideRecordActions}
                     inlineEditMode={inlineEditMode}
                     displayMode={displayMode}
+                    displayDetailState={displayDetailState}
                   />
                 </section>
               )}
@@ -1146,6 +1284,8 @@ export default function RecordingWeekView({
                     <MonthCalendarStack
                       calendars={calendarList}
                       todayStr={todayStr}
+                      displayMode={displayMode}
+                      displayDetailState={displayDetailState}
                     />
                   ) : hasOtherWeekAny ? (
                     <OtherWeekMergedGrid
@@ -1155,6 +1295,7 @@ export default function RecordingWeekView({
                       hideRecordActions={hideRecordActions}
                       inlineEditMode={inlineEditMode}
                       displayMode={displayMode}
+                      displayDetailState={displayDetailState}
                     />
                   ) : (
                     <div className="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-center">
