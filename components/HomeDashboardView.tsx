@@ -9,7 +9,7 @@ type DisplaySlide = "this-week" | "other-week";
 
 const DISPLAY_SLIDE_MS: Record<DisplaySlide, number> = {
   "this-week": 30_000,
-  "other-week": 20_000,
+  "other-week": 10_000,
 };
 
 /** 한 글자씩 세로로 쌓아 라벨 폭을 최소화 */
