@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ScheduleRecord, ScheduleEntry } from "@/lib/types";
 import {
   isSundayYmd,
@@ -65,6 +65,51 @@ interface MonthCalendarCell {
 interface MonthCalendar {
   label: string;
   cells: MonthCalendarCell[];
+}
+
+function useHoverPinnedDisclosure() {
+  const [hoverOpen, setHoverOpen] = useState(false);
+  const [pinnedOpen, setPinnedOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!pinnedOpen) return;
+
+    const handleOutsidePress = (event: MouseEvent | TouchEvent) => {
+      const target = event.target;
+      if (
+        target instanceof Node &&
+        rootRef.current &&
+        rootRef.current.contains(target)
+      ) {
+        return;
+      }
+      setPinnedOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleOutsidePress, true);
+    document.addEventListener("touchstart", handleOutsidePress, true);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsidePress, true);
+      document.removeEventListener("touchstart", handleOutsidePress, true);
+    };
+  }, [pinnedOpen]);
+
+  return {
+    rootRef,
+    open: hoverOpen || pinnedOpen,
+    onMouseEnter: () => setHoverOpen(true),
+    onMouseLeave: () => setHoverOpen(false),
+    togglePinned: () => {
+      setPinnedOpen((value) => !value);
+      setHoverOpen(false);
+    },
+    close: () => {
+      setHoverOpen(false);
+      setPinnedOpen(false);
+    },
+  };
 }
 
 /** entries[].date가 없으면 period 첫 날짜, 없으면 업로드일(서울 달력) */
@@ -302,7 +347,7 @@ function EntryDetailPopover({
   timeColor: string;
 }) {
   return (
-    <div className="absolute z-50 left-0 top-full mt-1 w-72 rounded-xl bg-gradient-to-br from-[#323a52] to-[#252b3d] p-4 text-xs text-gray-200 space-y-1.5 shadow-xl shadow-black/40 ring-1 ring-white/10">
+    <div className="absolute z-[80] left-0 top-full mt-1 w-72 rounded-xl border border-white/10 bg-[#202638] p-4 text-xs text-gray-200 space-y-1.5 shadow-2xl shadow-black/60">
       {entry.programTitle && (
         <p className="font-semibold text-sm text-white">
           {entry.programTitle}
@@ -366,7 +411,7 @@ function EntryCard({
   accentToday?: boolean;
   displayMode?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const disclosure = useHoverPinnedDisclosure();
 
   const headline =
     entry.programTitle ?? entry.note ?? entry.recordSummary;
@@ -436,23 +481,20 @@ function EntryCard({
 
   return (
     <div
+      ref={disclosure.rootRef}
       className="relative group"
-      onMouseEnter={() => {
-        setOpen(true);
-      }}
-      onMouseLeave={() => {
-        setOpen(false);
-      }}
+      onMouseEnter={disclosure.onMouseEnter}
+      onMouseLeave={disclosure.onMouseLeave}
       onClick={(e) => {
         if ((e.target as HTMLElement).closest("button,a")) return;
-        setOpen((v) => !v);
+        disclosure.togglePinned();
       }}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          setOpen((v) => !v);
+          disclosure.togglePinned();
         } else if (e.key === "Escape") {
-          setOpen(false);
+          disclosure.close();
         }
       }}
       role="button"
@@ -472,7 +514,7 @@ function EntryCard({
         )}
       </div>
 
-      {open && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
+      {disclosure.open && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
     </div>
   );
 }
@@ -568,25 +610,26 @@ function MonthCalendarMiniEntry({
   entry: EntryWithMeta;
   accentToday: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const disclosure = useHoverPinnedDisclosure();
   const headline = entry.programTitle ?? entry.note ?? entry.recordSummary;
   const timeColor = accentToday
     ? "text-yellow-100 font-semibold"
     : "text-gray-300";
   return (
     <div
+      ref={disclosure.rootRef}
       className={`relative rounded px-1.5 py-1 cursor-default ${
         accentToday ? "bg-yellow-300/20" : "bg-[#2a222c]"
       }`}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onClick={() => setOpen((v) => !v)}
+      onMouseEnter={disclosure.onMouseEnter}
+      onMouseLeave={disclosure.onMouseLeave}
+      onClick={disclosure.togglePinned}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          setOpen((v) => !v);
+          disclosure.togglePinned();
         } else if (e.key === "Escape") {
-          setOpen(false);
+          disclosure.close();
         }
       }}
       role="button"
@@ -604,7 +647,86 @@ function MonthCalendarMiniEntry({
           {entry.time}
         </p>
       )}
-      {open && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
+      {disclosure.open && <EntryDetailPopover entry={entry} timeColor={timeColor} />}
+    </div>
+  );
+}
+
+function MonthCalendarOverflowButton({
+  entries,
+  accentToday,
+}: {
+  entries: EntryWithMeta[];
+  accentToday: boolean;
+}) {
+  const disclosure = useHoverPinnedDisclosure();
+
+  return (
+    <div
+      ref={disclosure.rootRef}
+      className="relative"
+      onMouseEnter={disclosure.onMouseEnter}
+      onMouseLeave={disclosure.onMouseLeave}
+    >
+      <button
+        type="button"
+        className="w-full rounded bg-white/10 px-1.5 py-0.5 text-left text-[11px] font-semibold leading-tight text-gray-200 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#f7a7c1]/70"
+        onClick={(e) => {
+          e.stopPropagation();
+          disclosure.togglePinned();
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            disclosure.close();
+          }
+        }}
+      >
+        +{entries.length}
+      </button>
+
+      {disclosure.open && (
+        <div className="absolute z-[90] left-0 top-full mt-1 w-80 rounded-xl border border-white/10 bg-[#202638] p-3 text-xs text-gray-200 shadow-2xl shadow-black/60">
+          <p className="mb-2 text-[12px] font-bold text-white">
+            숨겨진 일정 {entries.length}건
+          </p>
+          <div className="max-h-72 space-y-2 overflow-y-auto pr-1">
+            {entries.map((entry, index) => {
+              const headline =
+                entry.programTitle ?? entry.note ?? entry.recordSummary;
+              return (
+                <div
+                  key={`${entry.recordId}-${entry.date ?? "hidden"}-${index}`}
+                  className={`rounded-lg border p-2 ${
+                    accentToday
+                      ? "border-yellow-300/25 bg-yellow-300/10"
+                      : "border-white/10 bg-black/20"
+                  }`}
+                >
+                  <p className="font-semibold leading-snug text-white">
+                    {headline}
+                  </p>
+                  {entry.time && (
+                    <p className="mt-1 font-medium text-gray-300">
+                      {entry.time}
+                    </p>
+                  )}
+                  {entry.place && (
+                    <p className="mt-1 text-gray-300">장소 {entry.place}</p>
+                  )}
+                  {entry.person && (
+                    <p className="mt-1 text-gray-300">담당 {entry.person}</p>
+                  )}
+                  {(entry.note || entry.recordMemo) && (
+                    <p className="mt-1 leading-snug text-gray-400">
+                      {entry.note || entry.recordMemo}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -660,17 +782,18 @@ function OtherWeekCurrentMonthCalendarGrid({
                     {day}
                   </p>
                   <div className="flex flex-col gap-1">
-                    {cell.entries.slice(0, 2).map((entry, i) => (
+                    {cell.entries.slice(0, 3).map((entry, i) => (
                       <MonthCalendarMiniEntry
                         key={`${entry.recordId}-${cell.date}-${i}`}
                         entry={entry}
                         accentToday={isToday}
                       />
                     ))}
-                    {cell.entries.length > 2 && (
-                      <p className="rounded bg-white/5 px-1.5 py-0.5 text-[11px] font-semibold leading-tight text-gray-300">
-                        +{cell.entries.length - 2}
-                      </p>
+                    {cell.entries.length > 3 && (
+                      <MonthCalendarOverflowButton
+                        entries={cell.entries.slice(3)}
+                        accentToday={isToday}
+                      />
                     )}
                   </div>
                 </>
@@ -724,8 +847,11 @@ function WeekGrid({
   const satYmd = weekDays[5] ?? "";
   const sunYmd = weekDays[6] ?? "";
   const gridClass = displayMode
-    ? "grid w-full grid-cols-6 gap-2 pb-1"
-    : "grid w-full min-w-0 grid-cols-6 gap-2 overflow-x-auto pb-1";
+    ? "flex w-full items-stretch pb-1"
+    : "flex w-full min-w-0 items-stretch overflow-x-auto pb-1";
+  const columnWrapClass = displayMode
+    ? "w-1/6 px-1"
+    : "w-1/6 min-w-0 px-1";
   const dayLabelClass = displayMode ? "text-xl" : "text-xs";
   const dateLabelClass = displayMode ? "text-xl" : "text-xs";
   const weekendDateClass = displayMode
@@ -753,102 +879,103 @@ function WeekGrid({
         const [, moSun, daSun] = sunYmd.split("-").map(Number);
 
         return (
-          <div
-            key={group.date}
-            className={`rounded-xl border p-2 flex flex-col gap-2 ${
-              displayMode ? "" : "min-w-0"
-            } ${
-              isToday
-                ? "border-[#4361DE] bg-[#4361DE]/20"
-                : "border-[#4361DE]/20 bg-black/40"
-            }`}
-          >
-            {isWeekendCol ? (
-              <div className="flex flex-col gap-1 px-0.5">
-                <div className="flex items-center justify-between">
-                  <span
-                    className={`${dayLabelClass} font-bold ${
-                      isToday ? "text-[#9ab0ff]" : "text-[#f7a7c1]"
-                    }`}
-                  >
-                    {dayLabel}
-                  </span>
+          <div key={group.date} className={columnWrapClass}>
+            <div
+              className={`h-full rounded-xl border p-2 flex flex-col gap-2 ${
+                displayMode ? "" : "min-w-0"
+              } ${
+                isToday
+                  ? "border-[#4361DE] bg-[#4361DE]/20"
+                  : "border-[#4361DE]/20 bg-black/40"
+              }`}
+            >
+              {isWeekendCol ? (
+                <div className="flex flex-col gap-1 px-0.5">
+                  <div className="flex items-center justify-between">
+                    <span
+                      className={`${dayLabelClass} font-bold ${
+                        isToday ? "text-[#9ab0ff]" : "text-[#f7a7c1]"
+                      }`}
+                    >
+                      {dayLabel}
+                    </span>
+                  </div>
+                  <div className={weekendDateClass}>
+                    <span
+                      className={
+                        todayStr === satYmd
+                          ? "font-semibold text-[#9ab0ff]"
+                          : "text-[#f7a7c1]/80"
+                      }
+                    >
+                      토 {pad2(moSat)}/{pad2(daSat)}
+                    </span>
+                    <span
+                      className={
+                        todayStr === sunYmd
+                          ? "font-semibold text-[#9ab0ff]"
+                          : "text-[#f7a7c1]/80"
+                      }
+                    >
+                      일 {pad2(moSun)}/{pad2(daSun)}
+                    </span>
+                  </div>
                 </div>
-                <div className={weekendDateClass}>
-                  <span
-                    className={
-                      todayStr === satYmd
-                        ? "font-semibold text-[#9ab0ff]"
-                        : "text-[#f7a7c1]/80"
-                    }
-                  >
-                    토 {pad2(moSat)}/{pad2(daSat)}
-                  </span>
-                  <span
-                    className={
-                      todayStr === sunYmd
-                        ? "font-semibold text-[#9ab0ff]"
-                        : "text-[#f7a7c1]/80"
-                    }
-                  >
-                    일 {pad2(moSun)}/{pad2(daSun)}
-                  </span>
+              ) : (
+                <div className="px-1">
+                  <div className="flex items-center justify-between">
+                    <span
+                      className={`${dayLabelClass} font-bold ${
+                        isToday
+                          ? "text-[#9ab0ff]"
+                          : isWeekend
+                            ? "text-[#f7a7c1]"
+                            : "text-gray-200"
+                      }`}
+                    >
+                      {dayLabel}
+                    </span>
+                    <span
+                      className={`${dateLabelClass} ${
+                        isToday
+                          ? "text-[#9ab0ff] font-semibold"
+                          : isWeekend
+                            ? "text-[#f7a7c1]/80"
+                            : "text-gray-500"
+                      }`}
+                    >
+                      {pad2(mo)}/{pad2(da)}
+                    </span>
+                  </div>
+                  {idx === 4 && isSecondOrFourthFriday(group.date) && (
+                    <p className={fridayNoteClass}>
+                      4.5일
+                    </p>
+                  )}
                 </div>
-              </div>
-            ) : (
-              <div className="px-1">
-                <div className="flex items-center justify-between">
-                  <span
-                    className={`${dayLabelClass} font-bold ${
-                      isToday
-                        ? "text-[#9ab0ff]"
-                        : isWeekend
-                          ? "text-[#f7a7c1]"
-                          : "text-gray-200"
-                    }`}
-                  >
-                    {dayLabel}
-                  </span>
-                  <span
-                    className={`${dateLabelClass} ${
-                      isToday
-                        ? "text-[#9ab0ff] font-semibold"
-                        : isWeekend
-                          ? "text-[#f7a7c1]/80"
-                          : "text-gray-500"
-                    }`}
-                  >
-                    {pad2(mo)}/{pad2(da)}
-                  </span>
-                </div>
-                {idx === 4 && isSecondOrFourthFriday(group.date) && (
-                  <p className={fridayNoteClass}>
-                    4.5일
-                  </p>
-                )}
-              </div>
-            )}
+              )}
 
-            {group.entries.length === 0 ? (
-              <p className={emptyClass}>일정 없음</p>
-            ) : (
-              group.entries.map((entry, i) => {
-                const ymd = entry.date ? toSeoulDateYmd(entry.date) : "";
-                const accentToday = Boolean(ymd && ymd === todayStr);
-                return (
-                  <EntryCard
-                    key={`${entry.recordId}-${group.date}-${i}`}
-                    entry={entry}
-                    thisWeekMonday={thisWeekMonday}
-                    hideRecordActions={hideRecordActions}
-                    inlineEditMode={inlineEditMode}
-                    variant="this-week"
-                    accentToday={accentToday}
-                    displayMode={displayMode}
-                  />
-                );
-              })
-            )}
+              {group.entries.length === 0 ? (
+                <p className={emptyClass}>일정 없음</p>
+              ) : (
+                group.entries.map((entry, i) => {
+                  const ymd = entry.date ? toSeoulDateYmd(entry.date) : "";
+                  const accentToday = Boolean(ymd && ymd === todayStr);
+                  return (
+                    <EntryCard
+                      key={`${entry.recordId}-${group.date}-${i}`}
+                      entry={entry}
+                      thisWeekMonday={thisWeekMonday}
+                      hideRecordActions={hideRecordActions}
+                      inlineEditMode={inlineEditMode}
+                      variant="this-week"
+                      accentToday={accentToday}
+                      displayMode={displayMode}
+                    />
+                  );
+                })
+              )}
+            </div>
           </div>
         );
       })}
