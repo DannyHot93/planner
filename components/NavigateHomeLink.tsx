@@ -7,7 +7,7 @@ const DISPLAY_MODE_STORAGE = "planner_display_mode";
 function isDisplayModeReturn(): boolean {
   if (typeof window === "undefined") return false;
   const params = new URLSearchParams(window.location.search);
-  if (params.get("display") === "1") {
+  if (window.location.pathname === "/display" || params.get("display") === "1") {
     try {
       sessionStorage.setItem(DISPLAY_MODE_STORAGE, "1");
     } catch {
@@ -37,7 +37,7 @@ export default function NavigateHomeLink({
   const [href, setHref] = useState("/");
 
   useEffect(() => {
-    setHref(isDisplayModeReturn() ? "/?display=1" : "/");
+    setHref(isDisplayModeReturn() ? "/display" : "/");
   }, []);
 
   return (
@@ -46,7 +46,7 @@ export default function NavigateHomeLink({
       className={className}
       onClick={(e) => {
         e.preventDefault();
-        window.location.replace(isDisplayModeReturn() ? "/?display=1" : "/");
+        window.location.replace(isDisplayModeReturn() ? "/display" : "/");
       }}
     >
       {children}

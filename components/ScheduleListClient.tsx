@@ -12,7 +12,7 @@ const REMOVED_IDS_STORAGE = "planner_removed_ids_v1";
 /** GitHub/Next 캐시가 따라잡지 못한 짧은 창 동안 삭제 묘비 유지 */
 const REMOVED_TOMBSTONE_TTL_MS = 10 * 60 * 1000;
 
-/** 상시 모니터 모드(?display=1)에서만 주기적 갱신 */
+/** 상시 모니터 모드(/display 또는 ?display=1)에서만 주기적 갱신 */
 const DISPLAY_POLL_INTERVAL_MS = 120_000;
 
 /** Google 캘린더 기본 진입(계정·뷰는 로그인 세션에 맡김) */
@@ -145,7 +145,11 @@ async function fetchPlannerData(): Promise<{
   }>;
 }
 
-export default function ScheduleListClient() {
+export default function ScheduleListClient({
+  forceDisplayMode = false,
+}: {
+  forceDisplayMode?: boolean;
+}) {
   const [loadStatus, setLoadStatus] = useState<LoadStatus>("loading");
   const [loadError, setLoadError] = useState<string | null>(null);
   const [records, setRecords] = useState<ScheduleRecord[]>([]);
@@ -165,6 +169,8 @@ export default function ScheduleListClient() {
 
   useEffect(() => {
     const isDisplayMode =
+      forceDisplayMode ||
+      window.location.pathname === "/display" ||
       new URLSearchParams(window.location.search).get("display") === "1";
     try {
       if (isDisplayMode) {
@@ -178,12 +184,15 @@ export default function ScheduleListClient() {
     setDisplayMode(isDisplayMode);
     setTombstones(readTombstones());
     const ui = readUiState();
-    if (ui) {
+    if (isDisplayMode) {
+      setActiveTab("schedule");
+      setEditMode(false);
+    } else if (ui) {
       setActiveTab(ui.activeTab);
       setEditMode(ui.editMode);
     }
     setUiHydrated(true);
-  }, []);
+  }, [forceDisplayMode]);
 
   const applyPayload = useCallback((payload: { allRecords: ScheduleRecord[]; castingRecords: ScheduleRecord[] }) => {
     setRecords(payload.allRecords);

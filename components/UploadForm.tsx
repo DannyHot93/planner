@@ -28,7 +28,7 @@ const DISPLAY_MODE_STORAGE = "planner_display_mode";
 function isDisplayModeUpload(): boolean {
   if (typeof window === "undefined") return false;
   const params = new URLSearchParams(window.location.search);
-  if (params.get("display") === "1") {
+  if (window.location.pathname === "/display" || params.get("display") === "1") {
     try {
       sessionStorage.setItem(DISPLAY_MODE_STORAGE, "1");
     } catch {
