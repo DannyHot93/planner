@@ -668,6 +668,13 @@ function MonthCalendarMiniEntry({
   const timeColor = accentToday
     ? "text-yellow-100 font-semibold"
     : "text-gray-300";
+  const titleClass = displayMode
+    ? "truncate text-[24px] font-semibold leading-tight"
+    : "truncate text-[12px] font-semibold leading-tight";
+  const timeClass = displayMode
+    ? "mt-1 truncate text-[22px] font-medium leading-tight text-gray-300"
+    : "mt-0.5 truncate text-[11px] font-medium leading-tight text-gray-300";
+  const entryPaddingClass = displayMode ? "px-2 py-1.5" : "px-1.5 py-1";
   const displayDetailOpen =
     displayMode && displayDetailState?.activeDetailKey === detailKey;
   const detailOpen = displayMode ? displayDetailOpen : disclosure.open;
@@ -685,7 +692,7 @@ function MonthCalendarMiniEntry({
   return (
     <div
       ref={disclosure.rootRef}
-      className={`relative rounded px-1.5 py-1 cursor-default ${
+      className={`relative rounded cursor-default ${entryPaddingClass} ${
         accentToday ? "bg-yellow-300/20" : "bg-[#2a222c]"
       }`}
       onMouseEnter={displayMode ? undefined : disclosure.onMouseEnter}
@@ -717,14 +724,14 @@ function MonthCalendarMiniEntry({
       tabIndex={0}
     >
       <p
-        className={`truncate text-[12px] font-semibold leading-tight ${
+        className={`${titleClass} ${
           accentToday ? "text-yellow-200" : "text-white"
         }`}
       >
         {headline}
       </p>
       {entry.time && (
-        <p className="mt-0.5 truncate text-[11px] font-medium leading-tight text-gray-300">
+        <p className={timeClass}>
           {entry.time}
         </p>
       )}
@@ -747,6 +754,9 @@ function MonthCalendarOverflowButton({
   displayDetailState?: DisplayDetailState;
 }) {
   const disclosure = useHoverPinnedDisclosure();
+  const overflowButtonClass = displayMode
+    ? "w-full rounded bg-white/10 px-2 py-1 text-left text-[22px] font-semibold leading-tight text-gray-200 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#f7a7c1]/70"
+    : "w-full rounded bg-white/10 px-1.5 py-0.5 text-left text-[11px] font-semibold leading-tight text-gray-200 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#f7a7c1]/70";
   const displayDetailOpen =
     displayMode && displayDetailState?.activeDetailKey === detailKey;
   const detailOpen = displayMode ? displayDetailOpen : disclosure.open;
@@ -770,7 +780,7 @@ function MonthCalendarOverflowButton({
     >
       <button
         type="button"
-        className="w-full rounded bg-white/10 px-1.5 py-0.5 text-left text-[11px] font-semibold leading-tight text-gray-200 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#f7a7c1]/70"
+        className={overflowButtonClass}
         onClick={(e) => {
           e.stopPropagation();
           if (displayMode) {
@@ -851,19 +861,42 @@ function OtherWeekCurrentMonthCalendarGrid({
   displayDetailState?: DisplayDetailState;
 }) {
   const entryCount = calendar.cells.reduce((sum, cell) => sum + cell.entries.length, 0);
+  const wrapClass = displayMode
+    ? "rounded-lg border border-[#CD366D]/25 bg-[#100b10] p-3"
+    : "rounded-lg border border-[#CD366D]/25 bg-[#100b10] p-2";
+  const headerClass = displayMode
+    ? "mb-3 flex items-center justify-between"
+    : "mb-1.5 flex items-center justify-between";
+  const titleClass = displayMode
+    ? "text-[32px] font-bold leading-tight text-[#f7a7c1]"
+    : "text-base font-bold text-[#f7a7c1]";
+  const countClass = displayMode
+    ? "text-[22px] font-semibold leading-tight text-[#f7a7c1]/70"
+    : "text-[11px] font-semibold text-[#f7a7c1]/70";
+  const gridClass = displayMode ? "grid grid-cols-7 gap-2" : "grid grid-cols-7 gap-1";
+  const dayHeaderClass = displayMode
+    ? "rounded border border-white/5 bg-black/35 py-1 text-center text-[22px] font-bold"
+    : "rounded border border-white/5 bg-black/35 py-0.5 text-center text-[11px] font-bold";
+  const cellClass = displayMode
+    ? "min-h-[150px] rounded border p-2"
+    : "min-h-[70px] rounded border p-1";
+  const dayNumberClass = displayMode
+    ? "mb-1 text-[24px] font-bold leading-tight"
+    : "mb-0.5 text-[12px] font-bold leading-tight";
+  const entryGapClass = displayMode ? "flex flex-col gap-2" : "flex flex-col gap-1";
   return (
-    <div className="rounded-lg border border-[#CD366D]/25 bg-[#100b10] p-2">
-      <div className="mb-1.5 flex items-center justify-between">
-        <h5 className="text-base font-bold text-[#f7a7c1]">{calendar.label}</h5>
-        <span className="text-[11px] font-semibold text-[#f7a7c1]/70">
+    <div className={wrapClass}>
+      <div className={headerClass}>
+        <h5 className={titleClass}>{calendar.label}</h5>
+        <span className={countClass}>
           전체 {entryCount}건
         </span>
       </div>
-      <div className="grid grid-cols-7 gap-1">
+      <div className={gridClass}>
         {DAY_LABELS.map((label, idx) => (
           <div
             key={label}
-            className={`rounded border border-white/5 bg-black/35 py-0.5 text-center text-[11px] font-bold ${
+            className={`${dayHeaderClass} ${
               idx >= 5 ? "text-[#f7a7c1]" : "text-gray-300"
             }`}
           >
@@ -876,7 +909,7 @@ function OtherWeekCurrentMonthCalendarGrid({
           return (
             <div
               key={`${cell.date ?? "blank"}-${idx}`}
-              className={`min-h-[70px] rounded border p-1 ${
+              className={`${cellClass} ${
                 cell.date
                   ? isToday
                     ? "border-yellow-300/70 bg-yellow-300/10"
@@ -887,13 +920,13 @@ function OtherWeekCurrentMonthCalendarGrid({
               {cell.date && (
                 <>
                   <p
-                    className={`mb-0.5 text-[12px] font-bold leading-tight ${
+                    className={`${dayNumberClass} ${
                       isToday ? "text-yellow-300" : "text-[#f7a7c1]/80"
                     }`}
                   >
                     {day}
                   </p>
-                  <div className="flex flex-col gap-1">
+                  <div className={entryGapClass}>
                     {cell.entries.slice(0, 3).map((entry, i) => (
                       <MonthCalendarMiniEntry
                         key={`${entry.recordId}-${cell.date}-${i}`}
