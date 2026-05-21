@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1779323075388_884c7fe4",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-21T00:24:35.389Z",
+    "memo": "",
+    "summary": "전국시대 프로그램의 2020년 6월 2일 공개홀 스튜디오 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-06-02",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": "스튜디오 녹화"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1779169927074_5e3cb299",
     "type": "production-schedule",
     "uploadedAt": "2026-05-19T05:52:07.075Z",
