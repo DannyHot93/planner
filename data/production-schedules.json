@@ -21,27 +21,6 @@
     }
   },
   {
-    "id": "ps_1779169927074_5e3cb299",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-19T05:52:07.075Z",
-    "memo": "",
-    "summary": "정오의 희망곡 프로그램의 '빨간맛 페스티벌 레드핫 콘서트' 녹화 의뢰서로, 2024년 5월 23일 괴산 유기농 엑스포 광장 주무대에서 19시부터 20시 30분까지 진행됩니다.",
-    "details": {
-      "period": null,
-      "title": "정오의 희망곡",
-      "entries": [
-        {
-          "date": "2026-05-23",
-          "time": "19:00-20:30",
-          "place": "괴산 유기농 엑스포 광장 주무대",
-          "person": "담당PD: 최다원, 출연: 나비, 이보람, 유성은",
-          "note": "빨간맛 페스티벌 레드핫 콘서트 (정오의 희망곡 공개방송). 문의: 황영은 작가님."
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1779094609065_03609425",
     "type": "production-schedule",
     "uploadedAt": "2026-05-18T08:56:49.066Z",
@@ -57,27 +36,6 @@
           "place": "4층 스튜디오",
           "person": "담당PD: 민수빈, 출연: 이종렬 사진가",
           "note": "방송일시: 2026-06-13, 중계차 스튜디오 O"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1778819442287_db187056",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-15T04:30:42.288Z",
-    "memo": "",
-    "summary": "전국시대 프로그램의 스튜디오 녹화 일정입니다.",
-    "details": {
-      "period": null,
-      "title": "전국시대",
-      "entries": [
-        {
-          "date": "2026-05-19",
-          "time": "10:30-11:30",
-          "place": "공개홀",
-          "person": "장세일 (담당PD), 박서영 (아나운서)",
-          "note": "전국시대 스튜디오 녹화"
         }
       ],
       "scheduleType": "production"
@@ -147,45 +105,6 @@
     }
   },
   {
-    "id": "ps_1777798379107_77fe087a",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-03T08:52:59.136Z",
-    "memo": "제천시장 후보자 토론회 · 2026-05-18",
-    "summary": "제천시장 후보자 토론회 · 2026-05-18 18:00~19:00",
-    "details": {
-      "title": "제천시장 후보자 토론회",
-      "program": "제천시장 후보자 토론회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-05-18",
-          "time": "18:00~19:00",
-          "place": "공개홀"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1777632893970_0f2776f4",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-01T10:54:54.001Z",
-    "memo": "초청",
-    "summary": "괴산군수 후보자 토론회 · 2026-05-22 12:30~13:50",
-    "details": {
-      "title": "괴산군수 후보자 토론회",
-      "program": "괴산군수 후보자 토론회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-05-22",
-          "time": "12:30~13:50",
-          "place": "공개홀",
-          "note": "초청"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1777632756984_bdab0379",
     "type": "production-schedule",
     "uploadedAt": "2026-05-01T10:52:37.014Z",
@@ -199,26 +118,6 @@
         {
           "date": "2026-05-26",
           "time": "23:00~24:20",
-          "place": "공개홀",
-          "note": "초청"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1777632617480_6a1cb4d1",
-    "type": "production-schedule",
-    "uploadedAt": "2026-05-01T10:50:17.512Z",
-    "memo": "초청",
-    "summary": "옥천군수 후보자 토론회 · 2026-05-21 17:10~18:30",
-    "details": {
-      "title": "옥천군수 후보자 토론회",
-      "program": "옥천군수 후보자 토론회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-05-21",
-          "time": "17:10~18:30",
           "place": "공개홀",
           "note": "초청"
         }
