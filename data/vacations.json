@@ -1,5 +1,30 @@
 [
   {
+    "id": "vac_1779864759781_ea5a5553",
+    "type": "vacation",
+    "uploadedAt": "2026-05-27T06:52:39.781Z",
+    "memo": "구분: 휴가",
+    "summary": "이종학 · 2026-06-01 ~ 2026-06-02",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-06-01 ~ 2026-06-02",
+      "entries": [
+        {
+          "date": "2026-06-01",
+          "person": "이종학",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        },
+        {
+          "date": "2026-06-02",
+          "person": "이종학",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1779864758864_eec17d42",
     "type": "vacation",
     "uploadedAt": "2026-05-27T06:52:38.865Z",
