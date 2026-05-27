@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1779919561312_b08a1161",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-27T22:06:01.314Z",
+    "memo": "더빙 · 2026-05-28",
+    "summary": "더빙 · 2026-05-28",
+    "details": {
+      "title": "더빙",
+      "program": "더빙",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-05-28"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1779323075388_884c7fe4",
     "type": "production-schedule",
     "uploadedAt": "2026-05-21T00:24:35.389Z",
