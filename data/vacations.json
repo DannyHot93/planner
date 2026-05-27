@@ -1,5 +1,30 @@
 [
   {
+    "id": "vac_1779864763549_97be734b",
+    "type": "vacation",
+    "uploadedAt": "2026-05-27T06:52:43.550Z",
+    "memo": "구분: 출장",
+    "summary": "오승민 · 2026-05-21 ~ 2026-05-22",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-05-21 ~ 2026-05-22",
+      "entries": [
+        {
+          "date": "2026-05-21",
+          "person": "오승민",
+          "reason": "구분: 출장",
+          "note": "구분: 출장"
+        },
+        {
+          "date": "2026-05-22",
+          "person": "오승민",
+          "reason": "구분: 출장",
+          "note": "구분: 출장"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1779864762861_41f8575a",
     "type": "vacation",
     "uploadedAt": "2026-05-27T06:52:42.861Z",
