@@ -1,5 +1,24 @@
 [
   {
+    "id": "ps_1779944994111_c036542f",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-28T05:09:54.112Z",
+    "memo": "선거방송 리허설 · 2026-06-01",
+    "summary": "선거방송 리허설 · 2026-06-01 14:00",
+    "details": {
+      "title": "선거방송 리허설",
+      "program": "선거방송 리허설",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-01",
+          "time": "14:00",
+          "place": "공개홀"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1779919561312_b08a1161",
     "type": "production-schedule",
     "uploadedAt": "2026-05-27T22:06:01.314Z",
