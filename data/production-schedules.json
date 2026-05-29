@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1780032709171_cebfb2be",
+    "type": "production-schedule",
+    "uploadedAt": "2026-05-29T05:31:49.171Z",
+    "memo": "개표방송 리허설 · 2026-06-01",
+    "summary": "개표방송 리허설 · 2026-06-01 16:00",
+    "details": {
+      "title": "개표방송 리허설",
+      "program": "개표방송 리허설",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-01",
+          "time": "16:00"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1780027649916_7bae2776",
     "type": "production-schedule",
     "uploadedAt": "2026-05-29T04:07:29.917Z",
