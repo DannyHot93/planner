@@ -218,7 +218,7 @@ export default function HomeDashboardView({
                       records={officeRecords}
                       sections="other-week"
                       embedded
-                      hideRecordActions
+                      hideRecordActions={!editMode}
                       inlineEditMode={editMode}
                       displayMode={displayMode}
                       calendarMode
@@ -238,7 +238,7 @@ export default function HomeDashboardView({
                       records={productionRecords}
                       sections="other-week"
                       embedded
-                      hideRecordActions
+                      hideRecordActions={!editMode}
                       inlineEditMode={editMode}
                       displayMode={displayMode}
                       calendarMode

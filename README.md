@@ -1,28 +1,41 @@
-# 일정 플래너 (Planner)
+# 일정 플래너
 
-근무·휴가·사무실·제작 일정을 **이미지 업로드** 또는 **폼 입력**으로 등록하면, 서버에서 **Google Gemini**로 분석하고 결과를 JSON으로 만든 뒤 **GitHub 저장소**에 커밋합니다. [Vercel](https://vercel.com)에 연결해 두면 `main` 푸시 시 자동 배포되고, 공개 홈에서 최신 일정을 볼 수 있습니다.
+이미지 업로드나 직접 입력으로 근무표, 휴가, 사무실 일정, 제작 일정을 등록하고 한 화면에서 확인하는 Next.js 기반 일정판입니다. 업로드한 이미지는 Gemini로 분석해 구조화하고, 결과 데이터는 GitHub 저장소의 `data/*.json`에 저장합니다. Vercel에 연결하면 `main` 브랜치 푸시 기준으로 자동 배포됩니다.
 
 ## 주요 기능
 
-| 구분 | 설명 |
-|------|------|
-| **홈 `/`** | 상단 탭: **일정**(대시보드) · **근무표** · **휴가** · **사무실일정** · **제작일정** |
-| **일정 탭** | 이번 주 / 이번 주 외 사무실·제작 일정 요약, 우측에 휴가(오늘의 휴가·부서별) |
-| **업로드 `/submit`** | 문서 종류 선택, 이미지·메모·폼 입력 → AI 분석 후 GitHub에 저장 |
-| **데이터** | 서버가 `data/*.json`을 읽고(GitHub 연동 시 원격 우선), 업로드 시 Contents API로 커밋 |
+| 영역 | 설명 |
+| --- | --- |
+| 홈 `/` | 일반 사용자용 일정판. 일정, 근무표, 휴가, 사무실일정, 제작일정 탭을 제공합니다. |
+| 디스플레이 `/display` | 삼성 Flip Pro/Tizen 브라우저를 고려한 상시 모니터 모드입니다. 자동 갱신과 로테이션 화면을 제공합니다. |
+| 업로드 `/submit` | 이미지 업로드 또는 폼 입력으로 일정을 등록합니다. 디스플레이 모드에서 이동하면 업로드 후 `/display`로 돌아옵니다. |
+| 일정 탭 | 이번 주 사무실/제작 일정, 월간 캘린더, 휴가 요약을 한 화면에서 보여줍니다. |
+| 사무실/제작 탭 | 이번 주 일정과 이번 달/다음 달 월간 캘린더를 보여줍니다. |
+| 편집/삭제 | 일정 탭의 편집 모드에서 월간 캘린더 일정 수정/삭제가 가능하고, 사무실/제작 탭에서도 월간 캘린더 삭제를 지원합니다. |
+| Google Calendar 연동 | 설정 시 Google Calendar의 사무실 일정을 읽어 홈 데이터에 합칩니다. 읽기 전용 일정은 GitHub에 저장하거나 삭제하지 않습니다. |
+
+## 디스플레이 모드
+
+- 권장 URL: `https://planner-ecru-beta.vercel.app/display`
+- 기존 `/?display=1` 접근도 `/display`로 연결됩니다.
+- `/display`에서만 `/api/planner-data`를 2분마다 폴링합니다.
+- 일반 `/` 화면은 첫 로드와 탭 복귀 시 중심으로 갱신해 Vercel Fluid Active CPU 사용량을 줄입니다.
+- 홈 일정판은 브라우저 내부 상태만으로 로테이션합니다.
+  - 이번 주 일정: 30초
+  - 이번 달 캘린더: 10초
+  - 다음 달 일정이 있을 때 다음 달 캘린더: 10초
+- 삼성/Tizen 브라우저에서는 상세 팝업이 하나만 열리도록 처리하고, hover 대신 터치/클릭 중심으로 동작합니다.
 
 ## 기술 스택
 
-- Next.js 16 (App Router), React 19, TypeScript  
-- Tailwind CSS 4  
-- Google Gen AI (Gemini, `application/json` 구조화 응답)  
-- GitHub REST API (Contents: 읽기·쓰기·커밋)
-
-## 사전 요구 사항
-
-- Node.js 20 이상 권장  
-- [Google AI Studio API 키](https://aistudio.google.com/apikey)  
-- GitHub 저장소 및 [Personal Access Token (classic)](https://github.com/settings/tokens) — `repo` 권한  
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Google Gen AI Gemini
+- Google Calendar API
+- GitHub REST API Contents
+- Vercel Blob 선택 사용
 
 ## 로컬 실행
 
@@ -30,75 +43,86 @@
 git clone https://github.com/DannyHot93/planner.git
 cd planner
 npm install
-```
-
-1. `.env.example`을 복사해 `.env.local`을 만듭니다.
-
-```bash
 cp .env.example .env.local
-```
-
-2. `.env.local`에 값을 채웁니다.
-
-| 변수 | 설명 |
-|------|------|
-| `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/apikey) API 키 |
-| `GEMINI_MODEL` | (선택) 기본 `gemini-3-flash-preview` |
-| `GEMINI_FALLBACK_MODEL` | (선택) 1차 실패·JSON 오류 시 사용, 기본 `gemini-2.5-flash` |
-| `GITHUB_TOKEN` | GitHub PAT (`repo` 권한) |
-| `GITHUB_OWNER` | GitHub 사용자 또는 조직 이름 |
-| `GITHUB_REPO` | 저장소 이름 |
-| `GITHUB_BRANCH` | 커밋할 브랜치 (기본 `main`) |
-| `BLOB_READ_WRITE_TOKEN` | (선택) Vercel Blob 토큰. 설정 시 업로드된 근무표 이미지는 GitHub JSON 대신 Blob에 저장돼 Fast Origin Transfer / ISR Write 사용량이 크게 줄어듭니다. Vercel 프로젝트에서 Blob Store를 만들어 연결하면 자동 주입됩니다. 토큰이 없으면 기존 base64 data URL 방식으로 자동 fallback 합니다. |
-
-3. 개발 서버
-
-```bash
 npm run dev
 ```
 
-브라우저에서 [http://localhost:3000](http://localhost:3000)으로 접속합니다.
+브라우저에서 다음 주소를 엽니다.
+
+- 일반 화면: [http://localhost:3000](http://localhost:3000)
+- 디스플레이 화면: [http://localhost:3000/display](http://localhost:3000/display)
+
+## 환경 변수
+
+`.env.example`을 기준으로 `.env.local`을 작성합니다. 실제 키와 토큰은 Git에 커밋하지 않습니다.
+
+| 변수 | 설명 |
+| --- | --- |
+| `GEMINI_API_KEY` | Gemini API 키 |
+| `GEMINI_MODEL` | 기본 분석 모델 |
+| `GEMINI_FALLBACK_MODEL` | 1차 분석 실패 또는 JSON 오류 시 fallback 모델 |
+| `GEMINI_CASTING_MODEL` | 선택. 주조 캐스팅 전용 모델 |
+| `GITHUB_TOKEN` | GitHub PAT. `repo` 권한 필요 |
+| `GITHUB_OWNER` | GitHub 사용자 또는 조직 |
+| `GITHUB_REPO` | 데이터가 저장될 저장소 이름 |
+| `GITHUB_BRANCH` | 저장 브랜치. 기본 `main` |
+| `BLOB_READ_WRITE_TOKEN` | 선택. Vercel Blob 저장소 연결 시 이미지 저장에 사용 |
+| `GOOGLE_CALENDAR_SYNC_ENABLED` | 선택. `false`면 Google Calendar 연동 끔 |
+| `GOOGLE_CALENDAR_ID` | Google Calendar ID |
+| `GOOGLE_CALENDAR_API_KEY` | 공개 캘린더 조회용 API 키 |
+| `GOOGLE_CALENDAR_SUBCALENDAR_SUMMARY` | 선택. OAuth/서비스 계정 사용 시 특정 부캘 이름 필터 |
+| `GOOGLE_CALENDAR_OAUTH_CLIENT_ID` | OAuth 방식 Calendar 연동용 클라이언트 ID |
+| `GOOGLE_CALENDAR_OAUTH_CLIENT_SECRET` | OAuth 방식 Calendar 연동용 클라이언트 Secret |
+| `GOOGLE_CALENDAR_OAUTH_REFRESH_TOKEN` | OAuth 리프레시 토큰 |
+| `GOOGLE_CALENDAR_CLIENT_EMAIL` | 서비스 계정 방식 Calendar 연동용 이메일 |
+| `GOOGLE_CALENDAR_PRIVATE_KEY` | 서비스 계정 방식 Calendar 연동용 private key |
+| `CRON_SECRET` | cleanup API 보호용 secret |
+
+OAuth 리프레시 토큰 발급은 다음 명령을 사용합니다.
+
+```bash
+npm run gcal:oauth
+```
+
+## 데이터 파일
+
+| 파일 | 용도 |
+| --- | --- |
+| `data/work-schedules.json` | 근무표 |
+| `data/vacations.json` | 휴가 |
+| `data/office-schedules.json` | 사무실 일정 |
+| `data/production-schedules.json` | 제작 일정 |
+| `data/recordings.json` | 레거시 녹화 일정 |
+| `data/casting-schedules.json` | 주조/캐스팅 일정 |
+
+서버는 홈 데이터 요청 시 GitHub 원격 데이터를 우선 읽고, Google Calendar 설정이 있으면 사무실 일정에 읽기 전용 항목을 합칩니다.
 
 ## 스크립트
 
 | 명령 | 설명 |
-|------|------|
-| `npm run dev` | 개발 서버 |
-| `npm run build` | 프로덕션 빌드 |
-| `npm run start` | 프로덕션 서버 |
-| `npm run lint` | ESLint |
+| --- | --- |
+| `npm run dev` | 개발 서버 실행 |
+| `npm run build` | 프로덕션 빌드 검증 |
+| `npm run start` | 프로덕션 서버 실행 |
+| `npm run lint` | ESLint 실행 |
+| `npm run gcal:oauth` | Google Calendar OAuth refresh token 발급 도우미 |
 
-## 데이터 파일 (`data/`)
+## 배포
 
-| 파일 | 용도 |
-|------|------|
-| `work-schedules.json` | 근무표 |
-| `vacations.json` | 휴가 |
-| `office-schedules.json` | 사무실 일정 |
-| `production-schedules.json` | 제작 일정 |
-| `recordings.json` | 구 녹화 일정(레거시) |
-| `casting-schedules.json` | 주조 근무 |
+1. Vercel에서 이 GitHub 저장소를 Import합니다.
+2. Vercel 프로젝트의 Environment Variables에 `.env.local`과 같은 값을 등록합니다.
+3. `main` 브랜치에 푸시하면 Vercel이 자동으로 빌드하고 배포합니다.
+4. 디스플레이 모니터는 `/display` 주소를 북마크해서 사용합니다.
 
-각 파일은 JSON 배열이며, 새 항목은 앞쪽에 추가됩니다.
+## 운영 메모
 
-## Vercel 배포
-
-1. [Vercel](https://vercel.com)에서 이 GitHub 저장소를 Import합니다.  
-2. **Settings → Environment Variables**에 `.env.local`과 동일한 변수를 등록합니다. (키는 Vercel에만 두고 저장소에 커밋하지 않습니다.)  
-3. `main`에 푸시하면 프로덕션 빌드·배포가 실행됩니다.  
-4. 업로드로 GitHub의 `data/*.json`이 바뀌면, 다음 배포 또는 재배포 시 반영됩니다.
-
-CLI로 수동 배포할 때(로그인·링크된 프로젝트가 있을 때):
-
-```bash
-npx vercel deploy --prod
-```
+- `/display` 로테이션은 클라이언트 상태 전환만 사용하므로 추가 API 요청을 만들지 않습니다.
+- Vercel Fluid Active CPU 사용량에 직접 영향을 주는 부분은 `/api/planner-data`, 업로드, 수정, 삭제 같은 서버 API 호출입니다.
+- 월간 캘린더 상세 팝업은 삼성/Tizen에서 꼬임을 줄이기 위해 디스플레이 모드에서 하나만 열리도록 제한합니다.
+- Google Calendar에서 들어온 읽기 전용 일정은 앱에서 삭제/수정하지 않습니다.
 
 ## 보안
 
-- `.env.local`은 `.gitignore`에 포함되어 Git에 올라가지 않습니다.  
-- API 키·토큰은 이슈·채팅에 붙이지 마세요. 노출 시 즉시 폐기 후 재발급하세요.
-
-## 라이선스
-
-Private 저장소라면 팀 내부 용도로 사용합니다. 공개 시 원하는 라이선스를 추가하세요.
+- `.env.local`과 실제 API 키, GitHub 토큰, Google 토큰은 저장소에 올리지 않습니다.
+- 토큰이 노출되면 즉시 폐기하고 새로 발급합니다.
+- GitHub PAT는 가능한 한 필요한 저장소와 권한으로만 제한합니다.

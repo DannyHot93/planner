@@ -656,12 +656,16 @@ function MonthCalendarMiniEntry({
   detailKey,
   displayMode = false,
   displayDetailState,
+  hideRecordActions,
+  inlineEditMode,
 }: {
   entry: EntryWithMeta;
   accentToday: boolean;
   detailKey: string;
   displayMode?: boolean;
   displayDetailState?: DisplayDetailState;
+  hideRecordActions?: boolean;
+  inlineEditMode?: boolean;
 }) {
   const disclosure = useHoverPinnedDisclosure();
   const headline = entry.programTitle ?? entry.note ?? entry.recordSummary;
@@ -688,6 +692,34 @@ function MonthCalendarMiniEntry({
     if (!displayDetailState) return;
     displayDetailState.setActiveDetailKey(null);
   };
+
+  if (inlineEditMode && !entry.readonlyFromCalendar) {
+    const entryDateYmd = entry.date ? toSeoulDateYmd(entry.date) : "";
+    const initialTitle =
+      (entry.programTitle && String(entry.programTitle).trim()) ||
+      (entry.note && String(entry.note).trim()) ||
+      "";
+    return (
+      <div className="rounded bg-[#202638] p-2">
+        {!hideRecordActions && (
+          <div className="mb-2 flex justify-end">
+            <DeleteRecordButton recordId={entry.recordId} />
+          </div>
+        )}
+        <InlineRecordEditor
+          recordId={entry.recordId}
+          initialSummary={entry.recordSummary}
+          initialMemo={entry.recordMemo}
+          compact
+          scheduleFields={{
+            initialTitle,
+            initialTime: entry.time ?? "",
+            entryDateYmd: entryDateYmd || undefined,
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -723,13 +755,18 @@ function MonthCalendarMiniEntry({
       role="button"
       tabIndex={0}
     >
-      <p
-        className={`${titleClass} ${
-          accentToday ? "text-yellow-200" : "text-white"
-        }`}
-      >
-        {headline}
-      </p>
+      <div className="flex items-start justify-between gap-1">
+        <p
+          className={`${titleClass} min-w-0 flex-1 ${
+            accentToday ? "text-yellow-200" : "text-white"
+          }`}
+        >
+          {headline}
+        </p>
+        {!hideRecordActions && !entry.readonlyFromCalendar && (
+          <DeleteRecordButton recordId={entry.recordId} className="shrink-0" />
+        )}
+      </div>
       {entry.time && (
         <p className={timeClass}>
           {entry.time}
@@ -746,12 +783,16 @@ function MonthCalendarOverflowButton({
   detailKey,
   displayMode = false,
   displayDetailState,
+  hideRecordActions,
+  inlineEditMode,
 }: {
   entries: EntryWithMeta[];
   accentToday: boolean;
   detailKey: string;
   displayMode?: boolean;
   displayDetailState?: DisplayDetailState;
+  hideRecordActions?: boolean;
+  inlineEditMode?: boolean;
 }) {
   const disclosure = useHoverPinnedDisclosure();
   const overflowButtonClass = displayMode
@@ -811,6 +852,11 @@ function MonthCalendarOverflowButton({
             {entries.map((entry, index) => {
               const headline =
                 entry.programTitle ?? entry.note ?? entry.recordSummary;
+              const entryDateYmd = entry.date ? toSeoulDateYmd(entry.date) : "";
+              const initialTitle =
+                (entry.programTitle && String(entry.programTitle).trim()) ||
+                (entry.note && String(entry.note).trim()) ||
+                "";
               return (
                 <div
                   key={`${entry.recordId}-${entry.date ?? "hidden"}-${index}`}
@@ -820,24 +866,52 @@ function MonthCalendarOverflowButton({
                       : "border-white/10 bg-black/20"
                   }`}
                 >
-                  <p className="font-semibold leading-snug text-white">
-                    {headline}
-                  </p>
-                  {entry.time && (
-                    <p className="mt-1 font-medium text-gray-300">
-                      {entry.time}
-                    </p>
-                  )}
-                  {entry.place && (
-                    <p className="mt-1 text-gray-300">장소 {entry.place}</p>
-                  )}
-                  {entry.person && (
-                    <p className="mt-1 text-gray-300">담당 {entry.person}</p>
-                  )}
-                  {(entry.note || entry.recordMemo) && (
-                    <p className="mt-1 leading-snug text-gray-400">
-                      {entry.note || entry.recordMemo}
-                    </p>
+                  {inlineEditMode && !entry.readonlyFromCalendar ? (
+                    <>
+                      {!hideRecordActions && (
+                        <div className="mb-2 flex justify-end">
+                          <DeleteRecordButton recordId={entry.recordId} />
+                        </div>
+                      )}
+                      <InlineRecordEditor
+                        recordId={entry.recordId}
+                        initialSummary={entry.recordSummary}
+                        initialMemo={entry.recordMemo}
+                        compact
+                        scheduleFields={{
+                          initialTitle,
+                          initialTime: entry.time ?? "",
+                          entryDateYmd: entryDateYmd || undefined,
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="min-w-0 flex-1 font-semibold leading-snug text-white">
+                          {headline}
+                        </p>
+                        {!hideRecordActions && !entry.readonlyFromCalendar && (
+                          <DeleteRecordButton recordId={entry.recordId} className="shrink-0" />
+                        )}
+                      </div>
+                      {entry.time && (
+                        <p className="mt-1 font-medium text-gray-300">
+                          {entry.time}
+                        </p>
+                      )}
+                      {entry.place && (
+                        <p className="mt-1 text-gray-300">장소 {entry.place}</p>
+                      )}
+                      {entry.person && (
+                        <p className="mt-1 text-gray-300">담당 {entry.person}</p>
+                      )}
+                      {(entry.note || entry.recordMemo) && (
+                        <p className="mt-1 leading-snug text-gray-400">
+                          {entry.note || entry.recordMemo}
+                        </p>
+                      )}
+                    </>
                   )}
                 </div>
               );
@@ -854,11 +928,15 @@ function OtherWeekCurrentMonthCalendarGrid({
   todayStr,
   displayMode = false,
   displayDetailState,
+  hideRecordActions,
+  inlineEditMode,
 }: {
   calendar: MonthCalendar;
   todayStr: string;
   displayMode?: boolean;
   displayDetailState?: DisplayDetailState;
+  hideRecordActions?: boolean;
+  inlineEditMode?: boolean;
 }) {
   const entryCount = calendar.cells.reduce((sum, cell) => sum + cell.entries.length, 0);
   const wrapClass = displayMode
@@ -935,6 +1013,8 @@ function OtherWeekCurrentMonthCalendarGrid({
                         detailKey={`month:${calendar.label}:${cell.date}:${entry.recordId}:${i}`}
                         displayMode={displayMode}
                         displayDetailState={displayDetailState}
+                        hideRecordActions={hideRecordActions}
+                        inlineEditMode={inlineEditMode}
                       />
                     ))}
                     {cell.entries.length > 3 && (
@@ -944,6 +1024,8 @@ function OtherWeekCurrentMonthCalendarGrid({
                         detailKey={`month-overflow:${calendar.label}:${cell.date}`}
                         displayMode={displayMode}
                         displayDetailState={displayDetailState}
+                        hideRecordActions={hideRecordActions}
+                        inlineEditMode={inlineEditMode}
                       />
                     )}
                   </div>
@@ -962,11 +1044,15 @@ function MonthCalendarStack({
   todayStr,
   displayMode = false,
   displayDetailState,
+  hideRecordActions,
+  inlineEditMode,
 }: {
   calendars: MonthCalendar[];
   todayStr: string;
   displayMode?: boolean;
   displayDetailState?: DisplayDetailState;
+  hideRecordActions?: boolean;
+  inlineEditMode?: boolean;
 }) {
   return (
     <div className="space-y-3">
@@ -977,6 +1063,8 @@ function MonthCalendarStack({
           todayStr={todayStr}
           displayMode={displayMode}
           displayDetailState={displayDetailState}
+          hideRecordActions={hideRecordActions}
+          inlineEditMode={inlineEditMode}
         />
       ))}
     </div>
@@ -1319,6 +1407,8 @@ export default function RecordingWeekView({
                       todayStr={todayStr}
                       displayMode={displayMode}
                       displayDetailState={displayDetailState}
+                      hideRecordActions={hideRecordActions}
+                      inlineEditMode={inlineEditMode}
                     />
                   ) : hasOtherWeekAny ? (
                     <OtherWeekMergedGrid
