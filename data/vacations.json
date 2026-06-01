@@ -1,5 +1,36 @@
 [
   {
+    "id": "vac_1780272158256_5a3d5fc2",
+    "type": "vacation",
+    "uploadedAt": "2026-06-01T00:02:38.256Z",
+    "memo": "구분: 휴가",
+    "summary": "전경후 · 2026-05-27 ~ 2026-05-29",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-05-27 ~ 2026-05-29",
+      "entries": [
+        {
+          "date": "2026-05-27",
+          "person": "전경후",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        },
+        {
+          "date": "2026-05-28",
+          "person": "전경후",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        },
+        {
+          "date": "2026-05-29",
+          "person": "전경후",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1780272157269_81b6606d",
     "type": "vacation",
     "uploadedAt": "2026-06-01T00:02:37.270Z",
