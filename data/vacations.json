@@ -1,143 +1,5 @@
 [
   {
-    "id": "vac_1780272160498_a3f4ac58",
-    "type": "vacation",
-    "uploadedAt": "2026-06-01T00:02:40.498Z",
-    "memo": "구분: 휴가",
-    "summary": "박종록 · 2026-05-27",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-05-27 ~ 2026-05-27",
-      "entries": [
-        {
-          "date": "2026-05-27",
-          "person": "박종록",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1780272159492_be547364",
-    "type": "vacation",
-    "uploadedAt": "2026-06-01T00:02:39.492Z",
-    "memo": "구분: 휴가",
-    "summary": "박현서 · 2026-05-27",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-05-27 ~ 2026-05-27",
-      "entries": [
-        {
-          "date": "2026-05-27",
-          "person": "박현서",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1780272158898_6de01f56",
-    "type": "vacation",
-    "uploadedAt": "2026-06-01T00:02:38.899Z",
-    "memo": "구분: 휴가",
-    "summary": "김규설 · 2026-05-27 ~ 2026-05-29",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-05-27 ~ 2026-05-29",
-      "entries": [
-        {
-          "date": "2026-05-27",
-          "person": "김규설",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        },
-        {
-          "date": "2026-05-28",
-          "person": "김규설",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        },
-        {
-          "date": "2026-05-29",
-          "person": "김규설",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1780272158256_5a3d5fc2",
-    "type": "vacation",
-    "uploadedAt": "2026-06-01T00:02:38.256Z",
-    "memo": "구분: 휴가",
-    "summary": "전경후 · 2026-05-27 ~ 2026-05-29",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-05-27 ~ 2026-05-29",
-      "entries": [
-        {
-          "date": "2026-05-27",
-          "person": "전경후",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        },
-        {
-          "date": "2026-05-28",
-          "person": "전경후",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        },
-        {
-          "date": "2026-05-29",
-          "person": "전경후",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1780272157269_81b6606d",
-    "type": "vacation",
-    "uploadedAt": "2026-06-01T00:02:37.270Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-05-29",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-05-29 ~ 2026-05-29",
-      "entries": [
-        {
-          "date": "2026-05-29",
-          "person": "손호율",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1780272156634_e01a411c",
-    "type": "vacation",
-    "uploadedAt": "2026-06-01T00:02:36.635Z",
-    "memo": "구분: 휴가",
-    "summary": "김규설 · 2026-06-01",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-01 ~ 2026-06-01",
-      "entries": [
-        {
-          "date": "2026-06-01",
-          "person": "김규설",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1780272156021_2f442d32",
     "type": "vacation",
     "uploadedAt": "2026-06-01T00:02:36.021Z",
@@ -175,25 +37,6 @@
         {
           "date": "2026-06-10",
           "person": "양윤길",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1779864760483_41e5c9fb",
-    "type": "vacation",
-    "uploadedAt": "2026-05-27T06:52:40.484Z",
-    "memo": "구분: 휴가",
-    "summary": "김규설 · 2026-06-01",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-01 ~ 2026-06-01",
-      "entries": [
-        {
-          "date": "2026-06-01",
-          "person": "김규설",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
         }
@@ -245,25 +88,6 @@
     }
   },
   {
-    "id": "vac_1779839917176_999faed5",
-    "type": "vacation",
-    "uploadedAt": "2026-05-26T23:58:37.176Z",
-    "memo": "구분: 휴가",
-    "summary": "김규설 · 2026-06-01",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-01 ~ 2026-06-01",
-      "entries": [
-        {
-          "date": "2026-06-01",
-          "person": "김규설",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1779839916485_59512673",
     "type": "vacation",
     "uploadedAt": "2026-05-26T23:58:36.485Z",
@@ -283,25 +107,6 @@
     }
   },
   {
-    "id": "vac_1779754195912_b9db91e5",
-    "type": "vacation",
-    "uploadedAt": "2026-05-26T00:09:55.913Z",
-    "memo": "구분: 휴가",
-    "summary": "김규설 · 2026-06-01",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-01 ~ 2026-06-01",
-      "entries": [
-        {
-          "date": "2026-06-01",
-          "person": "김규설",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1779754195247_0dd04ddf",
     "type": "vacation",
     "uploadedAt": "2026-05-26T00:09:55.247Z",
@@ -314,25 +119,6 @@
         {
           "date": "2026-06-10",
           "person": "양윤길",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1779321137338_61b56885",
-    "type": "vacation",
-    "uploadedAt": "2026-05-20T23:52:17.339Z",
-    "memo": "구분: 휴가",
-    "summary": "김규설 · 2026-06-01",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-01 ~ 2026-06-01",
-      "entries": [
-        {
-          "date": "2026-06-01",
-          "person": "김규설",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
         }
