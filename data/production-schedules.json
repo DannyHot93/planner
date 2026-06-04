@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1780554748205_509ba385",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-04T06:32:28.205Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 녹화 의뢰서로, 6월 10일 오후 1시부터 2시 10분까지 4층 뉴스룸에서 충북지사 당선인과의 대담이 진행될 예정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-06-10",
+          "time": "13:00-14:10",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철, 출연: 1명",
+          "note": "출연 1명 출연 / 대담"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1780554684908_5677978d",
     "type": "production-schedule",
     "uploadedAt": "2026-06-04T06:31:24.910Z",
