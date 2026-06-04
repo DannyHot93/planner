@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1780537438037_23509253",
+    "type": "vacation",
+    "uploadedAt": "2026-06-04T01:43:58.038Z",
+    "memo": "구분: 휴가",
+    "summary": "양윤길 · 2026-06-10",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-06-10 ~ 2026-06-10",
+      "entries": [
+        {
+          "date": "2026-06-10",
+          "person": "양윤길",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1780537437400_584ee67d",
     "type": "vacation",
     "uploadedAt": "2026-06-04T01:43:57.401Z",
