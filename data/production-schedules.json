@@ -1,5 +1,25 @@
 [
   {
+    "id": "ps_1780561165020_28df6020",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-04T08:19:25.021Z",
+    "memo": "좌: 2명 우: 2명",
+    "summary": "볼수록더좋은TV · 2026-06-23 14:30~16:30",
+    "details": {
+      "title": "볼수록더좋은TV",
+      "program": "볼수록더좋은TV",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-23",
+          "time": "14:30~16:30",
+          "place": "N/C",
+          "note": "좌: 2명 우: 2명"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1780554748205_509ba385",
     "type": "production-schedule",
     "uploadedAt": "2026-06-04T06:32:28.205Z",
