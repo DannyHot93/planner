@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1780645755826_75b6b9d6",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-05T07:49:15.826Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 2020년 6월 25일 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-06-25",
+          "time": "14:00-15:10",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철, 패널: 4명",
+          "note": "중계차: 스튜디오. 녹화내용: 6월 월간뉴스분석. 패널 배치: 좌 2명, 우 2명."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1780561165020_28df6020",
     "type": "production-schedule",
     "uploadedAt": "2026-06-04T08:19:25.021Z",
