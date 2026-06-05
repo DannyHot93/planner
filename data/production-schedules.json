@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1780645781965_a1e3efa6",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-05T07:49:41.965Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 녹화 의뢰서입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-06-18",
+          "time": "10:00-11:10",
+          "place": "4층 뉴스룸",
+          "person": "설경철 (담당PD)",
+          "note": "녹화 내용: 충북 교육감 당선인에게 듣는다. 특이사항: 출연 1명 출연 / 대담."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1780645755826_75b6b9d6",
     "type": "production-schedule",
     "uploadedAt": "2026-06-05T07:49:15.826Z",
