@@ -1,23 +1,5 @@
 [
   {
-    "id": "ps_1780885308985_7903b4df",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-08T02:21:49.014Z",
-    "memo": "핸드볼답사 · 2026-06-10",
-    "summary": "핸드볼답사 · 2026-06-10 10:00~14:00",
-    "details": {
-      "title": "핸드볼답사",
-      "program": "핸드볼답사",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-06-10",
-          "time": "10:00~14:00"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1780885262574_aa7fcead",
     "type": "production-schedule",
     "uploadedAt": "2026-06-08T02:21:02.575Z",
