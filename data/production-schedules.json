@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1780885262574_aa7fcead",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-08T02:21:02.575Z",
+    "memo": "중소기업답사 · 2026-06-09",
+    "summary": "중소기업답사 · 2026-06-09 10:30",
+    "details": {
+      "title": "중소기업답사",
+      "program": "중소기업답사",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-09",
+          "time": "10:30"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1780884906005_7cd5e5fa",
     "type": "production-schedule",
     "uploadedAt": "2026-06-08T02:15:06.006Z",
