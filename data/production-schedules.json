@@ -1,5 +1,24 @@
 [
   {
+    "id": "ps_1780884906005_7cd5e5fa",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-08T02:15:06.006Z",
+    "memo": "중소기업박람회 · 2026-06-12",
+    "summary": "중소기업박람회 · 2026-06-12 09:00",
+    "details": {
+      "title": "중소기업박람회",
+      "program": "중소기업박람회",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-12",
+          "time": "09:00",
+          "place": "청주체육관"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1780645781965_a1e3efa6",
     "type": "production-schedule",
     "uploadedAt": "2026-06-05T07:49:41.965Z",
