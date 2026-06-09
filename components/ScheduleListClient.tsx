@@ -443,6 +443,7 @@ export default function ScheduleListClient({
             records={officeRecords}
             calendarMode
             includeNextMonthCalendar
+            includeNextWeekSection
             displayMode={displayMode}
           />
         ) : activeTab === "production-schedule" ? (
@@ -450,6 +451,7 @@ export default function ScheduleListClient({
             records={productionRecords}
             calendarMode
             includeNextMonthCalendar
+            includeNextWeekSection
             displayMode={displayMode}
           />
         ) : activeTab === "work-schedule" ? (

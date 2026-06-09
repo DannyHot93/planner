@@ -10,6 +10,7 @@ import {
 } from "react";
 import { ScheduleRecord, ScheduleEntry } from "@/lib/types";
 import {
+  addDaysYmd,
   isSundayYmd,
   mondayOfWeekContaining,
   sevenDaysFromMonday,
@@ -1242,6 +1243,7 @@ export default function RecordingWeekView({
   calendarMode = false,
   displayCalendarMonthOffset = 0,
   includeNextMonthCalendar = false,
+  includeNextWeekSection = false,
 }: {
   records: ScheduleRecord[];
   /** both: 이번 주 + 이번 주 외. 대시보드에서는 열마다 분리 */
@@ -1260,6 +1262,8 @@ export default function RecordingWeekView({
   displayCalendarMonthOffset?: number;
   /** true면 월간 달력 모드에서 다음달 일정이 있을 때 다음달 달력도 함께 표시 */
   includeNextMonthCalendar?: boolean;
+  /** true면 이번 주 일정 아래에 같은 포맷의 다음 주 일정을 표시 */
+  includeNextWeekSection?: boolean;
 }) {
   const todayStr = getTodaySeoul();
   const [activeDetailKey, setActiveDetailKey] = useState<string | null>(null);
@@ -1295,6 +1299,13 @@ export default function RecordingWeekView({
     const seven = buildDayGroupsFromFlat(flat, days);
     return mergeWeekendDayGroups(seven);
   }, [flat, calendarThisWeekMonday]);
+  const nextWeekMonday = addDaysYmd(calendarThisWeekMonday, 7);
+  const nextWeekDays = sevenDaysFromMonday(nextWeekMonday);
+  const nextWeekGroups = useMemo(() => {
+    const days = sevenDaysFromMonday(nextWeekMonday);
+    const seven = buildDayGroupsFromFlat(flat, days);
+    return mergeWeekendDayGroups(seven);
+  }, [flat, nextWeekMonday]);
 
   const hasAny = flat.length > 0;
 
@@ -1368,26 +1379,51 @@ export default function RecordingWeekView({
               {!hasAny ? (
                 emptyBlock
               ) : (
-                <section className={thisWeekSectionClass}>
-                  {!embedded && (
-                    <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                      <h4 className="text-sm font-bold text-[#9ab0ff]">이번 주 일정</h4>
-                      <span className="text-xs font-medium text-[#9ab0ff]/80">
-                        {formatRangeLabel(thisWeekDays)}
-                      </span>
-                    </div>
+                <div className={embedded ? "space-y-0" : "space-y-4"}>
+                  <section className={thisWeekSectionClass}>
+                    {!embedded && (
+                      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                        <h4 className="text-sm font-bold text-[#9ab0ff]">이번 주 일정</h4>
+                        <span className="text-xs font-medium text-[#9ab0ff]/80">
+                          {formatRangeLabel(thisWeekDays)}
+                        </span>
+                      </div>
+                    )}
+                    <WeekGrid
+                      dayGroups={thisWeekGroups}
+                      todayStr={todayStr}
+                      thisWeekMonday={calendarThisWeekMonday}
+                      weekDays={thisWeekDays}
+                      hideRecordActions={hideRecordActions}
+                      inlineEditMode={inlineEditMode}
+                      displayMode={displayMode}
+                      displayDetailState={displayDetailState}
+                    />
+                  </section>
+
+                  {includeNextWeekSection && (
+                    <section className={thisWeekSectionClass}>
+                      {!embedded && (
+                        <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                          <h4 className="text-sm font-bold text-[#9ab0ff]">다음 주 일정</h4>
+                          <span className="text-xs font-medium text-[#9ab0ff]/80">
+                            {formatRangeLabel(nextWeekDays)}
+                          </span>
+                        </div>
+                      )}
+                      <WeekGrid
+                        dayGroups={nextWeekGroups}
+                        todayStr={todayStr}
+                        thisWeekMonday={nextWeekMonday}
+                        weekDays={nextWeekDays}
+                        hideRecordActions={hideRecordActions}
+                        inlineEditMode={inlineEditMode}
+                        displayMode={displayMode}
+                        displayDetailState={displayDetailState}
+                      />
+                    </section>
                   )}
-                  <WeekGrid
-                    dayGroups={thisWeekGroups}
-                    todayStr={todayStr}
-                    thisWeekMonday={calendarThisWeekMonday}
-                    weekDays={thisWeekDays}
-                    hideRecordActions={hideRecordActions}
-                    inlineEditMode={inlineEditMode}
-                    displayMode={displayMode}
-                    displayDetailState={displayDetailState}
-                  />
-                </section>
+                </div>
               )}
             </>
           )}
