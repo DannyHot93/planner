@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1780993395828_e60bb955",
+    "type": "vacation",
+    "uploadedAt": "2026-06-09T08:23:15.829Z",
+    "memo": "구분: 휴가",
+    "summary": "오승민 · 2026-06-05",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-06-05 ~ 2026-06-05",
+      "entries": [
+        {
+          "date": "2026-06-05",
+          "person": "오승민",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1780993395078_b099dd3b",
     "type": "vacation",
     "uploadedAt": "2026-06-09T08:23:15.079Z",
