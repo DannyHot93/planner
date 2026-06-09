@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": "os_1780975248539_2ab6d1d5",
+    "type": "office-schedule",
+    "uploadedAt": "2026-06-09T03:20:48.540Z",
+    "memo": "창 녹화 대근 · 2026-06-10",
+    "summary": "창 녹화 대근 · 2026-06-10 13:00",
+    "details": {
+      "title": "창 녹화 대근",
+      "program": "창 녹화 대근",
+      "scheduleType": "office",
+      "entries": [
+        {
+          "date": "2026-06-10",
+          "time": "13:00"
+        }
+      ]
+    }
+  }
+]
