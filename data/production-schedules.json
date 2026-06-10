@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1781059036527_734077be",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-10T02:37:16.527Z",
+    "memo": "",
+    "summary": "전국시대 프로그램의 녹화 일정표입니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-06-17",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": null
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1780896350131_f99e3e11",
     "type": "production-schedule",
     "uploadedAt": "2026-06-08T05:25:50.132Z",
