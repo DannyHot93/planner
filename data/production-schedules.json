@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1781078098163_5915d5a5",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-10T07:54:58.164Z",
+    "memo": "",
+    "summary": "This is a recording request for the 'Prime Interview' program, featuring Jincheon HR FC Director Yoo Sang-su, recorded on June 25, 2026, at the 4th-floor studio, and scheduled for broadcast on July 4, 2026.",
+    "details": {
+      "period": null,
+      "title": "프라임인터뷰",
+      "entries": [
+        {
+          "date": "2026-06-25",
+          "time": "16:00-17:00",
+          "place": "4층 스튜디오",
+          "person": "진천 HR FC 유상수 감독, 담당PD 민수빈",
+          "note": "방송일시: 2026-07-04"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1781077980435_26010d57",
     "type": "production-schedule",
     "uploadedAt": "2026-06-10T07:53:00.435Z",
