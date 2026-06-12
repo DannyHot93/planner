@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1781243173456_e5ce8c4c",
+    "type": "vacation",
+    "uploadedAt": "2026-06-12T05:46:13.456Z",
+    "memo": "구분: 휴가",
+    "summary": "손호율 · 2026-06-16",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-06-16 ~ 2026-06-16",
+      "entries": [
+        {
+          "date": "2026-06-16",
+          "person": "손호율",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1781243172779_0f3480bd",
     "type": "vacation",
     "uploadedAt": "2026-06-12T05:46:12.780Z",
