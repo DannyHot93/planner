@@ -63,61 +63,6 @@
     }
   },
   {
-    "id": "ps_1780896350131_f99e3e11",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-08T05:25:50.132Z",
-    "memo": "핸드볼 답사 · 2026-06-10",
-    "summary": "핸드볼 답사 · 2026-06-10 13:00",
-    "details": {
-      "title": "핸드볼 답사",
-      "program": "핸드볼 답사",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-06-10",
-          "time": "13:00"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1780885262574_aa7fcead",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-08T02:21:02.575Z",
-    "memo": "중소기업답사 · 2026-06-09",
-    "summary": "중소기업답사 · 2026-06-09 10:30",
-    "details": {
-      "title": "중소기업답사",
-      "program": "중소기업답사",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-06-09",
-          "time": "10:30"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1780884906005_7cd5e5fa",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-08T02:15:06.006Z",
-    "memo": "중소기업박람회 · 2026-06-12",
-    "summary": "중소기업박람회 · 2026-06-12 09:00",
-    "details": {
-      "title": "중소기업박람회",
-      "program": "중소기업박람회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-06-12",
-          "time": "09:00",
-          "place": "청주체육관"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1780645781965_a1e3efa6",
     "type": "production-schedule",
     "uploadedAt": "2026-06-05T07:49:41.965Z",
@@ -177,27 +122,6 @@
           "note": "좌: 2명 우: 2명"
         }
       ]
-    }
-  },
-  {
-    "id": "ps_1780554748205_509ba385",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-04T06:32:28.205Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 녹화 의뢰서로, 6월 10일 오후 1시부터 2시 10분까지 4층 뉴스룸에서 충북지사 당선인과의 대담이 진행될 예정입니다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-06-10",
-          "time": "13:00-14:10",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철, 출연: 1명",
-          "note": "출연 1명 출연 / 대담"
-        }
-      ],
-      "scheduleType": "production"
     }
   }
 ]
