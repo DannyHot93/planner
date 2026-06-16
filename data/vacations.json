@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1781576058540_e33aa6a1",
+    "type": "vacation",
+    "uploadedAt": "2026-06-16T02:14:18.540Z",
+    "memo": "구분: 휴가",
+    "summary": "김규설 · 2026-06-16",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-06-16 ~ 2026-06-16",
+      "entries": [
+        {
+          "date": "2026-06-16",
+          "person": "김규설",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1781576057404_4edda983",
     "type": "vacation",
     "uploadedAt": "2026-06-16T02:14:17.404Z",
