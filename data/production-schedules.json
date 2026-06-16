@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1781592031708_971421ac",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-16T06:40:31.709Z",
+    "memo": "6/21 이상훈, 안대현 · 2026-06-21",
+    "summary": "6/21 이상훈, 안대현 · 2026-06-21",
+    "details": {
+      "title": "6/21 이상훈, 안대현",
+      "program": "6/21 이상훈, 안대현",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-21"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1781078098163_5915d5a5",
     "type": "production-schedule",
     "uploadedAt": "2026-06-10T07:54:58.164Z",
