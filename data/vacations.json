@@ -1,24 +1,5 @@
 [
   {
-    "id": "vac_1781576060042_f60c2a51",
-    "type": "vacation",
-    "uploadedAt": "2026-06-16T02:14:20.042Z",
-    "memo": "구분: 휴가",
-    "summary": "전경후 · 2026-06-11",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-11 ~ 2026-06-11",
-      "entries": [
-        {
-          "date": "2026-06-11",
-          "person": "전경후",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1781576059299_2550f6db",
     "type": "vacation",
     "uploadedAt": "2026-06-16T02:14:19.299Z",
@@ -43,25 +24,6 @@
         {
           "date": "2026-06-17",
           "person": "박광형",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1781576058540_e33aa6a1",
-    "type": "vacation",
-    "uploadedAt": "2026-06-16T02:14:18.540Z",
-    "memo": "구분: 휴가",
-    "summary": "김규설 · 2026-06-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-16 ~ 2026-06-16",
-      "entries": [
-        {
-          "date": "2026-06-16",
-          "person": "김규설",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
         }
@@ -219,44 +181,6 @@
     }
   },
   {
-    "id": "vac_1781481586615_987f83fc",
-    "type": "vacation",
-    "uploadedAt": "2026-06-14T23:59:46.615Z",
-    "memo": "구분: 휴가",
-    "summary": "김규설 · 2026-06-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-16 ~ 2026-06-16",
-      "entries": [
-        {
-          "date": "2026-06-16",
-          "person": "김규설",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1781481585970_c4822db4",
-    "type": "vacation",
-    "uploadedAt": "2026-06-14T23:59:45.970Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-06-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-16 ~ 2026-06-16",
-      "entries": [
-        {
-          "date": "2026-06-16",
-          "person": "손호율",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1781481585376_9826023d",
     "type": "vacation",
     "uploadedAt": "2026-06-14T23:59:45.376Z",
@@ -388,25 +312,6 @@
     }
   },
   {
-    "id": "vac_1781243173456_e5ce8c4c",
-    "type": "vacation",
-    "uploadedAt": "2026-06-12T05:46:13.456Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-06-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-16 ~ 2026-06-16",
-      "entries": [
-        {
-          "date": "2026-06-16",
-          "person": "손호율",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1781243172779_0f3480bd",
     "type": "vacation",
     "uploadedAt": "2026-06-12T05:46:12.780Z",
@@ -512,25 +417,6 @@
         {
           "date": "2026-06-17",
           "person": "박광형",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1781221967899_084e3743",
-    "type": "vacation",
-    "uploadedAt": "2026-06-11T23:52:47.899Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-06-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-16 ~ 2026-06-16",
-      "entries": [
-        {
-          "date": "2026-06-16",
-          "person": "손호율",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
         }
@@ -650,25 +536,6 @@
     }
   },
   {
-    "id": "vac_1781136752387_67c340d6",
-    "type": "vacation",
-    "uploadedAt": "2026-06-11T00:12:32.387Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-06-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-16 ~ 2026-06-16",
-      "entries": [
-        {
-          "date": "2026-06-16",
-          "person": "손호율",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1781136751647_37cc4492",
     "type": "vacation",
     "uploadedAt": "2026-06-11T00:12:31.647Z",
@@ -781,25 +648,6 @@
     }
   },
   {
-    "id": "vac_1781051457821_39fe3534",
-    "type": "vacation",
-    "uploadedAt": "2026-06-10T00:30:57.821Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-06-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-16 ~ 2026-06-16",
-      "entries": [
-        {
-          "date": "2026-06-16",
-          "person": "손호율",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1781051457089_cd8fca3c",
     "type": "vacation",
     "uploadedAt": "2026-06-10T00:30:57.089Z",
@@ -905,25 +753,6 @@
         {
           "date": "2026-06-17",
           "person": "박광형",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1780993391749_63c479bf",
-    "type": "vacation",
-    "uploadedAt": "2026-06-09T08:23:11.750Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-06-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-16 ~ 2026-06-16",
-      "entries": [
-        {
-          "date": "2026-06-16",
-          "person": "손호율",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
         }
