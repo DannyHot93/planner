@@ -305,6 +305,16 @@ export default function ScheduleListClient({
   const headerClass = displayMode
     ? "sticky top-0 z-40 mb-2 -mx-2 sm:-mx-3 lg:-mx-4 xl:-mx-5 2xl:-mx-6 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-[#5A2FB7]/50 bg-[#351878] px-3 py-2 shadow-md"
     : "sticky top-0 z-40 mb-2 -mx-2 sm:-mx-3 lg:-mx-4 xl:-mx-5 2xl:-mx-6 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-[#5A2FB7]/40 bg-gradient-to-r from-[#5A2FB7] via-[#5A2FB7]/90 to-[#4361DE]/60 px-3 py-2 shadow-md shadow-[#5A2FB7]/25 backdrop-blur";
+  const scheduleWithVacationClass = displayMode
+    ? "flex flex-row items-stretch gap-2"
+    : "flex flex-col gap-3 lg:flex-row lg:items-stretch";
+  const scheduleMainClass = "min-w-0 flex-1";
+  const scheduleVacationAsideClass = displayMode
+    ? "w-[210px] shrink-0 border-l border-white/10 pl-2"
+    : "w-full shrink-0 lg:w-[168px] lg:border-l lg:border-white/10 lg:pl-3";
+  const scheduleVacationWrapClass = displayMode
+    ? ""
+    : "lg:sticky lg:top-10 lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto lg:pr-1";
 
   if (loadStatus === "loading") {
     return (
@@ -439,21 +449,51 @@ export default function ScheduleListClient({
             />
           </section>
         ) : activeTab === "office-schedule" ? (
-          <RecordingWeekView
-            records={officeRecords}
-            calendarMode
-            includeNextMonthCalendar
-            includeNextWeekSection
-            displayMode={displayMode}
-          />
+          <div className={scheduleWithVacationClass}>
+            <div className={scheduleMainClass}>
+              <RecordingWeekView
+                records={officeRecords}
+                calendarMode
+                includeNextMonthCalendar
+                includeNextWeekSection
+                displayMode={displayMode}
+              />
+            </div>
+            <aside className={scheduleVacationAsideClass}>
+              <div className={scheduleVacationWrapClass}>
+                <VacationWeekView
+                  vacationRecords={vacationRecords}
+                  variant="sidebar"
+                  hideTitle
+                  hideDeleteButtons
+                  displayMode={displayMode}
+                />
+              </div>
+            </aside>
+          </div>
         ) : activeTab === "production-schedule" ? (
-          <RecordingWeekView
-            records={productionRecords}
-            calendarMode
-            includeNextMonthCalendar
-            includeNextWeekSection
-            displayMode={displayMode}
-          />
+          <div className={scheduleWithVacationClass}>
+            <div className={scheduleMainClass}>
+              <RecordingWeekView
+                records={productionRecords}
+                calendarMode
+                includeNextMonthCalendar
+                includeNextWeekSection
+                displayMode={displayMode}
+              />
+            </div>
+            <aside className={scheduleVacationAsideClass}>
+              <div className={scheduleVacationWrapClass}>
+                <VacationWeekView
+                  vacationRecords={vacationRecords}
+                  variant="sidebar"
+                  hideTitle
+                  hideDeleteButtons
+                  displayMode={displayMode}
+                />
+              </div>
+            </aside>
+          </div>
         ) : activeTab === "work-schedule" ? (
           <WorkScheduleWeekView records={workScheduleRecords} castingRecords={castingRecords} />
         ) : (

@@ -256,6 +256,24 @@ function uniqueRecordIds(rows: VacationFlatEntry[]): string[] {
   return [...new Set(rows.map((r) => r.recordId))];
 }
 
+function uniqueRepresentativeRecordIds(rows: VacationFlatEntry[]): string[] {
+  const byContent = new Map<string, string>();
+  for (const row of rows) {
+    const key = [
+      row.vacationKind,
+      row.dateYmd,
+      (row.person ?? row.recordSummary).trim(),
+      (row.reason ?? "").trim(),
+      (row.note ?? "").trim(),
+      row.recordMemo.trim(),
+    ].join("|");
+    if (!byContent.has(key)) {
+      byContent.set(key, row.recordId);
+    }
+  }
+  return [...new Set(byContent.values())];
+}
+
 function buildTodayRows(
   combined: MergedVacationPerson[],
   todayStr: string,
@@ -285,7 +303,7 @@ function buildTodayRows(
     }
     out.push({
       displayName: m.displayName,
-      recordIds: uniqueRecordIds(m.rows),
+      recordIds: uniqueRepresentativeRecordIds(rowsToday),
       dateLabel,
     });
   }
@@ -329,7 +347,7 @@ function formatSidebarMergedDateLine(merged: MergedVacationPerson): string {
 }
 
 interface TabVacationSegment {
-  recordId: string;
+  recordIds: string[];
   sortKey: string;
   daysYmd: string[];
   kindLabel: string;
@@ -364,7 +382,7 @@ function buildTabVacationSegments(merged: MergedVacationPerson): TabVacationSegm
     byRecord.get(row.recordId)!.push(row);
   }
 
-  const out: TabVacationSegment[] = [];
+  const outByContent = new Map<string, TabVacationSegment>();
   for (const [recordId, rows] of byRecord) {
     const first = rows[0];
     const kindLabel = first.vacationKind === "production" ? "제작" : "사무실";
@@ -380,15 +398,24 @@ function buildTabVacationSegments(merged: MergedVacationPerson): TabVacationSegm
     } else {
       daysYmd = [...new Set(rows.map((r) => r.dateYmd))].sort();
     }
-    out.push({
-      recordId,
+    const noteText = buildTabNoteText(rows);
+    const contentKey = `${kindLabel}|${daysYmd.join(",")}|${noteText}`;
+    const existing = outByContent.get(contentKey);
+    if (existing) {
+      if (!existing.recordIds.includes(recordId)) {
+        existing.recordIds.push(recordId);
+      }
+      continue;
+    }
+    outByContent.set(contentKey, {
+      recordIds: [recordId],
       sortKey: daysYmd[0] ?? "",
       daysYmd,
       kindLabel,
-      noteText: buildTabNoteText(rows),
+      noteText,
     });
   }
-  return out.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+  return [...outByContent.values()].sort((a, b) => a.sortKey.localeCompare(b.sortKey));
 }
 
 function TodayVacationBox({
@@ -489,6 +516,10 @@ function MergedVacationPersonCard({
       : null;
   const tabSegments =
     dateMode === "tab" ? buildTabVacationSegments(merged) : [];
+  const visibleRecordIds =
+    dateMode === "tab"
+      ? tabSegments.map((seg) => seg.recordIds[0]).filter(Boolean)
+      : recordIds;
 
   return (
     <div className="bg-[#14141c] border border-white/10 rounded-lg hover:border-[#CD366D]/60 hover:shadow-md hover:shadow-[#CD366D]/20 transition-all overflow-hidden">
@@ -506,7 +537,7 @@ function MergedVacationPersonCard({
               </p>
               <div className="mt-2 space-y-3">
                 {tabSegments.map((seg) => (
-                  <div key={seg.recordId} className="border-l-2 border-[#CD366D]/70 pl-2.5">
+                  <div key={`${seg.kindLabel}-${seg.sortKey}-${seg.noteText}`} className="border-l-2 border-[#CD366D]/70 pl-2.5">
                     <ul className="space-y-0.5 list-none">
                       {seg.daysYmd.map((d) => (
                         <li key={d} className="text-xs text-gray-200">
@@ -530,7 +561,7 @@ function MergedVacationPersonCard({
         </div>
         {!hideDeleteButtons && !inlineEditMode && (
           <div className="flex flex-col gap-1 shrink-0">
-            {recordIds.map((id) => (
+            {visibleRecordIds.map((id) => (
               <DeleteRecordButton key={id} recordId={id} className="scale-95 origin-right" />
             ))}
           </div>
@@ -538,7 +569,7 @@ function MergedVacationPersonCard({
       </div>
       {inlineEditMode &&
         recordById &&
-        recordIds.map((id) => {
+        visibleRecordIds.map((id) => {
           const rec = recordById.get(id);
           if (!rec) return null;
           return (

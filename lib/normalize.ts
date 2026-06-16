@@ -149,6 +149,32 @@ function eachDayInclusive(startYmd: string, endYmd: string): string[] {
   return out;
 }
 
+function normalizedEntryText(value: unknown): string {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function vacationEntryKey(entry: ScheduleEntry): string {
+  const date = toSeoulDateYmd(entry.date) || normalizedEntryText(entry.date);
+  return [
+    date,
+    normalizedEntryText(entry.person),
+    normalizedEntryText(entry.reason),
+    normalizedEntryText(entry.note),
+  ].join("|");
+}
+
+function dedupeVacationEntries(entries: ScheduleEntry[]): ScheduleEntry[] {
+  const seen = new Set<string>();
+  const out: ScheduleEntry[] = [];
+  for (const entry of entries) {
+    const key = vacationEntryKey(entry);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(entry);
+  }
+  return out;
+}
+
 /** 휴가 폼(이미지 없음 또는 병합용) — 단일일·연일(시작~종료) */
 export function buildVacationFormAiResult(
   person: string,
@@ -210,7 +236,7 @@ export function mergeVacationFormOverlay(
         note: form.note.trim() || undefined,
       }));
       const existing = Array.isArray(details.entries) ? details.entries : [];
-      details.entries = [...formEntries, ...existing];
+      details.entries = dedupeVacationEntries([...formEntries, ...(existing as ScheduleEntry[])]);
     }
   }
 

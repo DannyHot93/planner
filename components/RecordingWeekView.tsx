@@ -1098,19 +1098,24 @@ function WeekGrid({
     ? "flex w-full items-stretch pb-1"
     : "flex w-full min-w-0 items-stretch overflow-x-auto pb-1";
   const columnWrapClass = displayMode
-    ? "w-1/6 px-1"
-    : "w-1/6 min-w-0 px-1";
-  const dayLabelClass = displayMode ? "text-xl" : "text-xs";
+    ? "flex w-1/6 flex-col px-1"
+    : "flex w-1/6 min-w-0 flex-col px-1";
   const dateLabelClass = displayMode ? "text-xl" : "text-xs";
   const weekendDateClass = displayMode
-    ? "flex flex-col gap-0.5 text-lg leading-tight"
-    : "flex flex-col gap-0.5 text-[10px] leading-tight";
+    ? "text-lg leading-tight"
+    : "text-[10px] leading-tight";
   const fridayNoteClass = displayMode
-    ? "text-base font-semibold text-amber-300/90 mt-0.5 text-right"
-    : "text-[10px] font-semibold text-amber-300/90 mt-0.5 text-right";
+    ? "text-base font-semibold text-amber-300/90 mt-0.5 text-center"
+    : "text-[10px] font-semibold text-amber-300/90 mt-0.5 text-center";
   const emptyClass = displayMode
     ? "text-lg text-gray-600 text-center py-3"
     : "text-xs text-gray-600 text-center py-3";
+  const dayHeaderClass = displayMode
+    ? "mb-1.5 text-center text-xl font-bold leading-tight"
+    : "mb-1 text-center text-xs font-bold leading-tight";
+  const dateHeaderClass = displayMode
+    ? "px-1 pb-1.5 text-center"
+    : "px-1 pb-1 text-center";
 
   return (
     <div className={gridClass}>
@@ -1129,6 +1134,17 @@ function WeekGrid({
         return (
           <div key={group.date} className={columnWrapClass}>
             <div
+              className={`${dayHeaderClass} ${
+                isToday
+                  ? "text-[#9ab0ff]"
+                  : isWeekend
+                    ? "text-[#f7a7c1]"
+                    : "text-gray-200"
+              }`}
+            >
+              {dayLabel}
+            </div>
+            <div
               className={`h-full rounded-xl border p-2 flex flex-col gap-2 ${
                 displayMode ? "" : "min-w-0"
               } ${
@@ -1138,17 +1154,8 @@ function WeekGrid({
               }`}
             >
               {isWeekendCol ? (
-                <div className="flex flex-col gap-1 px-0.5">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={`${dayLabelClass} font-bold ${
-                        isToday ? "text-[#9ab0ff]" : "text-[#f7a7c1]"
-                      }`}
-                    >
-                      {dayLabel}
-                    </span>
-                  </div>
-                  <div className={weekendDateClass}>
+                <div className={dateHeaderClass}>
+                  <div className={`${weekendDateClass} flex items-center justify-center gap-1`}>
                     <span
                       className={
                         todayStr === satYmd
@@ -1158,6 +1165,7 @@ function WeekGrid({
                     >
                       토 {pad2(moSat)}/{pad2(daSat)}
                     </span>
+                    <span className="text-[#f7a7c1]/50">·</span>
                     <span
                       className={
                         todayStr === sunYmd
@@ -1170,31 +1178,18 @@ function WeekGrid({
                   </div>
                 </div>
               ) : (
-                <div className="px-1">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={`${dayLabelClass} font-bold ${
-                        isToday
-                          ? "text-[#9ab0ff]"
-                          : isWeekend
-                            ? "text-[#f7a7c1]"
-                            : "text-gray-200"
-                      }`}
-                    >
-                      {dayLabel}
-                    </span>
-                    <span
-                      className={`${dateLabelClass} ${
-                        isToday
-                          ? "text-[#9ab0ff] font-semibold"
-                          : isWeekend
-                            ? "text-[#f7a7c1]/80"
-                            : "text-gray-500"
-                      }`}
-                    >
-                      {pad2(mo)}/{pad2(da)}
-                    </span>
-                  </div>
+                <div className={dateHeaderClass}>
+                  <p
+                    className={`${dateLabelClass} ${
+                      isToday
+                        ? "text-[#9ab0ff] font-semibold"
+                        : isWeekend
+                          ? "text-[#f7a7c1]/80"
+                          : "text-gray-500"
+                    }`}
+                  >
+                    {pad2(mo)}/{pad2(da)}
+                  </p>
                   {idx === 4 && isSecondOrFourthFriday(group.date) && (
                     <p className={fridayNoteClass}>
                       4.5일
