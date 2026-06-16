@@ -1,5 +1,36 @@
 [
   {
+    "id": "vac_1781576059299_2550f6db",
+    "type": "vacation",
+    "uploadedAt": "2026-06-16T02:14:19.299Z",
+    "memo": "구분: 휴가",
+    "summary": "박광형 · 2026-06-15 ~ 2026-06-17",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-06-15 ~ 2026-06-17",
+      "entries": [
+        {
+          "date": "2026-06-15",
+          "person": "박광형",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        },
+        {
+          "date": "2026-06-16",
+          "person": "박광형",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        },
+        {
+          "date": "2026-06-17",
+          "person": "박광형",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1781576058540_e33aa6a1",
     "type": "vacation",
     "uploadedAt": "2026-06-16T02:14:18.540Z",
