@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1781663938813_0b0e8895",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-17T02:38:58.813Z",
+    "memo": "",
+    "summary": "전국시대 프로그램의 녹화 일정이며, 2026년 7월 1일 10시 30분부터 11시 30분까지 공개홀에서 진행됩니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-07-01",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": null
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1781592031708_971421ac",
     "type": "production-schedule",
     "uploadedAt": "2026-06-16T06:40:31.709Z",
