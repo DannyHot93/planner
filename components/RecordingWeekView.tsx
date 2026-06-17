@@ -976,7 +976,7 @@ function OtherWeekCurrentMonthCalendarGrid({
           <div
             key={label}
             className={`${dayHeaderClass} ${
-              idx >= 5 ? "text-[#f7a7c1]" : "text-gray-300"
+              idx >= 5 ? "text-[#ff6b82]" : "text-white"
             }`}
           >
             {label}
@@ -1000,7 +1000,7 @@ function OtherWeekCurrentMonthCalendarGrid({
                 <>
                   <p
                     className={`${dayNumberClass} ${
-                      isToday ? "text-yellow-300" : "text-[#f7a7c1]/80"
+                      isToday ? "text-yellow-300" : idx % 7 >= 5 ? "text-[#ff6b82]" : "text-white"
                     }`}
                   >
                     {day}
@@ -1138,8 +1138,8 @@ function WeekGrid({
                 isToday
                   ? "text-[#9ab0ff]"
                   : isWeekend
-                    ? "text-[#f7a7c1]"
-                    : "text-gray-200"
+                    ? "text-[#ff6b82]"
+                    : "text-white"
               }`}
             >
               {dayLabel}
@@ -1160,7 +1160,7 @@ function WeekGrid({
                       className={
                         todayStr === satYmd
                           ? "font-semibold text-[#9ab0ff]"
-                          : "text-[#f7a7c1]/80"
+                          : "text-[#ff6b82]"
                       }
                     >
                       토 {pad2(moSat)}/{pad2(daSat)}
@@ -1170,7 +1170,7 @@ function WeekGrid({
                       className={
                         todayStr === sunYmd
                           ? "font-semibold text-[#9ab0ff]"
-                          : "text-[#f7a7c1]/80"
+                          : "text-[#ff6b82]"
                       }
                     >
                       일 {pad2(moSun)}/{pad2(daSun)}
@@ -1183,9 +1183,7 @@ function WeekGrid({
                     className={`${dateLabelClass} ${
                       isToday
                         ? "text-[#9ab0ff] font-semibold"
-                        : isWeekend
-                          ? "text-[#f7a7c1]/80"
-                          : "text-gray-500"
+                        : "text-white"
                     }`}
                   >
                     {pad2(mo)}/{pad2(da)}
