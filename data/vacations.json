@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1782104680571_e20e49d7",
+    "type": "vacation",
+    "uploadedAt": "2026-06-22T05:04:40.600Z",
+    "memo": "건강검진",
+    "summary": "안대현 · 2026-06-30",
+    "details": {
+      "vacationKind": "production",
+      "period": "2026-06-30 ~ 2026-06-30",
+      "entries": [
+        {
+          "date": "2026-06-30",
+          "person": "안대현",
+          "reason": "건강검진",
+          "note": "건강검진"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1782104611878_b47352dc",
     "type": "vacation",
     "uploadedAt": "2026-06-22T05:03:31.906Z",
