@@ -1,5 +1,22 @@
 [
   {
+    "id": "vac_1782104441740_97b852b5",
+    "type": "vacation",
+    "uploadedAt": "2026-06-22T05:00:41.740Z",
+    "memo": "안대현 · 2026-06-26",
+    "summary": "안대현 · 2026-06-26",
+    "details": {
+      "vacationKind": "production",
+      "period": "2026-06-26 ~ 2026-06-26",
+      "entries": [
+        {
+          "date": "2026-06-26",
+          "person": "안대현"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1781576052400_9e9ed4c6",
     "type": "vacation",
     "uploadedAt": "2026-06-16T02:14:12.401Z",
