@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1782209277656_4e2f7771",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-23T10:07:57.657Z",
+    "memo": "생활력 · 2026-06-24",
+    "summary": "생활력 · 2026-06-24",
+    "details": {
+      "title": "생활력",
+      "program": "생활력",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-24"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1782199651175_0c7135b3",
     "type": "production-schedule",
     "uploadedAt": "2026-06-23T07:27:31.176Z",
