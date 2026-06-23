@@ -15,21 +15,6 @@
     }
   },
   {
-    "id": "ws_1782208960585_3988ff76",
-    "type": "work-schedule",
-    "uploadedAt": "2026-06-23T10:02:40.585Z",
-    "memo": "매주 수요일 생활력",
-    "summary": "매주 수요일 생활력",
-    "details": {
-      "scheduleKind": "office",
-      "entries": [
-        {
-          "note": "매주 수요일 생활력"
-        }
-      ]
-    }
-  },
-  {
     "id": "ws_1780308977880_a26eb109",
     "type": "work-schedule",
     "uploadedAt": "2026-06-01T10:16:17.880Z",
