@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1782199651175_0c7135b3",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-23T07:27:31.176Z",
+    "memo": "R 정오의 희망곡 · 2026-06-24",
+    "summary": "R 정오의 희망곡 · 2026-06-24 12:00~14:00",
+    "details": {
+      "title": "R 정오의 희망곡",
+      "program": "R 정오의 희망곡",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-24",
+          "time": "12:00~14:00"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1782180657404_45a7689b",
     "type": "production-schedule",
     "uploadedAt": "2026-06-23T02:10:57.405Z",
