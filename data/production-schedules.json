@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1782180600569_ad914878",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-23T02:10:00.569Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 녹화 일정으로, 2020년 6월 30일 오후 2시 30분부터 3시 40분까지 4층 뉴스룸에서 설경철 PD 담당하에 이장섭 청주시장과의 특별 대담이 스튜디오에서 녹화될 예정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-06-30",
+          "time": "14:30-15:40",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철, 출연: 이장섭 청주시장",
+          "note": "특별대담 이장섭 청주시장에게 듣는다. 출연 1명. 스튜디오 녹화."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1782101106476_005dcaf8",
     "type": "production-schedule",
     "uploadedAt": "2026-06-22T04:05:06.506Z",
