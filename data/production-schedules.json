@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1782180657404_45a7689b",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-23T02:10:57.405Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 2024년 7월 8일 녹화 의뢰서로, 이장식 충북도 의장과의 특별 대담이 4층 뉴스룸에서 진행됩니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-07-08",
+          "time": "14:30-15:40",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철, 출연: 1명",
+          "note": "특별대담 이장식 충북도 의장에게 듣는다 (대담)"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1782180600569_ad914878",
     "type": "production-schedule",
     "uploadedAt": "2026-06-23T02:10:00.569Z",
