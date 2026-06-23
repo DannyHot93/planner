@@ -1,5 +1,20 @@
 [
   {
+    "id": "ws_1782209053629_1e10d1c6",
+    "type": "work-schedule",
+    "uploadedAt": "2026-06-23T10:04:13.657Z",
+    "memo": "6/24 생활력",
+    "summary": "6/24 생활력",
+    "details": {
+      "scheduleKind": "office",
+      "entries": [
+        {
+          "note": "6/24 생활력"
+        }
+      ]
+    }
+  },
+  {
     "id": "ws_1782208960585_3988ff76",
     "type": "work-schedule",
     "uploadedAt": "2026-06-23T10:02:40.585Z",
