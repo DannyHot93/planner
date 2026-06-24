@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1782287880990_194b12b5",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-24T07:58:00.990Z",
+    "memo": "앵커 : 박서영 · 2026-07-12",
+    "summary": "앵커 : 박서영 · 2026-07-12",
+    "details": {
+      "title": "앵커 : 박서영",
+      "program": "앵커 : 박서영",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-07-12"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1782287852000_9d355393",
     "type": "production-schedule",
     "uploadedAt": "2026-06-24T07:57:32.000Z",
