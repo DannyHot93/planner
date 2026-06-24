@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1782287904526_5bd7d291",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-24T07:58:24.555Z",
+    "memo": "앵커 : 최다원 · 2026-07-19",
+    "summary": "앵커 : 최다원 · 2026-07-19",
+    "details": {
+      "title": "앵커 : 최다원",
+      "program": "앵커 : 최다원",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-07-19"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1782287880990_194b12b5",
     "type": "production-schedule",
     "uploadedAt": "2026-06-24T07:58:00.990Z",
