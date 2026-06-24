@@ -1,5 +1,24 @@
 [
   {
+    "id": "ps_1782289604837_bc16f6d5",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-24T08:26:44.838Z",
+    "memo": "특별대담 이상천 제천시장에게 듣는다.\r\n출연 1명 / 대담",
+    "summary": "시사토론 창 · 2026-07-10 11:00~12:10",
+    "details": {
+      "title": "시사토론 창",
+      "program": "시사토론 창",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-07-10",
+          "time": "11:00~12:10",
+          "note": "특별대담 이상천 제천시장에게 듣는다.\r\n출연 1명 / 대담"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1782287904526_5bd7d291",
     "type": "production-schedule",
     "uploadedAt": "2026-06-24T07:58:24.555Z",
