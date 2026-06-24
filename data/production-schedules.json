@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1782287852000_9d355393",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-24T07:57:32.000Z",
+    "memo": "앵커 : 이황주 · 2026-07-26",
+    "summary": "앵커 : 이황주 · 2026-07-26",
+    "details": {
+      "title": "앵커 : 이황주",
+      "program": "앵커 : 이황주",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-07-26"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1782287835971_92de9259",
     "type": "production-schedule",
     "uploadedAt": "2026-06-24T07:57:15.973Z",
