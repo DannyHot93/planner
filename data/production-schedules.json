@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1782722245832_1621a42b",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-29T08:37:25.833Z",
+    "memo": "",
+    "summary": "2026년 7월 2일에 4층 스튜디오에서 프라임 인터뷰 녹화가 진행되며, 방송은 7월 11일 예정입니다.",
+    "details": {
+      "period": null,
+      "title": "프라임 인터뷰",
+      "entries": [
+        {
+          "date": "2026-07-02",
+          "time": "16:00-17:00",
+          "place": "4층 스튜디오",
+          "person": "담당PD: 민수빈, 출연: 청주시 사회복지공무원 고은정/손형선/이애영 주무관",
+          "note": "방송일시: 2026-07-11, 3명 출연(기존의자 대신 창 의자 사용)"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1782289604837_bc16f6d5",
     "type": "production-schedule",
     "uploadedAt": "2026-06-24T08:26:44.838Z",
