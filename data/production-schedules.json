@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1782807102372_155d3fbf",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-30T08:11:42.373Z",
+    "memo": "",
+    "summary": "2026년 7월 14일 진천종합스포츠타운 다목적홀B에서 진행되는 2026 발달장애인핸드볼대회 AllWinpeak 유튜브 라이브 중계 제작 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "2026 발달장애인핸드볼대회 AllWinpeak 유튜브 라이브",
+      "entries": [
+        {
+          "date": "2026-07-14",
+          "time": "10:00-15:00",
+          "place": "진천종합스포츠타운 다목적홀B",
+          "person": "김상훈 (BIZ전략국 전략사업부)",
+          "note": "유튜브 라이브; 2026 발달장애인핸드볼리그 AllWinPeak 정규-1.2R 4경기 녹화중계; 카메라 3대, 촬영인원 2명; 기술국 유튜브 송출 지원"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1782802005184_f847f468",
     "type": "production-schedule",
     "uploadedAt": "2026-06-30T06:46:45.185Z",
