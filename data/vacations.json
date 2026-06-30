@@ -1,137 +1,5 @@
 [
   {
-    "id": "vac_1782811171728_a4e81759",
-    "type": "vacation",
-    "uploadedAt": "2026-06-30T09:19:31.728Z",
-    "memo": "구분: 휴가",
-    "summary": "박종록 · 2026-06-22 ~ 2026-06-25",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-22 ~ 2026-06-25",
-      "entries": [
-        {
-          "date": "2026-06-22",
-          "person": "박종록",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        },
-        {
-          "date": "2026-06-23",
-          "person": "박종록",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        },
-        {
-          "date": "2026-06-24",
-          "person": "박종록",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        },
-        {
-          "date": "2026-06-25",
-          "person": "박종록",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782811170937_6ab19934",
-    "type": "vacation",
-    "uploadedAt": "2026-06-30T09:19:30.937Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-06-25",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-25 ~ 2026-06-25",
-      "entries": [
-        {
-          "date": "2026-06-25",
-          "person": "손호율",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782811168696_222107b2",
-    "type": "vacation",
-    "uploadedAt": "2026-06-30T09:19:28.696Z",
-    "memo": "구분: 휴가",
-    "summary": "안대현 · 2026-06-26",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-26 ~ 2026-06-26",
-      "entries": [
-        {
-          "date": "2026-06-26",
-          "person": "안대현",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782811167571_faaa3793",
-    "type": "vacation",
-    "uploadedAt": "2026-06-30T09:19:27.571Z",
-    "memo": "구분: 휴가",
-    "summary": "이상훈 · 2026-06-29",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-29 ~ 2026-06-29",
-      "entries": [
-        {
-          "date": "2026-06-29",
-          "person": "이상훈",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782811166900_c53e3f68",
-    "type": "vacation",
-    "uploadedAt": "2026-06-30T09:19:26.901Z",
-    "memo": "구분: 휴가",
-    "summary": "안대현 · 2026-06-29",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-29 ~ 2026-06-29",
-      "entries": [
-        {
-          "date": "2026-06-29",
-          "person": "안대현",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782811166189_c5bbc292",
-    "type": "vacation",
-    "uploadedAt": "2026-06-30T09:19:26.190Z",
-    "memo": "구분: 휴가",
-    "summary": "안대현 · 2026-06-30",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-30 ~ 2026-06-30",
-      "entries": [
-        {
-          "date": "2026-06-30",
-          "person": "안대현",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1782811165429_7ab82ed2",
     "type": "vacation",
     "uploadedAt": "2026-06-30T09:19:25.430Z",
@@ -182,25 +50,6 @@
     }
   },
   {
-    "id": "vac_1782692549705_4dde549c",
-    "type": "vacation",
-    "uploadedAt": "2026-06-29T00:22:29.705Z",
-    "memo": "구분: 휴가",
-    "summary": "안대현 · 2026-06-30",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-30 ~ 2026-06-30",
-      "entries": [
-        {
-          "date": "2026-06-30",
-          "person": "안대현",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1782692548953_bc12db5b",
     "type": "vacation",
     "uploadedAt": "2026-06-29T00:22:28.954Z",
@@ -213,25 +62,6 @@
         {
           "date": "2026-07-03",
           "person": "이상훈",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782275666334_6ea9eb0c",
-    "type": "vacation",
-    "uploadedAt": "2026-06-24T04:34:26.334Z",
-    "memo": "구분: 휴가",
-    "summary": "안대현 · 2026-06-30",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-06-30 ~ 2026-06-30",
-      "entries": [
-        {
-          "date": "2026-06-30",
-          "person": "안대현",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
         }
@@ -253,44 +83,6 @@
           "person": "이상훈",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782164856512_70504900",
-    "type": "vacation",
-    "uploadedAt": "2026-06-22T21:47:36.513Z",
-    "memo": "건강검진",
-    "summary": "안대현 · 2026-06-30",
-    "details": {
-      "vacationKind": "production",
-      "period": "2026-06-30 ~ 2026-06-30",
-      "entries": [
-        {
-          "date": "2026-06-30",
-          "person": "안대현",
-          "reason": "건강검진",
-          "note": "건강검진"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782104680571_e20e49d7",
-    "type": "vacation",
-    "uploadedAt": "2026-06-22T05:04:40.600Z",
-    "memo": "건강검진",
-    "summary": "안대현 · 2026-06-30",
-    "details": {
-      "vacationKind": "production",
-      "period": "2026-06-30 ~ 2026-06-30",
-      "entries": [
-        {
-          "date": "2026-06-30",
-          "person": "안대현",
-          "reason": "건강검진",
-          "note": "건강검진"
         }
       ]
     }
