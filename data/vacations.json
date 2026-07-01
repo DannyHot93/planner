@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1782867452812_4d798f32",
+    "type": "vacation",
+    "uploadedAt": "2026-07-01T00:57:32.813Z",
+    "memo": "구분: 휴가",
+    "summary": "안대현 · 2026-06-26",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-06-26 ~ 2026-06-26",
+      "entries": [
+        {
+          "date": "2026-06-26",
+          "person": "안대현",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1782867452028_bd8f7e59",
     "type": "vacation",
     "uploadedAt": "2026-07-01T00:57:32.029Z",
