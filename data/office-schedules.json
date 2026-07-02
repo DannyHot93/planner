@@ -3,16 +3,16 @@
     "id": "os_1782978391905_b8da7f42",
     "type": "office-schedule",
     "uploadedAt": "2026-07-02T07:46:31.905Z",
-    "memo": "submit smoke test",
-    "summary": "SMOKE_SUBMIT_TEST · 2026-07-20 10:00",
+    "memo": "edited smoke memo",
+    "summary": "SMOKE_SUBMIT_TEST_EDITED",
     "details": {
-      "title": "SMOKE_SUBMIT_TEST",
-      "program": "SMOKE_SUBMIT_TEST",
+      "title": "SMOKE_SUBMIT_TEST_EDITED",
+      "program": "SMOKE_SUBMIT_TEST_EDITED",
       "scheduleType": "office",
       "entries": [
         {
           "date": "2026-07-20",
-          "time": "10:00",
+          "time": "11:00",
           "place": "테스트룸",
           "note": "submit smoke test"
         }
