@@ -66,6 +66,7 @@ npm run dev
 | `GITHUB_OWNER` | GitHub 사용자 또는 조직 |
 | `GITHUB_REPO` | 데이터가 저장될 저장소 이름 |
 | `GITHUB_BRANCH` | 저장 브랜치. 기본 `main` |
+| `WEBHOOK_SECRET` | 외부 JSON webhook 수신 API 보호용 Bearer 토큰 |
 | `BLOB_READ_WRITE_TOKEN` | 선택. Vercel Blob 저장소 연결 시 이미지 저장에 사용 |
 | `GOOGLE_CALENDAR_SYNC_ENABLED` | 선택. `false`면 Google Calendar 연동 끔 |
 | `GOOGLE_CALENDAR_ID` | Google Calendar ID |
@@ -83,6 +84,19 @@ OAuth 리프레시 토큰 발급은 다음 명령을 사용합니다.
 ```bash
 npm run gcal:oauth
 ```
+
+## Webhook API
+
+외부 시스템에서 JSON으로 일정을 등록하려면 `POST /api/webhook/records`를 호출합니다. 요청은 `Authorization: Bearer $WEBHOOK_SECRET` 헤더가 필요하며, 저장된 일정은 기존 `/display` 화면에 최대 2분 내 표시됩니다.
+
+```bash
+curl -X POST https://planner-ecru-beta.vercel.app/api/webhook/records \
+  -H "Authorization: Bearer $WEBHOOK_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{"type":"office-schedule","summary":"테스트 일정","details":{"entries":[{"date":"2026-07-02","time":"14:00"}]}}'
+```
+
+허용되는 `type` 값은 `work-schedule`, `vacation`, `office-schedule`, `production-schedule`, `casting-schedule`입니다. 이미지는 webhook에서 받지 않으며, 이미지 등록은 기존 `/submit` 화면을 사용합니다.
 
 ## 데이터 파일
 
