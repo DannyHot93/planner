@@ -1,5 +1,22 @@
 [
   {
+    "id": "os_1782978448700_e3cb1606",
+    "type": "office-schedule",
+    "uploadedAt": "2026-07-02T07:47:28.700Z",
+    "memo": "webhook smoke test",
+    "summary": "SMOKE_WEBHOOK_TEST · 2026-07-21 12:00",
+    "details": {
+      "entries": [
+        {
+          "date": "2026-07-21",
+          "time": "12:00",
+          "place": "테스트룸",
+          "note": "webhook smoke"
+        }
+      ]
+    }
+  },
+  {
     "id": "os_1782976111954_1ccd289f",
     "type": "office-schedule",
     "uploadedAt": "2026-07-02T07:08:31.954Z",
