@@ -232,5 +232,147 @@
       ],
       "scheduleType": "production"
     }
+  },
+  {
+    "id": "ps_1781592031708_971421ac",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-16T06:40:31.709Z",
+    "memo": "6/21 이상훈, 안대현 · 2026-06-21",
+    "summary": "6/21 이상훈, 안대현 · 2026-06-21",
+    "details": {
+      "title": "6/21 이상훈, 안대현",
+      "program": "6/21 이상훈, 안대현",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-21"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ps_1781078098163_5915d5a5",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-10T07:54:58.164Z",
+    "memo": "",
+    "summary": "This is a recording request for the 'Prime Interview' program, featuring Jincheon HR FC Director Yoo Sang-su, recorded on June 25, 2026, at the 4th-floor studio, and scheduled for broadcast on July 4, 2026.",
+    "details": {
+      "period": null,
+      "title": "프라임인터뷰",
+      "entries": [
+        {
+          "date": "2026-06-25",
+          "time": "16:00-17:00",
+          "place": "4층 스튜디오",
+          "person": "진천 HR FC 유상수 감독, 담당PD 민수빈",
+          "note": "방송일시: 2026-07-04"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
+    "id": "ps_1781077980435_26010d57",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-10T07:53:00.435Z",
+    "memo": "",
+    "summary": "프라임 인터뷰 프로그램은 2026년 6월 16일 16시부터 17시까지 4층 스튜디오에서 국립괴산호국원 강대원 원장과 녹화되며, 2026년 6월 27일에 방송될 예정이다. 담당PD는 민수빈이다.",
+    "details": {
+      "period": "2026-06-16 ~ 2026-06-27",
+      "title": "프라임 인터뷰",
+      "entries": [
+        {
+          "date": "2026-06-16",
+          "time": "16:00-17:00",
+          "place": "4층 스튜디오",
+          "person": "출연: 국립괴산호국원 강대원 원장, 담당PD: 민수빈",
+          "note": "방송일시: 2026-06-27. 중계차: 스튜디오 사용"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
+    "id": "ps_1781059036527_734077be",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-10T02:37:16.527Z",
+    "memo": "",
+    "summary": "전국시대 프로그램의 녹화 일정표입니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-06-17",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": null
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
+    "id": "ps_1780645781965_a1e3efa6",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-05T07:49:41.965Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 녹화 의뢰서입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-06-18",
+          "time": "10:00-11:10",
+          "place": "4층 뉴스룸",
+          "person": "설경철 (담당PD)",
+          "note": "녹화 내용: 충북 교육감 당선인에게 듣는다. 특이사항: 출연 1명 출연 / 대담."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
+    "id": "ps_1780645755826_75b6b9d6",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-05T07:49:15.826Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 2020년 6월 25일 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-06-25",
+          "time": "14:00-15:10",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철, 패널: 4명",
+          "note": "중계차: 스튜디오. 녹화내용: 6월 월간뉴스분석. 패널 배치: 좌 2명, 우 2명."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
+    "id": "ps_1780561165020_28df6020",
+    "type": "production-schedule",
+    "uploadedAt": "2026-06-04T08:19:25.021Z",
+    "memo": "좌: 2명 우: 2명",
+    "summary": "볼수록더좋은TV · 2026-06-23 14:30~16:30",
+    "details": {
+      "title": "볼수록더좋은TV",
+      "program": "볼수록더좋은TV",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-06-23",
+          "time": "14:30~16:30",
+          "place": "N/C",
+          "note": "좌: 2명 우: 2명"
+        }
+      ]
+    }
   }
 ]
