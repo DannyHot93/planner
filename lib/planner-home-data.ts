@@ -6,11 +6,6 @@ import type {
   WorkScheduleDetails,
 } from "@/lib/types";
 import { readRecordsFromGitHub } from "@/lib/github";
-import {
-  filterRecordingsWeeklyCleanup,
-  getTodaySeoulYmd,
-} from "@/lib/recording-cleanup";
-import { filterPastVacations } from "@/lib/vacation-cleanup";
 import { fetchGoogleCalendarOfficeRecords } from "@/lib/google-calendar-office";
 
 /**
@@ -122,20 +117,14 @@ export async function getPlannerHomePayload(): Promise<PlannerHomePayload> {
     loadRecords("casting-schedules.json"),
   ]);
 
-  const todayYmd = getTodaySeoulYmd();
-  const vacations = filterPastVacations(rawVacations, todayYmd);
-  const officeSchedules = filterRecordingsWeeklyCleanup(rawOfficeSchedules);
-  const productionSchedules = filterRecordingsWeeklyCleanup(rawProductionSchedules);
-  const legacyRecordings = filterRecordingsWeeklyCleanup(rawLegacyRecordings);
-
   const gcalOffice = await fetchGoogleCalendarOfficeRecords();
 
   const merged = [
     ...workSchedules,
-    ...vacations,
-    ...officeSchedules,
-    ...productionSchedules,
-    ...legacyRecordings,
+    ...rawVacations,
+    ...rawOfficeSchedules,
+    ...rawProductionSchedules,
+    ...rawLegacyRecordings,
     ...gcalOffice,
   ].sort(
     (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
