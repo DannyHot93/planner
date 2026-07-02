@@ -1,25 +1,5 @@
 [
   {
-    "id": "os_1782978391905_b8da7f42",
-    "type": "office-schedule",
-    "uploadedAt": "2026-07-02T07:46:31.905Z",
-    "memo": "edited smoke memo",
-    "summary": "SMOKE_SUBMIT_TEST_EDITED",
-    "details": {
-      "title": "SMOKE_SUBMIT_TEST_EDITED",
-      "program": "SMOKE_SUBMIT_TEST_EDITED",
-      "scheduleType": "office",
-      "entries": [
-        {
-          "date": "2026-07-20",
-          "time": "11:00",
-          "place": "테스트룸",
-          "note": "submit smoke test"
-        }
-      ]
-    }
-  },
-  {
     "id": "os_1782976111954_1ccd289f",
     "type": "office-schedule",
     "uploadedAt": "2026-07-02T07:08:31.954Z",
