@@ -1,24 +1,5 @@
 [
   {
-    "id": "vac_1782867448541_edce5c3a",
-    "type": "vacation",
-    "uploadedAt": "2026-07-01T00:57:28.541Z",
-    "memo": "구분: 휴가",
-    "summary": "이상훈 · 2026-07-03",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-07-03 ~ 2026-07-03",
-      "entries": [
-        {
-          "date": "2026-07-03",
-          "person": "이상훈",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1782867447907_e25e6fb6",
     "type": "vacation",
     "uploadedAt": "2026-07-01T00:57:27.907Z",
@@ -50,25 +31,6 @@
     }
   },
   {
-    "id": "vac_1782811165429_7ab82ed2",
-    "type": "vacation",
-    "uploadedAt": "2026-06-30T09:19:25.430Z",
-    "memo": "구분: 휴가",
-    "summary": "이상훈 · 2026-07-03",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-07-03 ~ 2026-07-03",
-      "entries": [
-        {
-          "date": "2026-07-03",
-          "person": "이상훈",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1782811164603_d542f24d",
     "type": "vacation",
     "uploadedAt": "2026-06-30T09:19:24.604Z",
@@ -93,44 +55,6 @@
         {
           "date": "2026-07-08",
           "person": "김규설",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782692548953_bc12db5b",
-    "type": "vacation",
-    "uploadedAt": "2026-06-29T00:22:28.954Z",
-    "memo": "구분: 휴가",
-    "summary": "이상훈 · 2026-07-03",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-07-03 ~ 2026-07-03",
-      "entries": [
-        {
-          "date": "2026-07-03",
-          "person": "이상훈",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1782275665616_4fe3c05f",
-    "type": "vacation",
-    "uploadedAt": "2026-06-24T04:34:25.617Z",
-    "memo": "구분: 휴가",
-    "summary": "이상훈 · 2026-07-03",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-07-03 ~ 2026-07-03",
-      "entries": [
-        {
-          "date": "2026-07-03",
-          "person": "이상훈",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
         }
