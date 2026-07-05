@@ -3,16 +3,17 @@
     "id": "ps_1783287616895_72d15dff",
     "type": "production-schedule",
     "uploadedAt": "2026-07-05T21:40:16.896Z",
-    "memo": "이상훈, 안대현",
+    "memo": "",
     "summary": "주말 · 2026-07-12",
     "details": {
-      "title": "주말",
-      "program": "주말",
+      "title": "이상훈/안대현",
+      "program": "이상훈/안대현",
       "scheduleType": "production",
       "entries": [
         {
           "date": "2026-07-12",
-          "note": "이상훈, 안대현"
+          "note": "이상훈, 안대현",
+          "time": ""
         }
       ]
     }
