@@ -63,27 +63,6 @@
     }
   },
   {
-    "id": "ps_1782722245832_1621a42b",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-29T08:37:25.833Z",
-    "memo": "",
-    "summary": "2026년 7월 2일에 4층 스튜디오에서 프라임 인터뷰 녹화가 진행되며, 방송은 7월 11일 예정입니다.",
-    "details": {
-      "period": null,
-      "title": "프라임 인터뷰",
-      "entries": [
-        {
-          "date": "2026-07-02",
-          "time": "16:00-17:00",
-          "place": "4층 스튜디오",
-          "person": "담당PD: 민수빈, 출연: 청주시 사회복지공무원 고은정/손형선/이애영 주무관",
-          "note": "방송일시: 2026-07-11, 3명 출연(기존의자 대신 창 의자 사용)"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1782287904526_5bd7d291",
     "type": "production-schedule",
     "uploadedAt": "2026-06-24T07:58:24.555Z",
@@ -135,23 +114,6 @@
     }
   },
   {
-    "id": "ps_1782287835971_92de9259",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-24T07:57:15.973Z",
-    "memo": "앵커 : 이황주 · 2026-07-05",
-    "summary": "앵커 : 이황주 · 2026-07-05",
-    "details": {
-      "title": "앵커 : 이황주",
-      "program": "앵커 : 이황주",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-05"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1782180657404_45a7689b",
     "type": "production-schedule",
     "uploadedAt": "2026-06-23T02:10:57.405Z",
@@ -167,48 +129,6 @@
           "place": "4층 뉴스룸",
           "person": "담당PD: 설경철, 출연: 1명",
           "note": "특별대담 이장식 충북도 의장에게 듣는다 (대담)"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1782180600569_ad914878",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-23T02:10:00.569Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 녹화 일정으로, 2020년 6월 30일 오후 2시 30분부터 3시 40분까지 4층 뉴스룸에서 설경철 PD 담당하에 이장섭 청주시장과의 특별 대담이 스튜디오에서 녹화될 예정입니다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-06-30",
-          "time": "14:30-15:40",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철, 출연: 이장섭 청주시장",
-          "note": "특별대담 이장섭 청주시장에게 듣는다. 출연 1명. 스튜디오 녹화."
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1781663938813_0b0e8895",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-17T02:38:58.813Z",
-    "memo": "",
-    "summary": "전국시대 프로그램의 녹화 일정이며, 2026년 7월 1일 10시 30분부터 11시 30분까지 공개홀에서 진행됩니다.",
-    "details": {
-      "period": null,
-      "title": "전국시대",
-      "entries": [
-        {
-          "date": "2026-07-01",
-          "time": "10:30-11:30",
-          "place": "공개홀",
-          "person": "장세일",
-          "note": null
         }
       ],
       "scheduleType": "production"
