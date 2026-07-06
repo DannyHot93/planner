@@ -1,5 +1,40 @@
 [
   {
+    "id": "ps_1783321519385_84f12e82",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-06T07:05:19.386Z",
+    "memo": "",
+    "summary": "통섭 프로그램의 7월 23일 녹화 의뢰서로, 강연 및 Q&A 녹화 일정과 사전 스탭회의, 리허설 등 관련 세부사항을 포함합니다.",
+    "details": {
+      "period": null,
+      "title": "통섭",
+      "entries": [
+        {
+          "date": "2026-07-23",
+          "time": "19:30-21:30",
+          "place": "지하1층 공개홀",
+          "person": "담당PD 설경철",
+          "note": "녹화내용: 강연 (60~70분), 강사, MC 송민수의 Q&A (30분 내외). 카메라 6대 활용 (지미집 1대, 거치 카메라 2대 추가)"
+        },
+        {
+          "date": "2026-07-22",
+          "time": "13:30",
+          "place": null,
+          "person": null,
+          "note": "사전 스탭회의 / 창 녹화 직전"
+        },
+        {
+          "date": "2026-07-23",
+          "time": "19:15",
+          "place": null,
+          "person": null,
+          "note": "리허설"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1783321184627_5329f82b",
     "type": "production-schedule",
     "uploadedAt": "2026-07-06T06:59:44.628Z",
