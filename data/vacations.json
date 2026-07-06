@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1783313345621_d3fc8adc",
+    "type": "vacation",
+    "uploadedAt": "2026-07-06T04:49:05.622Z",
+    "memo": "구분: 휴가",
+    "summary": "이상훈 · 2026-07-03",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-07-03 ~ 2026-07-03",
+      "entries": [
+        {
+          "date": "2026-07-03",
+          "person": "이상훈",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1783313344987_fa392beb",
     "type": "vacation",
     "uploadedAt": "2026-07-06T04:49:04.987Z",
