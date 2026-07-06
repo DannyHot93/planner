@@ -1,5 +1,26 @@
 [
   {
+    "id": "ps_1783321184627_5329f82b",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-06T06:59:44.628Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 '7월 월간뉴스분석' 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-07-22",
+          "time": "14:00-15:10",
+          "place": "4층 뉴스룸",
+          "person": "설경철 (담당PD)",
+          "note": "녹화 내용: 7월 월간뉴스분석. 특이사항: 패널 4명 출연 (좌 2명, 우 2명)."
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1783314092918_a4b8c3dc",
     "type": "production-schedule",
     "uploadedAt": "2026-07-06T05:01:32.919Z",
