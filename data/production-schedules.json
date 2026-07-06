@@ -1,5 +1,24 @@
 [
   {
+    "id": "ps_1783314092918_a4b8c3dc",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-06T05:01:32.919Z",
+    "memo": "조명, 백 그림 운용",
+    "summary": "시청자플렉스 영상 촬영 협조 · 2026-07-07 14:00 이전",
+    "details": {
+      "title": "시청자플렉스 영상 촬영 협조",
+      "program": "시청자플렉스 영상 촬영 협조",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-07-07",
+          "time": "14:00 이전",
+          "note": "조명, 백 그림 운용"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1783307628077_80ebe4cf",
     "type": "production-schedule",
     "uploadedAt": "2026-07-06T03:13:48.078Z",
