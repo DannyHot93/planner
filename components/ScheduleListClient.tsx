@@ -5,6 +5,7 @@ import { ScheduleRecord } from "@/lib/types";
 import { RecordRemoveProvider } from "./RecordDeleteContext";
 import HomeDashboardView from "./HomeDashboardView";
 import RecordingWeekView from "./RecordingWeekView";
+import SharedMemoBox from "./SharedMemoBox";
 import WorkScheduleWeekView from "./WorkScheduleWeekView";
 import VacationWeekView from "./VacationWeekView";
 
@@ -491,6 +492,7 @@ export default function ScheduleListClient({
                   hideDeleteButtons
                   displayMode={displayMode}
                 />
+                <SharedMemoBox compact />
               </div>
             </aside>
           </div>

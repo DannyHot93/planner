@@ -99,6 +99,25 @@ async function loadRecords(filename: string): Promise<ScheduleRecord[]> {
   return loadRecordsFromDisk(filename);
 }
 
+async function loadOfficeFallbackRecords(): Promise<ScheduleRecord[]> {
+  const url = process.env.PLANNER_REMOTE_OFFICE_FALLBACK_URL?.trim();
+  if (!url) return [];
+
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const payload = (await res.json()) as { allRecords?: ScheduleRecord[] };
+    return Array.isArray(payload.allRecords)
+      ? payload.allRecords.filter((record) => record.type === "office-schedule")
+      : [];
+  } catch (e) {
+    console.error("사무실 일정 fallback 로드 실패:", e);
+    return [];
+  }
+}
+
 export type PlannerHomePayload = {
   allRecords: ScheduleRecord[];
   castingRecords: ScheduleRecord[];
@@ -129,11 +148,16 @@ export async function getPlannerHomePayload(): Promise<PlannerHomePayload> {
   const legacyRecordings = filterRecordingsWeeklyCleanup(rawLegacyRecordings);
 
   const gcalOffice = await fetchGoogleCalendarOfficeRecords();
+  const officeFallback =
+    officeSchedules.length === 0 && gcalOffice.length === 0
+      ? await loadOfficeFallbackRecords()
+      : [];
 
   const merged = [
     ...workSchedules,
     ...vacations,
     ...officeSchedules,
+    ...officeFallback,
     ...productionSchedules,
     ...legacyRecordings,
     ...gcalOffice,

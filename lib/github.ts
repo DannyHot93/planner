@@ -143,11 +143,11 @@ async function fetchUtf8FromDownloadUrl(
   return response.text();
 }
 
-async function getFileContent(
+async function getUtf8FileContent(
   config: GitHubConfig,
   filePath: string,
   options: { forWrite?: boolean } = {}
-): Promise<{ sha: string; data: ScheduleRecord[] }> {
+): Promise<{ sha: string; text: string }> {
   const cache: GitHubFetchCache = options.forWrite ? cacheForWrite() : cacheForRead();
   const url = `${GITHUB_API_BASE}/repos/${config.owner}/${config.repo}/contents/${filePath}?ref=${config.branch}`;
 
@@ -157,7 +157,7 @@ async function getFileContent(
   });
 
   if (response.status === 404) {
-    return { sha: "", data: [] };
+    return { sha: "", text: "" };
   }
 
   if (!response.ok) {
@@ -193,9 +193,20 @@ async function getFileContent(
     );
   }
 
-  const data = parseRecordsJson(decoded, filePath);
+  return { sha: body.sha, text: decoded };
+}
 
-  return { sha: body.sha, data };
+async function getFileContent(
+  config: GitHubConfig,
+  filePath: string,
+  options: { forWrite?: boolean } = {}
+): Promise<{ sha: string; data: ScheduleRecord[] }> {
+  const { sha, text } = await getUtf8FileContent(config, filePath, options);
+  if (!sha && !text.trim()) {
+    return { sha: "", data: [] };
+  }
+  const data = parseRecordsJson(text, filePath);
+  return { sha, data };
 }
 
 async function putFileContent(
@@ -288,6 +299,34 @@ export async function readRecordsFromGitHub(
   const config = getConfig();
   const { data } = await getFileContent(config, filePath);
   return Array.isArray(data) ? data : [];
+}
+
+/** 작은 JSON/텍스트 파일을 그대로 읽습니다. */
+export async function readTextFromGitHub(filePath: string): Promise<string> {
+  const config = getConfig();
+  const { text } = await getUtf8FileContent(config, filePath);
+  return text;
+}
+
+/** 작은 JSON/텍스트 파일 전체를 덮어씁니다. */
+export async function overwriteTextOnGitHub(
+  filePath: string,
+  content: string,
+  commitMessage: string
+): Promise<void> {
+  const config = getConfig();
+  const maxAttempts = 6;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const { sha } = await getUtf8FileContent(config, filePath, { forWrite: true });
+    try {
+      await putFileContent(config, filePath, sha, content, commitMessage);
+      return;
+    } catch (e) {
+      if (!isPutConflict(e) || attempt === maxAttempts) throw e;
+      await sleepMs(150 * attempt);
+    }
+  }
 }
 
 /** 파일 전체를 새 배열로 덮어씁니다 (이전 주 정리 등에 사용). */
