@@ -25,14 +25,20 @@ import {
 import { appendRecordToGitHub } from "@/lib/github";
 import { uploadRecordImageToBlob } from "@/lib/blob";
 import { revalidatePlannerHome } from "@/lib/planner-cache";
-import { SubmitApiResponse } from "@/lib/types";
-import type { WorkScheduleKind } from "@/lib/types";
+import type {
+  ScheduleRecord,
+  SubmitApiResponse,
+  WorkScheduleKind,
+} from "@/lib/types";
 import { toSeoulDateYmd } from "@/lib/seoul-week";
 import {
   classifyRecordingWeekScope,
   getEffectiveRecordingYmd,
 } from "@/lib/recording-week";
-import { enrichRecordingScheduleAiResult } from "@/lib/recording-schedule-enrich";
+import {
+  enrichRecordingScheduleAiResult,
+  hasNoEligibleProductionScheduleDate,
+} from "@/lib/recording-schedule-enrich";
 
 const MEMO_ONLY_MIN = 1;
 const MEMO_ONLY_MAX = 8000;
@@ -63,6 +69,29 @@ function isValidYmd(s: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
   const t = Date.parse(s + "T12:00:00");
   return !Number.isNaN(t);
+}
+
+function buildRecordingResultSummary(record: ScheduleRecord): string {
+  const details = record.details as Record<string, unknown>;
+  const program =
+    (typeof details.program === "string" && details.program.trim()) ||
+    (typeof details.title === "string" && details.title.trim()) ||
+    record.summary.split("·")[0]?.trim() ||
+    "일정";
+  const entries = Array.isArray(details.entries) ? details.entries : [];
+  const items = entries
+    .filter((entry): entry is Record<string, unknown> =>
+      Boolean(entry && typeof entry === "object")
+    )
+    .map((entry) => {
+      const date = typeof entry.date === "string" ? entry.date.trim() : "";
+      const time = typeof entry.time === "string" ? entry.time.trim() : "";
+      return `${date}${time ? ` ${time}` : ""}`.trim();
+    })
+    .filter(Boolean);
+  const uniqueItems = [...new Set(items)];
+  if (uniqueItems.length === 0) return record.summary;
+  return `${program} · ${uniqueItems.join(" / ")}`;
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<SubmitApiResponse>> {
@@ -354,6 +383,23 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
       if (documentType === "office-schedule" || documentType === "production-schedule") {
         const merged = mergeRecordingFormOverlay(aiResult, recordingForm);
         aiResult = validateAiResult(merged, documentType);
+        if (recordingForm.dateYmd.trim()) {
+          const details = aiResult.details as Record<string, unknown>;
+          delete details.noEligibleRecordingDate;
+        }
+      }
+      if (
+        documentType === "production-schedule" &&
+        hasNoEligibleProductionScheduleDate(aiResult)
+      ) {
+        return NextResponse.json(
+          {
+            success: false,
+            error:
+              "녹화일시를 찾지 못했습니다. 생방송 일정이 아니라면 방송일시는 일정 날짜로 등록하지 않습니다. 녹화일시를 직접 입력하거나 이미지 내용을 확인해 주세요.",
+          },
+          { status: 400 }
+        );
       }
     }
 
@@ -405,7 +451,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitApi
     const payload: SubmitApiResponse = {
       success: true,
       id: record.id,
-      summary: record.summary,
+      summary:
+        documentType === "office-schedule" || documentType === "production-schedule"
+          ? buildRecordingResultSummary(record)
+          : record.summary,
     };
     if (documentType === "office-schedule" || documentType === "production-schedule") {
       const recordingEffectiveDate = getEffectiveRecordingYmd(record);

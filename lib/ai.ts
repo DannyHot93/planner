@@ -224,8 +224,12 @@ const PROMPTS: Record<Exclude<DocumentType, "casting-schedule">, string> = {
 
 필수 규칙:
 - 각 일정(프로그램·코너·행 한 줄)마다 entries에 **한 항목**씩 넣습니다.
+- 문서에 **"녹화일시"와 "방송일시"가 함께 있으면 date/time은 반드시 "녹화일시"에서만 가져옵니다. "방송일시" 날짜·시각은 일정 date/time으로 쓰지 말고 note에 "방송: YYYY-MM-DD HH:mm"처럼만 기록합니다.**
+- "녹화일시"가 여러 개 있으면 녹화일시마다 entries를 각각 만듭니다.
+- "녹화일시"가 전혀 없고 문서가 **생방송**임을 명확히 표시한 경우에만 방송/생방송 일시를 date/time으로 사용합니다.
+- 각 entry에는 날짜 출처를 sourceLabel에 넣습니다. 예: "녹화일시", "생방송", "촬영일시". 방송일시는 date/time 출처로 쓰지 않으므로 sourceLabel에 "방송일시"만 적힌 entry를 만들지 마세요.
 - **date**는 반드시 "YYYY-MM-DD". 문서에 "4/30(수)", "5월 6일" 등만 있으면 period·상단 기간·표 제목의 연도를 참고해 완전한 YYYY-MM-DD로 만듭니다.
-- **time**에는 녹화·방송·제작 시간을 넣습니다 (예: "09:50-11:00", "14:00–16:00").
+- **time**에는 위 규칙에 따라 선택된 녹화·촬영·생방송 시간을 넣습니다 (예: "09:50-11:00", "14:00–16:00").
 - **place**는 스튜디오·뉴스룸·층 등.
 - **period**는 표가 덮는 기간을 "YYYY-MM-DD ~ YYYY-MM-DD"로 쓸 수 있으면 작성.
 - **title**은 프로그램·콘텐츠 제목.
@@ -242,13 +246,14 @@ const PROMPTS: Record<Exclude<DocumentType, "casting-schedule">, string> = {
         "time": "제작·녹화 시간 또는 null",
         "place": "스튜디오·장소 또는 null",
         "person": "담당·출연 또는 null",
-        "note": "특이사항 또는 null"
+        "note": "특이사항 또는 방송일시 메모 또는 null",
+        "sourceLabel": "녹화일시 또는 생방송 또는 촬영일시 또는 null"
       }
     ]
   }
 }
 
-**date를 가능한 한 모든 행에 채웁니다.** 반드시 유효한 JSON만 응답하세요.`,
+**date를 가능한 한 모든 행에 채우되, 방송일시만 있는 일반 녹화의뢰서는 방송일시를 date/time으로 쓰지 않습니다.** 반드시 유효한 JSON만 응답하세요.`,
 };
 
 const CASTING_SCHEDULE_PROMPT = `이 이미지는 주조 근무표입니다. 이미지 하단에 있는 휴가 관련 표(휴가자, 휴가일, 대근자(주간), 대근자(야간) 컬럼이 포함된 테이블)만 찾아서 정보를 추출하세요.

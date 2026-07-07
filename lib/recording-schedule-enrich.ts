@@ -47,6 +47,95 @@ function rowTextForInference(row: Record<string, unknown>): string {
     .join(" ");
 }
 
+const RECORDING_SOURCE_RE =
+  /(녹화\s*일시|녹화\s*일자|녹화일(?!정)|촬영\s*일시|촬영\s*일자|촬영일(?!정))/;
+const BROADCAST_SOURCE_RE =
+  /(방송\s*일시|방송\s*일자|방송일(?!정)|송출\s*일시|송출\s*일자|송출일(?!정))/;
+const LIVE_SOURCE_RE = /(생\s*방송|라이브|live)/i;
+
+function productionEntrySourceText(row: Record<string, unknown>): string {
+  return [
+    row.sourceLabel,
+    row.source,
+    row.dateSource,
+    row.dateLabel,
+    row.kind,
+    row.category,
+    row.title,
+    row.program,
+    row.note,
+    row.rawText,
+    row.description,
+  ]
+    .filter((x) => x != null && String(x).trim() !== "")
+    .map((x) => String(x))
+    .join(" ");
+}
+
+function classifyProductionEntry(
+  row: Record<string, unknown>
+): "recording" | "broadcast" | "live" | "unknown" {
+  const text = productionEntrySourceText(row);
+  const hasRecording = RECORDING_SOURCE_RE.test(text);
+  const hasBroadcast = BROADCAST_SOURCE_RE.test(text);
+  const hasLive = LIVE_SOURCE_RE.test(text);
+
+  if (hasRecording) return "recording";
+  if (hasLive) return "live";
+  if (hasBroadcast) return "broadcast";
+  return "unknown";
+}
+
+function selectProductionScheduleEntries(entries: unknown[]): {
+  entries: unknown[];
+  noEligibleRecordingDate: boolean;
+} {
+  const classified = entries.map((entry) => {
+    const source =
+      entry && typeof entry === "object"
+        ? classifyProductionEntry(entry as Record<string, unknown>)
+        : "unknown";
+    return { entry, source };
+  });
+
+  const hasRecording = classified.some((x) => x.source === "recording");
+  if (hasRecording) {
+    return {
+      entries: classified
+        .filter((x) => x.source !== "broadcast")
+        .map((x) => x.entry),
+      noEligibleRecordingDate: false,
+    };
+  }
+
+  const liveEntries = classified
+    .filter((x) => x.source === "live")
+    .map((x) => x.entry);
+  if (liveEntries.length > 0) {
+    return { entries: liveEntries, noEligibleRecordingDate: false };
+  }
+
+  const nonBroadcastEntries = classified
+    .filter((x) => x.source !== "broadcast")
+    .map((x) => x.entry);
+
+  if (nonBroadcastEntries.length !== entries.length) {
+    return {
+      entries: nonBroadcastEntries,
+      noEligibleRecordingDate: nonBroadcastEntries.length === 0,
+    };
+  }
+
+  return { entries, noEligibleRecordingDate: entries.length === 0 };
+}
+
+export function hasNoEligibleProductionScheduleDate(
+  aiResult: AiAnalysisResult
+): boolean {
+  const details = aiResult.details as Record<string, unknown>;
+  return details.noEligibleRecordingDate === true;
+}
+
 /** "5월 6일" "5/6" 등 — 연도는 refYear */
 function parseKoreanStyleMonthDay(text: string, refYear: number): string | null {
   const km = text.match(/(\d{1,2})\s*월\s*(\d{1,2})\s*일?/);
@@ -94,6 +183,22 @@ export function enrichRecordingScheduleAiResult(
 
   let entries = Array.isArray(details.entries) ? [...details.entries] : [];
 
+  if (documentType === "production-schedule") {
+    const selected = selectProductionScheduleEntries(entries);
+    entries = selected.entries;
+    if (selected.noEligibleRecordingDate) {
+      details.noEligibleRecordingDate = true;
+    } else {
+      delete details.noEligibleRecordingDate;
+    }
+  }
+
+  if (entries.length === 0 && documentType === "production-schedule") {
+    details.entries = [];
+    details.noEligibleRecordingDate = true;
+    return { summary: aiResult.summary, details };
+  }
+
   if (entries.length === 0) {
     const fallbackDate = anchorRecordingScheduleDateYmd(bounds[0] ?? todayYmd);
     entries = [{ date: fallbackDate, note: summary || undefined }];
@@ -103,7 +208,7 @@ export function enrichRecordingScheduleAiResult(
     );
 
     const pool = bounds.length > 0 ? bounds : [todayYmd];
-    let lastYmd = pool[0];
+    let lastYmd = documentType === "production-schedule" ? "" : pool[0];
 
     for (let i = 0; i < entries.length; i++) {
       const e = entries[i];
@@ -114,14 +219,18 @@ export function enrichRecordingScheduleAiResult(
       if (!ymd) {
         ymd = parseKoreanStyleMonthDay(rowTextForInference(row), refYear) ?? "";
       }
-      if (!ymd && pool.length > i) {
+      if (!ymd && documentType !== "production-schedule" && pool.length > i) {
         ymd = pool[Math.min(i, pool.length - 1)];
       }
-      if (!ymd && pool.length >= 1) {
+      if (!ymd && documentType !== "production-schedule" && pool.length >= 1) {
         ymd = pool[0];
       }
       if (!ymd) {
         ymd = lastYmd;
+      }
+      if (!ymd && documentType === "production-schedule") {
+        entries[i] = row;
+        continue;
       }
       if (!ymd) {
         ymd = todayYmd;
@@ -130,6 +239,17 @@ export function enrichRecordingScheduleAiResult(
       row.date = anchorRecordingScheduleDateYmd(ymd);
       lastYmd = ymd;
       entries[i] = row;
+    }
+
+    if (documentType === "production-schedule") {
+      entries = entries.filter((entry) => {
+        if (!entry || typeof entry !== "object") return false;
+        const date = normalizeEntryDate((entry as Record<string, unknown>).date);
+        return Boolean(date);
+      });
+      if (entries.length === 0) {
+        details.noEligibleRecordingDate = true;
+      }
     }
   }
 
