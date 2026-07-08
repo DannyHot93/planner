@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { appendRecordToGitHub } from "@/lib/github";
+import {
+  appendRecordToGitHub,
+  upsertRecordByExternalIdToGitHub,
+} from "@/lib/github";
 import {
   DATA_FILE_MAP,
   getCommitMessage,
@@ -16,6 +19,8 @@ type WebhookResponse = {
   success: boolean;
   id?: string;
   summary?: string;
+  action?: "created" | "updated";
+  external_id?: string;
   error?: string;
 };
 
@@ -43,6 +48,14 @@ function readStringField(
 ): string | null {
   const value = body[field];
   return typeof value === "string" ? value.trim() : null;
+}
+
+function validateExternalId(externalId: string | null): string | null {
+  if (!externalId) return null;
+  if (externalId.length > 200) {
+    throw new ValidationError("external_id는 200자 이하로 보내주세요.");
+  }
+  return externalId;
 }
 
 export async function POST(
@@ -74,10 +87,14 @@ export async function POST(
     }
 
     const documentType = validateDocumentType(typeRaw);
+    const externalId = validateExternalId(readStringField(obj, "external_id"));
     const aiResult = validateAiResult(
       {
         summary,
-        details: { ...(details as DocumentDetails) },
+        details: {
+          ...(details as DocumentDetails),
+          ...(externalId ? { external_id: externalId } : {}),
+        },
       },
       documentType
     );
@@ -88,17 +105,30 @@ export async function POST(
       timeZone: "Asia/Seoul",
     }).format(new Date());
 
-    await appendRecordToGitHub(
-      DATA_FILE_MAP[documentType],
-      record,
-      getCommitMessage(documentType, today)
-    );
+    const filePath = DATA_FILE_MAP[documentType];
+    const commitMessage = getCommitMessage(documentType, today);
+    let saved: {
+      action: "created" | "updated";
+      record: typeof record;
+    } = { action: "created", record };
+    if (externalId) {
+      saved = await upsertRecordByExternalIdToGitHub(
+        filePath,
+        externalId,
+        record,
+        commitMessage
+      );
+    } else {
+      await appendRecordToGitHub(filePath, record, commitMessage);
+    }
     revalidatePlannerHome();
 
     return NextResponse.json({
       success: true,
-      id: record.id,
-      summary: record.summary,
+      id: saved.record.id,
+      external_id: externalId ?? undefined,
+      action: saved.action,
+      summary: saved.record.summary,
     });
   } catch (error) {
     if (error instanceof ValidationError) {

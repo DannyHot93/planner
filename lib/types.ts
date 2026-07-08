@@ -95,6 +95,8 @@ export type DocumentDetails =
 
 export interface ScheduleRecord {
   id: string;
+  /** 외부 시스템에서 보낸 일정 고유 id. webhook upsert에 사용 */
+  external_id?: string;
   type: DocumentType;
   uploadedAt: string;
   memo: string;

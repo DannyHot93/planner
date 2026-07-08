@@ -292,6 +292,68 @@ export async function appendRecordToGitHub(
   }
 }
 
+function recordExternalId(record: ScheduleRecord): string {
+  const topLevel = typeof record.external_id === "string" ? record.external_id.trim() : "";
+  if (topLevel) return topLevel;
+  const details = record.details as Record<string, unknown>;
+  const detailsValue = details.external_id;
+  return typeof detailsValue === "string" ? detailsValue.trim() : "";
+}
+
+function withExternalId(record: ScheduleRecord, externalId: string): ScheduleRecord {
+  const details = { ...(record.details as Record<string, unknown>) };
+  details.external_id = externalId;
+  return {
+    ...record,
+    external_id: externalId,
+    details: details as ScheduleRecord["details"],
+  };
+}
+
+export async function upsertRecordByExternalIdToGitHub(
+  filePath: string,
+  externalId: string,
+  newRecord: ScheduleRecord,
+  commitMessage: string
+): Promise<{ action: "created" | "updated"; record: ScheduleRecord }> {
+  const config = getConfig();
+  const maxAttempts = 6;
+  const normalizedExternalId = externalId.trim();
+  if (!normalizedExternalId) {
+    throw new Error("external_id가 비어 있습니다.");
+  }
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const { sha, data } = await getFileContent(config, filePath, { forWrite: true });
+    const idx = data.findIndex((r) => recordExternalId(r) === normalizedExternalId);
+    const recordWithExternalId = withExternalId(newRecord, normalizedExternalId);
+    const action = idx >= 0 ? "updated" : "created";
+    const nextRecord =
+      idx >= 0
+        ? {
+            ...recordWithExternalId,
+            id: data[idx].id,
+            uploadedAt: data[idx].uploadedAt,
+          }
+        : recordWithExternalId;
+    const next =
+      idx >= 0
+        ? data.map((r, i) => (i === idx ? nextRecord : r))
+        : [nextRecord, ...data];
+    const updatedContent = JSON.stringify(next, null, 2);
+
+    try {
+      await putFileContent(config, filePath, sha, updatedContent, commitMessage);
+      return { action, record: nextRecord };
+    } catch (e) {
+      if (!isPutConflict(e) || attempt === maxAttempts) throw e;
+      await sleepMs(150 * attempt);
+    }
+  }
+
+  throw new Error("upsertRecordByExternalIdToGitHub: 예기치 않은 종료");
+}
+
 /** 홈 화면 등에서 최신 목록을 보기 위해 GitHub에 저장된 JSON을 읽습니다. */
 export async function readRecordsFromGitHub(
   filePath: string

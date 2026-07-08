@@ -93,8 +93,10 @@ npm run gcal:oauth
 curl -X POST https://planner-ecru-beta.vercel.app/api/webhook/records \
   -H "Authorization: Bearer $WEBHOOK_SECRET" \
   -H "Content-Type: application/json" \
-  -d '{"type":"office-schedule","summary":"테스트 일정","details":{"entries":[{"date":"2026-07-02","time":"14:00"}]}}'
+  -d '{"type":"office-schedule","summary":"테스트 일정","external_id":"external-schedule-uuid","details":{"entries":[{"date":"2026-07-02","time":"14:00"}]}}'
 ```
+
+`external_id`는 선택 필드입니다. 외부 시스템의 일정 UUID를 `external_id`로 보내면 같은 `type` 데이터 파일 안에서 이미 존재하는 일정은 update, 없으면 insert로 처리합니다. `external_id`가 없으면 기존처럼 매 요청마다 새 일정이 생성됩니다.
 
 허용되는 `type` 값은 `work-schedule`, `vacation`, `office-schedule`, `production-schedule`, `casting-schedule`입니다. 이미지는 webhook에서 받지 않으며, 이미지 등록은 기존 `/submit` 화면을 사용합니다.
 
