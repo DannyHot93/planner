@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1783482842164_d6be9100",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-08T03:54:02.165Z",
+    "memo": "음향지원",
+    "summary": "유기농가요제 예선 · 2026-08-08",
+    "details": {
+      "title": "유기농가요제 예선",
+      "program": "유기농가요제 예선",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-08-08",
+          "note": "음향지원"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1783413422847_e89bf5d2",
     "type": "production-schedule",
     "uploadedAt": "2026-07-07T08:37:02.848Z",
