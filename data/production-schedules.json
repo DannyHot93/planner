@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1783582902814_75cdf628",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-09T07:41:42.815Z",
+    "memo": "",
+    "summary": "최다원을 막아라 · 2026-07-14 11:00",
+    "details": {
+      "title": "최다원을 막아라",
+      "program": "최다원을 막아라",
+      "entries": [
+        {
+          "date": "2026-07-14",
+          "time": "11:00",
+          "place": "FM A-booth",
+          "person": "담당PD 박현서",
+          "note": "AUDIO / 방송: 2026-07-17 14:00"
+        }
+      ],
+      "external_id": "2f45be2f-bee3-4e1f-adf9-ae58b2de9855"
+    },
+    "external_id": "2f45be2f-bee3-4e1f-adf9-ae58b2de9855"
+  },
+  {
     "id": "ps_1783578488584_ae31e09c",
     "type": "production-schedule",
     "uploadedAt": "2026-07-09T06:28:08.585Z",
