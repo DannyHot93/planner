@@ -18,25 +18,6 @@
     }
   },
   {
-    "id": "ps_1783578488584_ae31e09c",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-09T06:28:08.585Z",
-    "memo": "",
-    "summary": "전국시대 · 2026-07-13 11:00",
-    "details": {
-      "entries": [
-        {
-          "date": "2026-07-13",
-          "time": "11:00",
-          "place": "4층 뉴스센터",
-          "note": "스튜디오 / 방송: 2026-07-14 09:00"
-        }
-      ],
-      "external_id": "76eec923-9864-466b-b723-57e3bd48c2fe"
-    },
-    "external_id": "76eec923-9864-466b-b723-57e3bd48c2fe"
-  },
-  {
     "id": "ps_1783486086584_e27b4f67",
     "type": "production-schedule",
     "uploadedAt": "2026-07-08T04:48:06.585Z",
