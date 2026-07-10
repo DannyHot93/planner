@@ -1,5 +1,36 @@
 [
   {
+    "id": "vac_1783647750510_2ba2db3c",
+    "type": "vacation",
+    "uploadedAt": "2026-07-10T01:42:30.511Z",
+    "memo": "구분: 휴가",
+    "summary": "조종록 · 2026-07-08 ~ 2026-07-10",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-07-08 ~ 2026-07-10",
+      "entries": [
+        {
+          "date": "2026-07-08",
+          "person": "조종록",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        },
+        {
+          "date": "2026-07-09",
+          "person": "조종록",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        },
+        {
+          "date": "2026-07-10",
+          "person": "조종록",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1783647749700_c18046e4",
     "type": "vacation",
     "uploadedAt": "2026-07-10T01:42:29.700Z",
