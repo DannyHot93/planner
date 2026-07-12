@@ -1,23 +1,5 @@
 [
   {
-    "id": "ps_1783663156646_76e537be",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-10T05:59:16.647Z",
-    "memo": "더빙 · 2026-07-10",
-    "summary": "더빙 · 2026-07-10 17:20",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-10",
-          "time": "17:20"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1783486086584_e27b4f67",
     "type": "production-schedule",
     "uploadedAt": "2026-07-08T04:48:06.585Z",
@@ -168,61 +150,6 @@
     }
   },
   {
-    "id": "ps_1783314092918_a4b8c3dc",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-06T05:01:32.919Z",
-    "memo": "조명, 백 그림 운용",
-    "summary": "시청자플렉스 영상 촬영 협조 · 2026-07-07 14:00 이전",
-    "details": {
-      "title": "시청자플렉스 영상 촬영 협조",
-      "program": "시청자플렉스 영상 촬영 협조",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-07",
-          "time": "14:00 이전",
-          "note": "조명, 백 그림 운용"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1783307628077_80ebe4cf",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-06T03:13:48.078Z",
-    "memo": "더빙 · 2026-07-06",
-    "summary": "더빙 · 2026-07-06 15:10",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-06",
-          "time": "15:10"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1783307607760_340b4611",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-06T03:13:27.761Z",
-    "memo": "더빙 · 2026-07-06",
-    "summary": "더빙 · 2026-07-06 14:40",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-06",
-          "time": "14:40"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1783298825281_efade8e1",
     "type": "production-schedule",
     "uploadedAt": "2026-07-06T00:47:05.310Z",
@@ -237,46 +164,6 @@
           "date": "2026-07-19"
         }
       ]
-    }
-  },
-  {
-    "id": "ps_1783287616895_72d15dff",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-05T21:40:16.896Z",
-    "memo": "",
-    "summary": "주말 · 2026-07-12",
-    "details": {
-      "title": "이상훈/안대현",
-      "program": "이상훈/안대현",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-12",
-          "note": "이상훈, 안대현",
-          "time": ""
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1782971707605_25442175",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-02T05:55:07.606Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 녹화 의뢰서로, 7월 8일 수요일 4층 뉴스룸에서 제천시장 이상천과 특별대담을 진행한다.",
-    "details": {
-      "period": "2024-07-08 ~ 2024-07-08",
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-07-08",
-          "time": "11:00-12:10",
-          "place": "4층 뉴스룸",
-          "person": "설경철 (담당PD), 이상천 제천시장 (출연)",
-          "note": "특별대담: 이상천 제천시장과 진행. 금요일에서 수요일로 변경."
-        }
-      ],
-      "scheduleType": "production"
     }
   },
   {
@@ -301,27 +188,6 @@
     }
   },
   {
-    "id": "ps_1782802005184_f847f468",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-30T06:46:45.185Z",
-    "memo": "",
-    "summary": "This document details the recording schedule for the 'Prime Interview' program, featuring Jeungpyeong County Chief Lee Jae-young, with the recording set for July 7, 2026, and broadcast on July 18, 2026.",
-    "details": {
-      "period": null,
-      "title": "프라임 인터뷰",
-      "entries": [
-        {
-          "date": "2026-07-07",
-          "time": "14:00-15:00",
-          "place": "4층 스튜디오",
-          "person": "담당PD: 민수빈, 출연: 이재영 증평군수",
-          "note": "*차담 시 분장 시작 시간 조율"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1782287904526_5bd7d291",
     "type": "production-schedule",
     "uploadedAt": "2026-06-24T07:58:24.555Z",
@@ -334,23 +200,6 @@
       "entries": [
         {
           "date": "2026-07-19"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1782287880990_194b12b5",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-24T07:58:00.990Z",
-    "memo": "앵커 : 박서영 · 2026-07-12",
-    "summary": "앵커 : 박서영 · 2026-07-12",
-    "details": {
-      "title": "앵커 : 박서영",
-      "program": "앵커 : 박서영",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-12"
         }
       ]
     }
@@ -370,27 +219,6 @@
           "date": "2026-07-26"
         }
       ]
-    }
-  },
-  {
-    "id": "ps_1782180657404_45a7689b",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-23T02:10:57.405Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 2024년 7월 8일 녹화 의뢰서로, 이장식 충북도 의장과의 특별 대담이 4층 뉴스룸에서 진행됩니다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-07-08",
-          "time": "14:30-15:40",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철, 출연: 1명",
-          "note": "특별대담 이장식 충북도 의장에게 듣는다 (대담)"
-        }
-      ],
-      "scheduleType": "production"
     }
   }
 ]
