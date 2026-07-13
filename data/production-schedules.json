@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1783924834097_141633b3",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-13T06:40:34.098Z",
+    "memo": "",
+    "summary": "전국시대 프로그램의 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-07-28",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": null,
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1783917399530_b99de7b3",
     "type": "production-schedule",
     "uploadedAt": "2026-07-13T04:36:39.531Z",
