@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1783917399530_b99de7b3",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-13T04:36:39.531Z",
+    "memo": "",
+    "summary": "전국시대 프로그램의 녹화 의뢰서로, 2024년 7월 13일 공개홀에서 스튜디오 녹화가 진행됩니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-07-13",
+          "time": "14:30-15:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": null,
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1783901650193_7828051e",
     "type": "production-schedule",
     "uploadedAt": "2026-07-13T00:14:10.194Z",
