@@ -1,5 +1,35 @@
 [
   {
+    "id": "ps_1783928262432_cfb88284",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-13T07:37:42.433Z",
+    "memo": "",
+    "summary": "26년 후반기 작계훈련(1차)을 위한 시설 및 장비 사용 협조 요청 일정",
+    "details": {
+      "period": "2026-08-20 ~ 2026-08-24",
+      "title": "26년 후반기 작계훈련(1차)",
+      "entries": [
+        {
+          "date": "2026-08-20",
+          "time": "09:00-20:00",
+          "place": "공개홀, 주차장 등",
+          "person": null,
+          "note": "1일 소요. 훈련 당일 시설 개방 협조: 08:00부터.",
+          "sourceLabel": "협조(훈련) 기간"
+        },
+        {
+          "date": "2026-08-24",
+          "time": "09:00-20:00",
+          "place": "공개홀, 주차장 등",
+          "person": null,
+          "note": "1일 소요. 훈련 당일 시설 개방 협조: 08:00부터.",
+          "sourceLabel": "협조(훈련) 기간"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1783924834097_141633b3",
     "type": "production-schedule",
     "uploadedAt": "2026-07-13T06:40:34.098Z",
