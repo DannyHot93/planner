@@ -1,5 +1,36 @@
 [
   {
+    "id": "vac_1783901434413_ff5822aa",
+    "type": "vacation",
+    "uploadedAt": "2026-07-13T00:10:34.414Z",
+    "memo": "구분: 휴가",
+    "summary": "김규설 · 2026-07-06 ~ 2026-07-08",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-07-06 ~ 2026-07-08",
+      "entries": [
+        {
+          "date": "2026-07-06",
+          "person": "김규설",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        },
+        {
+          "date": "2026-07-07",
+          "person": "김규설",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        },
+        {
+          "date": "2026-07-08",
+          "person": "김규설",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1783901433634_86a807fa",
     "type": "vacation",
     "uploadedAt": "2026-07-13T00:10:33.634Z",
