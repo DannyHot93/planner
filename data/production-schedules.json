@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1784069333147_0b693b02",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-14T22:48:53.148Z",
+    "memo": "930 없음 · 2026-07-17",
+    "summary": "930 없음 · 2026-07-17 09:30",
+    "details": {
+      "title": "930 없음",
+      "program": "930 없음",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-07-17",
+          "time": "09:30"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1783928262432_cfb88284",
     "type": "production-schedule",
     "uploadedAt": "2026-07-13T07:37:42.433Z",
