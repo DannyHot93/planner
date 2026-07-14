@@ -1,27 +1,5 @@
 [
   {
-    "id": "ps_1784007434965_e5ceefaa",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-14T05:37:14.966Z",
-    "memo": "",
-    "summary": "re_테스트 프라임 · 2026-07-23 09:00",
-    "details": {
-      "title": "re_테스트 프라임",
-      "program": "re_테스트 프라임",
-      "entries": [
-        {
-          "date": "2026-07-23",
-          "time": "09:00",
-          "place": "ttest",
-          "person": "담당PD 민수빈",
-          "note": "스튜디오 / 방송: 2026-07-31 09:00"
-        }
-      ],
-      "external_id": "10ea2111-74ea-465f-a793-688ba87fb0b5"
-    },
-    "external_id": "10ea2111-74ea-465f-a793-688ba87fb0b5"
-  },
-  {
     "id": "ps_1783928262432_cfb88284",
     "type": "production-schedule",
     "uploadedAt": "2026-07-13T07:37:42.433Z",
