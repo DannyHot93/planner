@@ -1,30 +1,5 @@
 [
   {
-    "id": "vac_1783901431083_e7cc4070",
-    "type": "vacation",
-    "uploadedAt": "2026-07-13T00:10:31.083Z",
-    "memo": "구분: 휴가",
-    "summary": "이기성 · 2026-07-13 ~ 2026-07-14",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-07-13 ~ 2026-07-14",
-      "entries": [
-        {
-          "date": "2026-07-13",
-          "person": "이기성",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        },
-        {
-          "date": "2026-07-14",
-          "person": "이기성",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1783901430273_e0f4fb59",
     "type": "vacation",
     "uploadedAt": "2026-07-13T00:10:30.274Z",
@@ -106,31 +81,6 @@
         {
           "date": "2026-07-23",
           "person": "전경후",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1783647749700_c18046e4",
-    "type": "vacation",
-    "uploadedAt": "2026-07-10T01:42:29.700Z",
-    "memo": "구분: 휴가",
-    "summary": "이기성 · 2026-07-13 ~ 2026-07-14",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-07-13 ~ 2026-07-14",
-      "entries": [
-        {
-          "date": "2026-07-13",
-          "person": "이기성",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        },
-        {
-          "date": "2026-07-14",
-          "person": "이기성",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
         }
