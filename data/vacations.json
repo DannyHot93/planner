@@ -1,24 +1,5 @@
 [
   {
-    "id": "vac_1783901424081_a2dbb51c",
-    "type": "vacation",
-    "uploadedAt": "2026-07-13T00:10:24.082Z",
-    "memo": "구분: 휴가",
-    "summary": "전경후 · 2026-07-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-07-16 ~ 2026-07-16",
-      "entries": [
-        {
-          "date": "2026-07-16",
-          "person": "전경후",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1783901423310_b0166b19",
     "type": "vacation",
     "uploadedAt": "2026-07-13T00:10:23.310Z",
@@ -69,25 +50,6 @@
     }
   },
   {
-    "id": "vac_1783647746877_81581a05",
-    "type": "vacation",
-    "uploadedAt": "2026-07-10T01:42:26.877Z",
-    "memo": "구분: 휴가",
-    "summary": "전경후 · 2026-07-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-07-16 ~ 2026-07-16",
-      "entries": [
-        {
-          "date": "2026-07-16",
-          "person": "전경후",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1783647745618_506008ce",
     "type": "vacation",
     "uploadedAt": "2026-07-10T01:42:25.619Z",
@@ -130,25 +92,6 @@
         },
         {
           "date": "2026-07-23",
-          "person": "전경후",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1783313342387_cd51e6b4",
-    "type": "vacation",
-    "uploadedAt": "2026-07-06T04:49:02.388Z",
-    "memo": "구분: 휴가",
-    "summary": "전경후 · 2026-07-16",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-07-16 ~ 2026-07-16",
-      "entries": [
-        {
-          "date": "2026-07-16",
           "person": "전경후",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
