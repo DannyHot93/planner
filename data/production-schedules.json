@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1784191215648_e251bdd7",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-16T08:40:15.649Z",
+    "memo": "",
+    "summary": "테스트_녹화 · 2026-07-17 09:00",
+    "details": {
+      "title": "테스트_녹화",
+      "program": "테스트_녹화",
+      "entries": [
+        {
+          "date": "2026-07-17",
+          "time": "09:00",
+          "place": "2층 부조",
+          "person": "담당PD 박현서",
+          "note": "스튜디오 / 방송: 2026-07-20 09:00"
+        }
+      ],
+      "external_id": "6c54921b-368f-495e-aa91-1ebd716c38ff"
+    },
+    "external_id": "6c54921b-368f-495e-aa91-1ebd716c38ff"
+  },
+  {
     "id": "ps_1784086943119_77c33fed",
     "type": "production-schedule",
     "uploadedAt": "2026-07-15T03:42:23.120Z",
