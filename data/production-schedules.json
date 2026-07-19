@@ -68,23 +68,6 @@
     }
   },
   {
-    "id": "ps_1784281476094_71d97de6",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-17T09:44:36.122Z",
-    "memo": "오승민/사무실 · 2026-07-19",
-    "summary": "오승민/사무실 · 2026-07-19",
-    "details": {
-      "title": "오승민/사무실",
-      "program": "오승민/사무실",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-19"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1784281427077_67f13b32",
     "type": "production-schedule",
     "uploadedAt": "2026-07-17T09:43:47.100Z",
@@ -114,64 +97,6 @@
       "entries": [
         {
           "date": "2026-07-26"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1784191215648_e251bdd7",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-16T08:40:15.649Z",
-    "memo": "",
-    "summary": "테스트_녹화 · 2026-07-17 09:00",
-    "details": {
-      "title": "테스트_녹화",
-      "program": "테스트_녹화",
-      "entries": [
-        {
-          "date": "2026-07-17",
-          "time": "09:00",
-          "place": "2층 부조",
-          "person": "담당PD 박현서",
-          "note": "스튜디오 / 방송: 2026-07-20 09:00"
-        }
-      ],
-      "external_id": "6c54921b-368f-495e-aa91-1ebd716c38ff"
-    },
-    "external_id": "6c54921b-368f-495e-aa91-1ebd716c38ff"
-  },
-  {
-    "id": "ps_1784086943119_77c33fed",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-15T03:42:23.120Z",
-    "memo": "더빙 · 2026-07-15",
-    "summary": "더빙 · 2026-07-15 15:00",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-15",
-          "time": "15:00"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1784069333147_0b693b02",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-14T22:48:53.148Z",
-    "memo": "930 없음 · 2026-07-17",
-    "summary": "930 없음 · 2026-07-17 09:30",
-    "details": {
-      "title": "930 없음",
-      "program": "930 없음",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-17",
-          "time": "09:30"
         }
       ]
     }
@@ -226,46 +151,6 @@
         }
       ],
       "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1783917399530_b99de7b3",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-13T04:36:39.531Z",
-    "memo": "",
-    "summary": "전국시대 프로그램의 녹화 의뢰서로, 2024년 7월 13일 공개홀에서 스튜디오 녹화가 진행됩니다.",
-    "details": {
-      "period": null,
-      "title": "전국시대",
-      "entries": [
-        {
-          "date": "2026-07-13",
-          "time": "14:30-15:30",
-          "place": "공개홀",
-          "person": "장세일",
-          "note": null,
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1783901650193_7828051e",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-13T00:14:10.194Z",
-    "memo": "더빙 · 2026-07-13",
-    "summary": "더빙 · 2026-07-13 15:30",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-13",
-          "time": "15:30"
-        }
-      ]
     }
   },
   {
@@ -338,13 +223,6 @@
       "title": "프라임 인터뷰",
       "entries": [
         {
-          "date": "2026-07-15",
-          "time": "14:00-15:00",
-          "place": "4층 스튜디오",
-          "person": "김명식 진천군수",
-          "note": "방송일: 2026-07-25"
-        },
-        {
           "date": "2026-07-23",
           "time": "14:00-15:00",
           "place": "4층 스튜디오",
@@ -416,44 +294,6 @@
         }
       ],
       "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1782807102372_155d3fbf",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-30T08:11:42.373Z",
-    "memo": "",
-    "summary": "2026년 7월 14일 진천종합스포츠타운 다목적홀B에서 진행되는 2026 발달장애인핸드볼대회 AllWinpeak 유튜브 라이브 중계 제작 일정입니다.",
-    "details": {
-      "period": null,
-      "title": "2026 발달장애인핸드볼대회 AllWinpeak 유튜브 라이브",
-      "entries": [
-        {
-          "date": "2026-07-14",
-          "time": "10:00-15:00",
-          "place": "진천종합스포츠타운 다목적홀B",
-          "person": "김상훈 (BIZ전략국 전략사업부)",
-          "note": "유튜브 라이브; 2026 발달장애인핸드볼리그 AllWinPeak 정규-1.2R 4경기 녹화중계; 카메라 3대, 촬영인원 2명; 기술국 유튜브 송출 지원"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1782287904526_5bd7d291",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-24T07:58:24.555Z",
-    "memo": "앵커 : 최다원 · 2026-07-19",
-    "summary": "앵커 : 최다원 · 2026-07-19",
-    "details": {
-      "title": "앵커 : 최다원",
-      "program": "앵커 : 최다원",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-19"
-        }
-      ]
     }
   },
   {
