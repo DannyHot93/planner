@@ -14,6 +14,37 @@
 | 편집/삭제 | 일정 탭의 편집 모드에서 월간 캘린더 일정 수정/삭제가 가능하고, 사무실/제작 탭에서도 월간 캘린더 삭제를 지원합니다. |
 | Google Calendar 연동 | 설정 시 Google Calendar의 사무실 일정을 읽어 홈 데이터에 합칩니다. 읽기 전용 일정은 GitHub에 저장하거나 삭제하지 않습니다. |
 
+## 시스템 전체 구조
+
+이 앱은 별도 운영 DB 없이 GitHub JSON 파일을 일정 데이터 원본으로 사용하는 일정판입니다. Next.js/Vercel 서버가 이미지 분석, 직접 입력, 외부 webhook, 수정/삭제 요청을 받아 `data/*.json` 파일을 GitHub Contents API로 갱신하고, `/display`와 홈 화면은 `/api/planner-data`를 통해 병합된 최신 일정을 읽습니다.
+
+```text
+사용자/외부 프로그램
+  ↓
+Next.js 화면 또는 API Route
+  ↓
+검증·정규화·AI 분석·upsert 처리
+  ↓
+GitHub data/*.json 커밋 저장
+  ↓
+/api/planner-data 병합 응답
+  ↓
+홈 / display 화면 표시
+```
+
+| 흐름 | 설명 |
+| --- | --- |
+| 내부 업로드 | `/submit`에서 이미지나 폼을 보내면 `POST /api/submit`이 분석/정규화 후 GitHub JSON에 저장합니다. |
+| 외부 webhook | 외부 프로그램이 `POST /api/webhook/records`로 JSON을 보내면 `external_id` 기준으로 생성 또는 수정합니다. |
+| 화면 데이터 | `GET /api/planner-data`가 GitHub 데이터, Google Calendar 읽기 전용 일정, 정리 필터를 합쳐 화면용 JSON을 반환합니다. |
+| 디스플레이 갱신 | `/display`는 `/api/planner-data`를 주기적으로 폴링하고, 화면 내부 로테이션은 클라이언트 상태로 처리합니다. |
+| 자동 정리 | `/api/cleanup`이 지난 휴가와 지난 주 사무실/제작 일정을 GitHub JSON에서 제거합니다. |
+| 수정/삭제 | `PATCH/DELETE /api/records/[id]`가 GitHub JSON의 특정 레코드를 갱신하거나 삭제합니다. |
+
+운영 데이터 파일은 `data/work-schedules.json`, `data/vacations.json`, `data/office-schedules.json`, `data/production-schedules.json`, `data/recordings.json`, `data/casting-schedules.json`입니다. 파일이 갱신될 때마다 GitHub 커밋이 남으므로 변경 이력과 복구 경로가 생깁니다. 현재 예상 사용량인 하루 10건 안팎의 외부 webhook에는 이 방식으로 충분하며, webhook이 수십~수백 건 이상으로 늘어나면 Supabase/PostgreSQL 같은 DB 이전을 검토합니다.
+
+외부 프로그램 연동 상세 규격과 권장 JSON은 [외부 프로그램 연동 및 시스템 개요](docs/external-integration-system-overview.md)를 참고합니다.
+
 ## 디스플레이 모드
 
 - 권장 URL: `https://planner-ecru-beta.vercel.app/display`
