@@ -701,7 +701,7 @@ function MonthCalendarMiniEntry({
       (entry.note && String(entry.note).trim()) ||
       "";
     return (
-      <div className="rounded bg-[#202638] p-2">
+      <div className="rounded bg-gradient-to-br from-[#323a52]/95 to-[#252b3d] p-2">
         {!hideRecordActions && (
           <div className="mb-2 flex justify-end">
             <DeleteRecordButton recordId={entry.recordId} />
@@ -726,7 +726,9 @@ function MonthCalendarMiniEntry({
     <div
       ref={disclosure.rootRef}
       className={`relative rounded cursor-default ${entryPaddingClass} ${
-        accentToday ? "bg-yellow-300/20" : "bg-[#2a222c]"
+        accentToday
+          ? "bg-yellow-300/20"
+          : "bg-gradient-to-br from-[#323a52]/95 to-[#252b3d]"
       }`}
       onMouseEnter={displayMode ? undefined : disclosure.onMouseEnter}
       onMouseLeave={displayMode ? undefined : disclosure.onMouseLeave}
@@ -941,17 +943,17 @@ function OtherWeekCurrentMonthCalendarGrid({
 }) {
   const entryCount = calendar.cells.reduce((sum, cell) => sum + cell.entries.length, 0);
   const wrapClass = displayMode
-    ? "rounded-lg border border-[#CD366D]/25 bg-[#100b10] p-3"
-    : "rounded-lg border border-[#CD366D]/25 bg-[#100b10] p-2";
+    ? "rounded-lg border border-[#4361DE]/40 bg-[#0e0e14] p-3"
+    : "rounded-lg border border-[#4361DE]/40 bg-[#0e0e14]/80 p-2";
   const headerClass = displayMode
     ? "mb-3 flex items-center justify-between"
     : "mb-1.5 flex items-center justify-between";
   const titleClass = displayMode
-    ? "text-[32px] font-bold leading-tight text-[#f7a7c1]"
-    : "text-base font-bold text-[#f7a7c1]";
+    ? "text-[32px] font-bold leading-tight text-[#9ab0ff]"
+    : "text-base font-bold text-[#9ab0ff]";
   const countClass = displayMode
-    ? "text-[22px] font-semibold leading-tight text-[#f7a7c1]/70"
-    : "text-[11px] font-semibold text-[#f7a7c1]/70";
+    ? "text-[22px] font-semibold leading-tight text-[#9ab0ff]/70"
+    : "text-[11px] font-semibold text-[#9ab0ff]/70";
   const gridClass = displayMode ? "grid grid-cols-7 gap-2" : "grid grid-cols-7 gap-1";
   const dayHeaderClass = displayMode
     ? "rounded border border-white/5 bg-black/35 py-1 text-center text-[22px] font-bold"
@@ -992,7 +994,7 @@ function OtherWeekCurrentMonthCalendarGrid({
                 cell.date
                   ? isToday
                     ? "border-yellow-300/70 bg-yellow-300/10"
-                    : "border-[#CD366D]/20 bg-black/30"
+                    : "border-[#4361DE]/20 bg-black/40"
                   : "border-white/5 bg-black/10"
               }`}
             >
@@ -1237,6 +1239,8 @@ export default function RecordingWeekView({
   displayCalendarMonthOffset = 0,
   includeNextMonthCalendar = false,
   includeNextWeekSection = false,
+  calendarMonthOffsets,
+  bareCalendar = false,
 }: {
   records: ScheduleRecord[];
   /** both: 이번 주 + 이번 주 외. 대시보드에서는 열마다 분리 */
@@ -1257,6 +1261,10 @@ export default function RecordingWeekView({
   includeNextMonthCalendar?: boolean;
   /** true면 이번 주 일정 아래에 같은 포맷의 다음 주 일정을 표시 */
   includeNextWeekSection?: boolean;
+  /** 지정한 월 오프셋의 달력만 순서대로 표시 */
+  calendarMonthOffsets?: number[];
+  /** 월간 달력 바깥 제목·테두리 컨테이너를 숨김 */
+  bareCalendar?: boolean;
 }) {
   const todayStr = getTodaySeoul();
   const [activeDetailKey, setActiveDetailKey] = useState<string | null>(null);
@@ -1277,14 +1285,29 @@ export default function RecordingWeekView({
     () => buildMonthCalendar(flat, todayStr, 1),
     [flat, todayStr]
   );
+  const requestedCalendars = useMemo(
+    () =>
+      calendarMonthOffsets?.map((offset) =>
+        buildMonthCalendar(flat, todayStr, offset)
+      ),
+    [calendarMonthOffsets, flat, todayStr]
+  );
 
   const hasOtherWeekAny = otherWeekByWeekday.some((g) => g.entries.length > 0);
   const calendarList = useMemo(() => {
+    if (requestedCalendars) {
+      return requestedCalendars;
+    }
     if (!includeNextMonthCalendar || !hasCalendarEntries(nextMonthCalendar)) {
       return [displayMonthCalendar];
     }
     return [displayMonthCalendar, nextMonthCalendar];
-  }, [displayMonthCalendar, includeNextMonthCalendar, nextMonthCalendar]);
+  }, [
+    displayMonthCalendar,
+    includeNextMonthCalendar,
+    nextMonthCalendar,
+    requestedCalendars,
+  ]);
 
   const thisWeekDays = sevenDaysFromMonday(calendarThisWeekMonday);
   const thisWeekGroups = useMemo(() => {
@@ -1320,11 +1343,13 @@ export default function RecordingWeekView({
       ? "rounded-lg border border-[#4361DE]/40 bg-[#0e0e14] p-2"
       : "rounded-xl border border-[#4361DE]/40 bg-[#0e0e14]/80 p-3"
     : "rounded-2xl border border-[#4361DE]/40 bg-gradient-to-b from-[#4361DE]/15 to-[#0e0e14]/95 p-4";
-  const otherWeekSectionClass = embedded
-    ? displayMode
-      ? "rounded-lg border border-[#CD366D]/40 bg-[#0e0e14] p-2"
-      : "rounded-xl border border-[#CD366D]/40 bg-[#0e0e14]/80 p-3"
-    : "rounded-2xl border border-[#CD366D]/40 bg-gradient-to-b from-[#CD366D]/15 to-[#0e0e14]/95 p-4";
+  const otherWeekSectionClass = bareCalendar
+    ? ""
+    : embedded
+      ? displayMode
+        ? "rounded-lg border border-[#4361DE]/40 bg-[#0e0e14] p-2"
+        : "rounded-xl border border-[#4361DE]/40 bg-[#0e0e14]/80 p-3"
+      : "rounded-2xl border border-[#4361DE]/40 bg-gradient-to-b from-[#4361DE]/15 to-[#0e0e14]/95 p-4";
 
   const emptyBlock = (
     <div className={`text-center py-8 text-gray-500 ${embedded ? "py-6" : "py-16"}`}>
@@ -1425,9 +1450,9 @@ export default function RecordingWeekView({
             <>
               {showCalendar || hasOtherWeekAny ? (
                 <section className={otherWeekSectionClass}>
-                  {!embedded && (
+                  {!embedded && !bareCalendar && (
                     <div className="mb-3">
-                      <h4 className="text-sm font-bold text-[#f7a7c1]">이번 주 외 일정</h4>
+                      <h4 className="text-sm font-bold text-[#9ab0ff]">이번 주 외 일정</h4>
                     </div>
                   )}
                   {showCalendar ? (
