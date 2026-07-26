@@ -1,23 +1,5 @@
 [
   {
-    "id": "ps_1784869331566_993ce6cc",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-24T05:02:11.567Z",
-    "memo": "더빙 · 2026-07-24",
-    "summary": "더빙 · 2026-07-24 17:10",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-24",
-          "time": "17:10"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1784704720268_317eccdc",
     "type": "production-schedule",
     "uploadedAt": "2026-07-22T07:18:40.268Z",
@@ -45,42 +27,6 @@
         }
       ],
       "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1784523967010_e32a29e3",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-20T05:06:07.011Z",
-    "memo": "더빙 · 2026-07-20",
-    "summary": "더빙 · 2026-07-20 15:00",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-20",
-          "time": "15:00"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1784523939880_cfcb717b",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-20T05:05:39.881Z",
-    "memo": "더빙 · 2026-07-20",
-    "summary": "더빙 · 2026-07-20 14:30",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-20",
-          "time": "14:30"
-        }
-      ]
     }
   },
   {
@@ -164,23 +110,6 @@
       "entries": [
         {
           "date": "2026-08-02"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1784281383581_ca290f80",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-17T09:43:03.582Z",
-    "memo": "김보성/양윤길 · 2026-07-26",
-    "summary": "김보성/양윤길 · 2026-07-26",
-    "details": {
-      "title": "김보성/양윤길",
-      "program": "김보성/양윤길",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-26"
         }
       ]
     }
@@ -285,13 +214,6 @@
       "title": "프라임 인터뷰",
       "entries": [
         {
-          "date": "2026-07-23",
-          "time": "14:00-15:00",
-          "place": "4층 스튜디오",
-          "person": "최재형 보은군수",
-          "note": "방송일: 2026-08-01"
-        },
-        {
           "date": "2026-07-29",
           "time": "14:00-15:00",
           "place": "4층 스튜디오",
@@ -300,79 +222,6 @@
         }
       ],
       "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1783321519385_84f12e82",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-06T07:05:19.386Z",
-    "memo": "",
-    "summary": "통섭 프로그램의 7월 23일 녹화 의뢰서로, 강연 및 Q&A 녹화 일정과 사전 스탭회의, 리허설 등 관련 세부사항을 포함합니다.",
-    "details": {
-      "period": null,
-      "title": "통섭",
-      "entries": [
-        {
-          "date": "2026-07-23",
-          "time": "19:30-21:30",
-          "place": "지하1층 공개홀",
-          "person": "담당PD 설경철",
-          "note": "녹화내용: 강연 (60~70분), 강사, MC 송민수의 Q&A (30분 내외). 카메라 6대 활용 (지미집 1대, 거치 카메라 2대 추가)"
-        },
-        {
-          "date": "2026-07-22",
-          "time": "13:30",
-          "place": null,
-          "person": null,
-          "note": "사전 스탭회의 / 창 녹화 직전"
-        },
-        {
-          "date": "2026-07-23",
-          "time": "19:15",
-          "place": null,
-          "person": null,
-          "note": "리허설"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1783321184627_5329f82b",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-06T06:59:44.628Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 '7월 월간뉴스분석' 녹화 일정입니다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-07-22",
-          "time": "14:00-15:10",
-          "place": "4층 뉴스룸",
-          "person": "설경철 (담당PD)",
-          "note": "녹화 내용: 7월 월간뉴스분석. 특이사항: 패널 4명 출연 (좌 2명, 우 2명)."
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1782287852000_9d355393",
-    "type": "production-schedule",
-    "uploadedAt": "2026-06-24T07:57:32.000Z",
-    "memo": "앵커 : 이황주 · 2026-07-26",
-    "summary": "앵커 : 이황주 · 2026-07-26",
-    "details": {
-      "title": "앵커 : 이황주",
-      "program": "앵커 : 이황주",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-26"
-        }
-      ]
     }
   }
 ]
