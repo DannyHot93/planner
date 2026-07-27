@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1785139476006_5675dbe8",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-27T08:04:36.007Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 부동산 정책 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-08-13",
+          "time": "14:30-15:40",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철. 출연: 패널 4명 (좌 2명, 우 2명)",
+          "note": "녹화 내용: 부동산 정책. 스튜디오 사용.",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1785122253483_53f31d15",
     "type": "production-schedule",
     "uploadedAt": "2026-07-27T03:17:33.484Z",
