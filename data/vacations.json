@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1785203229300_76f8d487",
+    "type": "vacation",
+    "uploadedAt": "2026-07-28T01:47:09.300Z",
+    "memo": "구분: 휴가",
+    "summary": "김보성 · 2026-07-28",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-07-28 ~ 2026-07-28",
+      "entries": [
+        {
+          "date": "2026-07-28",
+          "person": "김보성",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1785203228153_abf5d44d",
     "type": "vacation",
     "uploadedAt": "2026-07-28T01:47:08.153Z",
