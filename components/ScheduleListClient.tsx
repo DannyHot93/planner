@@ -3,8 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ScheduleRecord } from "@/lib/types";
 import { RecordRemoveProvider } from "./RecordDeleteContext";
-import HomeDashboardView from "./HomeDashboardView";
-import RecordingWeekView from "./RecordingWeekView";
+import ScheduleRangeMenu, {
+  SCHEDULE_RANGE_OPTIONS,
+  type ScheduleRange,
+} from "./ScheduleRangeMenu";
 import SharedMemoBox from "./SharedMemoBox";
 import WorkScheduleWeekView from "./WorkScheduleWeekView";
 import VacationWeekView from "./VacationWeekView";
@@ -29,7 +31,6 @@ interface PersistedUiState {
 
 function isTabValue(v: unknown): v is TabValue {
   return (
-    v === "schedule" ||
     v === "work-schedule" ||
     v === "vacation" ||
     v === "office-schedule" ||
@@ -44,7 +45,9 @@ function readUiState(): PersistedUiState | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<PersistedUiState>;
     if (!parsed || typeof parsed !== "object") return null;
-    const tab = isTabValue(parsed.activeTab) ? parsed.activeTab : "schedule";
+    const tab = isTabValue(parsed.activeTab)
+      ? parsed.activeTab
+      : "office-schedule";
     return {
       activeTab: tab,
       editMode: Boolean(parsed.editMode),
@@ -99,18 +102,16 @@ function writeTombstones(map: TombstoneMap): void {
 }
 
 type TabValue =
-  | "schedule"
   | "work-schedule"
   | "vacation"
   | "office-schedule"
   | "production-schedule";
 
 const TABS: { value: TabValue; label: string }[] = [
-  { value: "schedule", label: "일정" },
-  { value: "work-schedule", label: "근무표" },
-  { value: "vacation", label: "휴가" },
   { value: "office-schedule", label: "사무실일정" },
   { value: "production-schedule", label: "제작일정" },
+  { value: "work-schedule", label: "근무표" },
+  { value: "vacation", label: "휴가" },
 ];
 
 const uploadButtonClass =
@@ -156,9 +157,20 @@ export default function ScheduleListClient({
   const [records, setRecords] = useState<ScheduleRecord[]>([]);
   const [castingRecords, setCastingRecords] = useState<ScheduleRecord[]>([]);
   const refreshInFlightRef = useRef(false);
+  const tabMenuRef = useRef<HTMLDivElement | null>(null);
   const [displayMode, setDisplayMode] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<TabValue>("schedule");
+  const [activeTab, setActiveTab] =
+    useState<TabValue>("office-schedule");
+  const [openScheduleMenu, setOpenScheduleMenu] = useState<
+    "office-schedule" | "production-schedule" | null
+  >(null);
+  const [scheduleRanges, setScheduleRanges] = useState<
+    Record<"office-schedule" | "production-schedule", ScheduleRange>
+  >({
+    "office-schedule": "this-week",
+    "production-schedule": "this-week",
+  });
   const [editMode, setEditMode] = useState(false);
   /**
    * 삭제 직후 서버 캐시(GitHub/Next ISR)가 따라잡지 못해도 목록에서 계속 숨김.
@@ -186,7 +198,7 @@ export default function ScheduleListClient({
     setTombstones(readTombstones());
     const ui = readUiState();
     if (isDisplayMode) {
-      setActiveTab("schedule");
+      setActiveTab("office-schedule");
       setEditMode(false);
     } else if (ui) {
       setActiveTab(ui.activeTab);
@@ -255,6 +267,25 @@ export default function ScheduleListClient({
     writeUiState({ activeTab, editMode });
   }, [uiHydrated, activeTab, editMode]);
 
+  useEffect(() => {
+    const closeOpenMenu = (event: MouseEvent | TouchEvent) => {
+      const target = event.target;
+      if (
+        target instanceof Node &&
+        tabMenuRef.current &&
+        !tabMenuRef.current.contains(target)
+      ) {
+        setOpenScheduleMenu(null);
+      }
+    };
+    document.addEventListener("mousedown", closeOpenMenu);
+    document.addEventListener("touchstart", closeOpenMenu);
+    return () => {
+      document.removeEventListener("mousedown", closeOpenMenu);
+      document.removeEventListener("touchstart", closeOpenMenu);
+    };
+  }, []);
+
   const markRecordRemoved = useCallback((id: string) => {
     setTombstones((prev) => {
       const next: TombstoneMap = { ...prev, [id]: Date.now() + REMOVED_TOMBSTONE_TTL_MS };
@@ -287,10 +318,6 @@ export default function ScheduleListClient({
       return next;
     });
   }, [records, loadStatus]);
-
-  useEffect(() => {
-    if (activeTab !== "schedule") setEditMode(false);
-  }, [activeTab]);
 
   const visibleRecords = useMemo(
     () => records.filter((r) => !(r.id in tombstones)),
@@ -358,30 +385,105 @@ export default function ScheduleListClient({
 
         <nav className="flex min-w-0 flex-1 justify-center" aria-label="일정 구역">
           <div
+            ref={tabMenuRef}
             role="tablist"
-            className="inline-flex max-w-full gap-0.5 overflow-x-auto rounded-lg bg-black/30 p-0.5 shadow-inner ring-1 ring-white/10 [scrollbar-width:thin]"
+            className="inline-flex max-w-full gap-0.5 rounded-lg bg-black/30 p-0.5 shadow-inner ring-1 ring-white/10"
           >
-            {TABS.map((tab) => (
-              <button
-                key={tab.value}
-                type="button"
-                role="tab"
-                aria-selected={activeTab === tab.value}
-                onClick={() => setActiveTab(tab.value)}
-                className={`shrink-0 rounded-md px-2.5 py-1 text-xs font-medium transition-all sm:px-3 sm:text-sm ${
-                  activeTab === tab.value
-                    ? "bg-white/95 text-[#2a1466] shadow-sm ring-1 ring-white/80"
-                    : "text-white/75 hover:text-white"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+            {TABS.map((tab) => {
+              const scheduleTab =
+                tab.value === "office-schedule" ||
+                tab.value === "production-schedule"
+                  ? tab.value
+                  : null;
+              const hasRangeMenu = scheduleTab !== null;
+              const menuOpen =
+                scheduleTab !== null && openScheduleMenu === scheduleTab;
+              return (
+                <div key={tab.value} className="relative shrink-0">
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTab === tab.value}
+                    aria-haspopup={hasRangeMenu ? "menu" : undefined}
+                    aria-expanded={hasRangeMenu ? menuOpen : undefined}
+                    onClick={() => {
+                      if (hasRangeMenu) {
+                        setOpenScheduleMenu((current) =>
+                          current === scheduleTab ? null : scheduleTab
+                        );
+                        return;
+                      }
+                      setOpenScheduleMenu(null);
+                      setActiveTab(tab.value);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") {
+                        setOpenScheduleMenu(null);
+                      }
+                    }}
+                    className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium transition-all sm:px-3 sm:text-sm ${
+                      activeTab === tab.value
+                        ? "bg-white/95 text-[#2a1466] shadow-sm ring-1 ring-white/80"
+                        : "text-white/75 hover:text-white"
+                    }`}
+                  >
+                    {tab.label}
+                    {hasRangeMenu && (
+                      <span
+                        aria-hidden
+                        className={`text-[9px] transition-transform ${
+                          menuOpen ? "rotate-180" : ""
+                        }`}
+                      >
+                        ▼
+                      </span>
+                    )}
+                  </button>
+
+                  {hasRangeMenu && menuOpen && (
+                    <div
+                      role="menu"
+                      aria-label={`${tab.label} 기간 선택`}
+                      className="absolute left-1/2 top-[calc(100%+0.5rem)] z-[70] w-44 -translate-x-1/2 rounded-xl border border-white/15 bg-[#171721] p-1.5 shadow-2xl shadow-black/60"
+                    >
+                      {SCHEDULE_RANGE_OPTIONS.map((option) => {
+                        const selected =
+                          scheduleRanges[scheduleTab] === option.value;
+                        return (
+                          <button
+                            key={option.value}
+                            type="button"
+                            role="menuitem"
+                            onClick={() => {
+                              setScheduleRanges((current) => ({
+                                ...current,
+                                [scheduleTab]: option.value,
+                              }));
+                              setActiveTab(scheduleTab);
+                              setOpenScheduleMenu(null);
+                            }}
+                            className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-semibold transition-colors sm:text-sm ${
+                              selected
+                                ? "bg-[#4361DE] text-white"
+                                : "text-gray-300 hover:bg-white/10 hover:text-white"
+                            }`}
+                          >
+                            <span>{option.label}</span>
+                            {selected && <span aria-hidden>✓</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </nav>
 
         <div className="flex shrink-0 items-center gap-1.5">
-          {activeTab === "schedule" && (
+          {(activeTab === "office-schedule" ||
+            activeTab === "production-schedule") && (
             <>
               <a
                 href={GOOGLE_CALENDAR_WEB_URL}
@@ -439,25 +541,15 @@ export default function ScheduleListClient({
       </header>
 
       <div className="text-gray-100">
-        {activeTab === "schedule" ? (
-          <section className="space-y-2" aria-label="사무실·제작 일정과 휴가 요약">
-            <HomeDashboardView
-              officeRecords={officeRecords}
-              productionRecords={productionRecords}
-              vacationRecords={vacationRecords}
-              editMode={editMode}
-              displayMode={displayMode}
-            />
-          </section>
-        ) : activeTab === "office-schedule" ? (
+        {activeTab === "office-schedule" ? (
           <div className={scheduleWithVacationClass}>
             <div className={scheduleMainClass}>
-              <RecordingWeekView
+              <ScheduleRangeMenu
                 records={officeRecords}
-                calendarMode
-                includeNextMonthCalendar
-                includeNextWeekSection
+                scheduleLabel="사무실일정"
+                activeRange={scheduleRanges["office-schedule"]}
                 displayMode={displayMode}
+                editMode={editMode}
               />
             </div>
             <aside className={scheduleVacationAsideClass}>
@@ -475,12 +567,12 @@ export default function ScheduleListClient({
         ) : activeTab === "production-schedule" ? (
           <div className={scheduleWithVacationClass}>
             <div className={scheduleMainClass}>
-              <RecordingWeekView
+              <ScheduleRangeMenu
                 records={productionRecords}
-                calendarMode
-                includeNextMonthCalendar
-                includeNextWeekSection
+                scheduleLabel="제작일정"
+                activeRange={scheduleRanges["production-schedule"]}
                 displayMode={displayMode}
+                editMode={editMode}
               />
             </div>
             <aside className={scheduleVacationAsideClass}>
