@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1785399811945_2c84e9cf",
+    "type": "production-schedule",
+    "uploadedAt": "2026-07-30T08:23:31.945Z",
+    "memo": "",
+    "summary": "이 문서는 '전국시대' 프로그램의 녹화 의뢰서로, 8월 11일 오전 10시 30분부터 11시 30분까지 공개홀에서 녹화가 진행됩니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-08-11",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": null,
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1785149437150_9dad6b35",
     "type": "production-schedule",
     "uploadedAt": "2026-07-27T10:50:37.151Z",
