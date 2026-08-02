@@ -1083,6 +1083,7 @@ function WeekGrid({
   inlineEditMode,
   displayMode = false,
   displayDetailState,
+  fillHeight = false,
 }: {
   dayGroups: DayGroup[];
   todayStr: string;
@@ -1093,14 +1094,15 @@ function WeekGrid({
   inlineEditMode?: boolean;
   displayMode?: boolean;
   displayDetailState?: DisplayDetailState;
+  fillHeight?: boolean;
 }) {
   const satYmd = weekDays[5] ?? "";
   const sunYmd = weekDays[6] ?? "";
   const gridClass = displayMode
-    ? "flex w-full items-stretch pb-1"
+    ? `flex w-full items-stretch pb-1 ${fillHeight ? "min-h-0 flex-1" : ""}`
     : "flex w-full min-w-0 items-stretch overflow-x-auto pb-1";
   const columnWrapClass = displayMode
-    ? "flex w-1/6 flex-col px-1"
+    ? `flex w-1/6 flex-col px-1 ${fillHeight ? "h-full min-h-0" : ""}`
     : "flex w-1/6 min-w-0 flex-col px-1";
   const dateLabelClass = displayMode ? "text-xl" : "text-xs";
   const weekendDateClass = displayMode
@@ -1241,6 +1243,7 @@ export default function RecordingWeekView({
   includeNextWeekSection = false,
   calendarMonthOffsets,
   bareCalendar = false,
+  fillDisplayHeight = false,
 }: {
   records: ScheduleRecord[];
   /** both: 이번 주 + 이번 주 외. 대시보드에서는 열마다 분리 */
@@ -1265,6 +1268,8 @@ export default function RecordingWeekView({
   calendarMonthOffsets?: number[];
   /** 월간 달력 바깥 제목·테두리 컨테이너를 숨김 */
   bareCalendar?: boolean;
+  /** 디스플레이 주간 카드가 남은 화면 높이를 채우도록 확장 */
+  fillDisplayHeight?: boolean;
 }) {
   const todayStr = getTodaySeoul();
   const [activeDetailKey, setActiveDetailKey] = useState<string | null>(null);
@@ -1338,11 +1343,14 @@ export default function RecordingWeekView({
     setActiveDetailKey(null);
   }, [displayMode, displayCalendarMonthOffset, records, sections]);
 
-  const thisWeekSectionClass = embedded
+  const thisWeekSectionBaseClass = embedded
     ? displayMode
       ? "rounded-lg border border-[#4361DE]/40 bg-[#0e0e14] p-2"
       : "rounded-xl border border-[#4361DE]/40 bg-[#0e0e14]/80 p-3"
     : "rounded-2xl border border-[#4361DE]/40 bg-gradient-to-b from-[#4361DE]/15 to-[#0e0e14]/95 p-4";
+  const thisWeekSectionClass = `${thisWeekSectionBaseClass} ${
+    fillDisplayHeight ? "flex min-h-0 flex-1 flex-col" : ""
+  }`;
   const otherWeekSectionClass = bareCalendar
     ? ""
     : embedded
@@ -1382,8 +1390,21 @@ export default function RecordingWeekView({
     </div>
   );
 
+  const rootClass = fillDisplayHeight
+    ? "flex min-h-0 flex-1 flex-col"
+    : embedded
+      ? "space-y-0"
+      : "space-y-8";
+  const thisWeekWrapClass = fillDisplayHeight
+    ? includeNextWeekSection
+      ? "grid min-h-0 flex-1 grid-rows-2 gap-2"
+      : "flex min-h-0 flex-1 flex-col"
+    : embedded
+      ? "space-y-0"
+      : "space-y-4";
+
   return (
-    <div className={embedded ? "space-y-0" : "space-y-8"}>
+    <div className={rootClass}>
       {!hasAny && showBoth ? (
         emptyBlock
       ) : !hasAny && showThis ? (
@@ -1397,7 +1418,7 @@ export default function RecordingWeekView({
               {!hasAny ? (
                 emptyBlock
               ) : (
-                <div className={embedded ? "space-y-0" : "space-y-4"}>
+                <div className={thisWeekWrapClass}>
                   <section className={thisWeekSectionClass}>
                     {!embedded && (
                       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
@@ -1416,6 +1437,7 @@ export default function RecordingWeekView({
                       inlineEditMode={inlineEditMode}
                       displayMode={displayMode}
                       displayDetailState={displayDetailState}
+                      fillHeight={fillDisplayHeight}
                     />
                   </section>
 
@@ -1438,6 +1460,7 @@ export default function RecordingWeekView({
                         inlineEditMode={inlineEditMode}
                         displayMode={displayMode}
                         displayDetailState={displayDetailState}
+                        fillHeight={fillDisplayHeight}
                       />
                     </section>
                   )}

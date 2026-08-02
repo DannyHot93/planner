@@ -19,10 +19,10 @@ export const SCHEDULE_RANGE_OPTIONS: {
   value: ScheduleRange;
   label: string;
 }[] = [
-  { value: "this-week", label: "이번주일정" },
+  { value: "this-week", label: "이번 주 일정" },
   { value: "two-weeks", label: "2주간 일정" },
-  { value: "one-month", label: "이번달 일정" },
-  { value: "after-month", label: "한달 이후 일정" },
+  { value: "one-month", label: "이번 달 일정" },
+  { value: "after-month", label: "다음 달 일정" },
 ];
 
 function getTodaySeoul(): string {
@@ -187,11 +187,26 @@ export default function ScheduleRangeMenu({
           ? `${formatRangeDate(monthStart)} ~ ${formatRangeDate(monthEnd)}`
           : `${formatRangeDate(nextMonthStart)} 이후`;
 
+  const fillDisplayHeight =
+    displayMode &&
+    (activeRange === "this-week" || activeRange === "two-weeks");
+
   return (
-    <section aria-label={`${scheduleLabel} 기간별 보기`} className="space-y-2">
+    <section
+      aria-label={`${scheduleLabel} 기간별 보기`}
+      className={
+        fillDisplayHeight
+          ? "flex h-[calc(100vh-4rem)] min-h-0 flex-col"
+          : "space-y-2"
+      }
+    >
       <div
         id={`${scheduleLabel}-range-panel`}
-        className="space-y-2"
+        className={
+          fillDisplayHeight
+            ? "flex min-h-0 flex-1 flex-col gap-2"
+            : "space-y-2"
+        }
       >
         <div className="flex justify-end px-1">
           <p className="text-xs font-medium text-gray-400">
@@ -206,6 +221,7 @@ export default function ScheduleRangeMenu({
             hideRecordActions={!editMode}
             inlineEditMode={editMode}
             displayMode={displayMode}
+            fillDisplayHeight={fillDisplayHeight}
           />
         ) : activeRange === "two-weeks" ? (
           <RecordingWeekView
@@ -215,6 +231,7 @@ export default function ScheduleRangeMenu({
             hideRecordActions={!editMode}
             inlineEditMode={editMode}
             displayMode={displayMode}
+            fillDisplayHeight={fillDisplayHeight}
           />
         ) : (
           <RecordingWeekView
