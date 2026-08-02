@@ -34,23 +34,6 @@
     }
   },
   {
-    "id": "ps_1785406550938_00db7db8",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-30T10:15:50.939Z",
-    "memo": "4.5일제 · 2026-07-31",
-    "summary": "4.5일제 · 2026-07-31",
-    "details": {
-      "title": "4.5일제",
-      "program": "4.5일제",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-31"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1785399811945_2c84e9cf",
     "type": "production-schedule",
     "uploadedAt": "2026-07-30T08:23:31.945Z",
@@ -110,46 +93,6 @@
           "place": "4층 뉴스룸",
           "person": "담당PD: 설경철. 출연: 패널 4명 (좌 2명, 우 2명)",
           "note": "녹화 내용: 부동산 정책. 스튜디오 사용.",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1785122253483_53f31d15",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-27T03:17:33.484Z",
-    "memo": "더빙 · 2026-07-27",
-    "summary": "더빙 · 2026-07-27 15:10",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-07-27",
-          "time": "15:10"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1785121329682_650f8a51",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-27T03:02:09.683Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 이동석 충주시장 특별대담이 7월 30일 4층 뉴스룸에서 녹화될 예정이다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-07-30",
-          "time": "15:00-16:10",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철, 출연: 이동석 충주시장",
-          "note": "특별대담 진행 (1명 출연)",
           "sourceLabel": "녹화일시"
         }
       ],
@@ -255,23 +198,6 @@
     }
   },
   {
-    "id": "ps_1784281427077_67f13b32",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-17T09:43:47.100Z",
-    "memo": "이상훈/안대현 · 2026-08-02",
-    "summary": "이상훈/안대현 · 2026-08-02",
-    "details": {
-      "title": "이상훈/안대현",
-      "program": "이상훈/안대현",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-08-02"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1783928262432_cfb88284",
     "type": "production-schedule",
     "uploadedAt": "2026-07-13T07:37:42.433Z",
@@ -296,28 +222,6 @@
           "person": null,
           "note": "1일 소요. 훈련 당일 시설 개방 협조: 08:00부터.",
           "sourceLabel": "협조(훈련) 기간"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1783924834097_141633b3",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-13T06:40:34.098Z",
-    "memo": "",
-    "summary": "전국시대 프로그램의 녹화 일정입니다.",
-    "details": {
-      "period": null,
-      "title": "전국시대",
-      "entries": [
-        {
-          "date": "2026-07-28",
-          "time": "10:30-11:30",
-          "place": "공개홀",
-          "person": "장세일",
-          "note": null,
-          "sourceLabel": "녹화일시"
         }
       ],
       "scheduleType": "production"
@@ -358,27 +262,6 @@
           "note": "김명식 진천군수"
         }
       ]
-    }
-  },
-  {
-    "id": "ps_1783410607417_dc169f06",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-07T07:50:07.418Z",
-    "memo": "",
-    "summary": "프라임 인터뷰 프로그램의 2026년 7월 15일부터 7월 29일까지의 녹화 일정과 7월 25일부터 8월 8일까지의 방송 일정입니다.",
-    "details": {
-      "period": "2026-07-15 ~ 2026-08-08",
-      "title": "프라임 인터뷰",
-      "entries": [
-        {
-          "date": "2026-07-29",
-          "time": "14:00-15:00",
-          "place": "4층 스튜디오",
-          "person": "송인헌 괴산군수",
-          "note": "방송일: 2026-08-08"
-        }
-      ],
-      "scheduleType": "production"
     }
   }
 ]
