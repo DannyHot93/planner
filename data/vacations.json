@@ -1,24 +1,5 @@
 [
   {
-    "id": "vac_1785314351244_abf65efa",
-    "type": "vacation",
-    "uploadedAt": "2026-07-29T08:39:11.244Z",
-    "memo": "구분: 휴가",
-    "summary": "이기성 · 2026-08-01",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-08-01 ~ 2026-08-01",
-      "entries": [
-        {
-          "date": "2026-08-01",
-          "person": "이기성",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1785314350482_e4b83af5",
     "type": "vacation",
     "uploadedAt": "2026-07-29T08:39:10.482Z",
@@ -153,25 +134,6 @@
         {
           "date": "2026-08-12",
           "person": "박광형",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1785203228153_abf5d44d",
-    "type": "vacation",
-    "uploadedAt": "2026-07-28T01:47:08.153Z",
-    "memo": "구분: 휴가",
-    "summary": "이기성 · 2026-08-01",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-08-01 ~ 2026-08-01",
-      "entries": [
-        {
-          "date": "2026-08-01",
-          "person": "이기성",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
         }
