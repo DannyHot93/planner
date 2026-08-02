@@ -17,23 +17,6 @@
     }
   },
   {
-    "id": "ps_1785666217955_7d9ba0d4",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-02T10:23:37.983Z",
-    "memo": "4.5일 · 2026-08-14",
-    "summary": "4.5일 · 2026-08-14",
-    "details": {
-      "title": "4.5일",
-      "program": "4.5일",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-08-14"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1785399811945_2c84e9cf",
     "type": "production-schedule",
     "uploadedAt": "2026-07-30T08:23:31.945Z",
