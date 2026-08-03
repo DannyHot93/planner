@@ -1,5 +1,35 @@
 [
   {
+    "id": "ps_1785722006895_075e1dd5",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-03T01:53:26.896Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 2020년 8월 5일 4층 뉴스룸에서 진행된 두 차례 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-08-05",
+          "time": "12:50-13:30",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철, 출연: 김동원 (국민의힘)",
+          "note": "녹화내용: 충북 도당위원장에게 듣는다 (1), 특기사항: 패널 1명 출연 / 2회 녹화",
+          "sourceLabel": "녹화일시"
+        },
+        {
+          "date": "2026-08-05",
+          "time": "14:30-15:10",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철, 출연: 송재봉 (더불어민주당)",
+          "note": "녹화내용: 충북 도당위원장에게 듣는다 (2), 특기사항: 패널 1명 출연 / 2회 녹화",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1785399811945_2c84e9cf",
     "type": "production-schedule",
     "uploadedAt": "2026-07-30T08:23:31.945Z",
