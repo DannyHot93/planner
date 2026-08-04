@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1785843661417_6e4dbcd7",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-04T11:41:01.418Z",
+    "memo": "유기농가요제 답사 · 2026-08-07",
+    "summary": "유기농가요제 답사 · 2026-08-07",
+    "details": {
+      "title": "유기농가요제 답사",
+      "program": "유기농가요제 답사",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-08-07",
+          "place": "10:00"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1785831192888_b3f183e1",
     "type": "production-schedule",
     "uploadedAt": "2026-08-04T08:13:12.888Z",
