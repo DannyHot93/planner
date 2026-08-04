@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1785831192888_b3f183e1",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-04T08:13:12.888Z",
+    "memo": "",
+    "summary": "2026년 8월 8일 괴산 유기농 가요제 오프라인 예심의 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "괴산 유기농 가요제",
+      "entries": [
+        {
+          "date": "2026-08-08",
+          "time": "08:00-18:00",
+          "place": "괴산문화예술회관 (충청북도 괴산군 괴산읍 읍내로 266)",
+          "person": "민수빈",
+          "note": "방송: 2026-08-08; 녹화내용: 오프라인 예심; 특기사항: 촬영 X, 배차 요청, 음향 지원; 중계차: ENG O, AUDIO O",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1785831148852_0c8cf300",
     "type": "production-schedule",
     "uploadedAt": "2026-08-04T08:12:28.852Z",
