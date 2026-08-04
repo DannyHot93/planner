@@ -6,13 +6,14 @@
     "memo": "유기농가요제 답사 · 2026-08-07",
     "summary": "유기농가요제 답사 · 2026-08-07",
     "details": {
-      "title": "유기농가요제 답사",
-      "program": "유기농가요제 답사",
+      "title": "유기농가요제 예선 답사",
+      "program": "유기농가요제 예선 답사",
       "scheduleType": "production",
       "entries": [
         {
           "date": "2026-08-07",
-          "place": "10:00"
+          "place": "10:00",
+          "time": ""
         }
       ]
     }
