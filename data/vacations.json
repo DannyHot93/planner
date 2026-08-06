@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1785976213683_3bd6d275",
+    "type": "vacation",
+    "uploadedAt": "2026-08-06T00:30:13.683Z",
+    "memo": "구분: 휴가",
+    "summary": "오홍택 · 2026-08-04",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-08-04 ~ 2026-08-04",
+      "entries": [
+        {
+          "date": "2026-08-04",
+          "person": "오홍택",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1785976212879_9f4fd10d",
     "type": "vacation",
     "uploadedAt": "2026-08-06T00:30:12.879Z",
