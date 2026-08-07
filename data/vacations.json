@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1786062500068_6d50dd8d",
+    "type": "vacation",
+    "uploadedAt": "2026-08-07T00:28:20.068Z",
+    "memo": "구분: 휴가",
+    "summary": "박현서 · 2026-08-04",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-08-04 ~ 2026-08-04",
+      "entries": [
+        {
+          "date": "2026-08-04",
+          "person": "박현서",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1786062499228_0e95df7f",
     "type": "vacation",
     "uploadedAt": "2026-08-07T00:28:19.229Z",
