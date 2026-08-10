@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1786358085971_41fbfd14",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-10T10:34:45.999Z",
+    "memo": "음식 경연대회 · 2026-11-05",
+    "summary": "음식 경연대회 · 2026-11-05",
+    "details": {
+      "title": "음식 경연대회",
+      "program": "음식 경연대회",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-11-05"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1786358057645_0e59191e",
     "type": "production-schedule",
     "uploadedAt": "2026-08-10T10:34:17.674Z",
