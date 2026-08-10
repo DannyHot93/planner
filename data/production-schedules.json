@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1786358057645_0e59191e",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-10T10:34:17.674Z",
+    "memo": "속리산 단풍가요제 · 2026-10-31",
+    "summary": "속리산 단풍가요제 · 2026-10-31",
+    "details": {
+      "title": "속리산 단풍가요제",
+      "program": "속리산 단풍가요제",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-10-31"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1786358013618_7f9a1fd0",
     "type": "production-schedule",
     "uploadedAt": "2026-08-10T10:33:33.647Z",
