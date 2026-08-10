@@ -7,7 +7,7 @@
     "summary": "충북 시사토론 창 프로그램의 8월 월간뉴스분석 녹화 일정이 8월 27일 오후 2시 30분부터 3시 40분까지 4층 뉴스룸에서 진행됩니다.",
     "details": {
       "period": null,
-      "title": null,
+      "title": "충북 시사토론 창",
       "entries": [
         {
           "date": "2026-08-27",
@@ -19,7 +19,8 @@
           "title": "충북 시사토론 창 - 8월 월간뉴스분석"
         }
       ],
-      "scheduleType": "production"
+      "scheduleType": "production",
+      "program": "충북 시사토론 창"
     }
   },
   {
