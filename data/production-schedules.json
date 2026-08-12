@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1786522068584_378ec476",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-12T08:07:48.584Z",
+    "memo": "",
+    "summary": "제 4회 유기농 가요제 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "제 4회 유기농 가요제 녹화",
+      "entries": [
+        {
+          "date": "2026-09-05",
+          "time": "19:00-22:00",
+          "place": "괴산 공설운동장",
+          "person": "설경철",
+          "note": "방송 예정: 2020-09-19 00:00. 특이사항: 차량 배차 및 출발시간은 차후 스탭회의에서 결정. 전 스탭 회의: 2020-09-01 13:30 / 5층 편성국 회의실.",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1786521927224_ed295d73",
     "type": "production-schedule",
     "uploadedAt": "2026-08-12T08:05:27.225Z",
