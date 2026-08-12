@@ -1,5 +1,24 @@
 [
   {
+    "id": "vac_1786492912226_6d60648d",
+    "type": "vacation",
+    "uploadedAt": "2026-08-12T00:01:52.227Z",
+    "memo": "구분: 휴가",
+    "summary": "조종록 · 2026-08-07",
+    "details": {
+      "vacationKind": "office",
+      "period": "2026-08-07 ~ 2026-08-07",
+      "entries": [
+        {
+          "date": "2026-08-07",
+          "person": "조종록",
+          "reason": "구분: 휴가",
+          "note": "구분: 휴가"
+        }
+      ]
+    }
+  },
+  {
     "id": "vac_1786492911497_b9cdac8c",
     "type": "vacation",
     "uploadedAt": "2026-08-12T00:01:51.497Z",
