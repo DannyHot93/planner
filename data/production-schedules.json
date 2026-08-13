@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1786583896750_11090d61",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-13T01:18:16.751Z",
+    "memo": "",
+    "summary": "제4회 유기농 가요제 녹화 · 2026-09-05 19:00",
+    "details": {
+      "title": "제4회 유기농 가요제 녹화",
+      "program": "제4회 유기농 가요제 녹화",
+      "entries": [
+        {
+          "date": "2026-09-05",
+          "time": "19:00",
+          "place": "괴산 공설운동장",
+          "person": "담당PD 설경철",
+          "note": "중계차 / 방송: 2026-09-19 09:00"
+        }
+      ],
+      "external_id": "577209ad-a70d-4300-825e-8ff09813334a"
+    },
+    "external_id": "577209ad-a70d-4300-825e-8ff09813334a"
+  },
+  {
     "id": "ps_1786522068584_378ec476",
     "type": "production-schedule",
     "uploadedAt": "2026-08-12T08:07:48.584Z",
