@@ -134,28 +134,6 @@
     }
   },
   {
-    "id": "ps_1786521877706_2e78a556",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-12T08:04:37.706Z",
-    "memo": "",
-    "summary": "The 4th Organic Song Festival recording schedule, including participant profile shooting and practice mixing.",
-    "details": {
-      "period": null,
-      "title": "제 4회 유기농 가요제",
-      "entries": [
-        {
-          "date": "2026-08-22",
-          "time": "12:30-18:00",
-          "place": "4층 뉴스룸 / 4층 라디오 A 스튜디오",
-          "person": "설경철",
-          "note": "유기농 가요제 참가자 9인 프로필 촬영 (뉴스룸 크로마키), 출연자 연습시 (라디오 A 스튜디오) 엔지니어 믹싱 요청. ENG 사용.",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1786414430895_3b444a36",
     "type": "production-schedule",
     "uploadedAt": "2026-08-11T02:13:50.895Z",
