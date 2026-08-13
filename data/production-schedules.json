@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1786609162020_647d9d0a",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-13T08:19:22.044Z",
+    "memo": "김보성/안대현 · 2026-08-23",
+    "summary": "김보성/안대현 · 2026-08-23",
+    "details": {
+      "title": "김보성/안대현",
+      "program": "김보성/안대현",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-08-23"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1786592890543_b8691281",
     "type": "production-schedule",
     "uploadedAt": "2026-08-13T03:48:10.544Z",
