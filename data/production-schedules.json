@@ -224,23 +224,6 @@
     }
   },
   {
-    "id": "ps_1786357891191_c61b20fb",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-10T10:31:31.219Z",
-    "memo": "유기농 괴산 가요제 · 2026-09-05",
-    "summary": "유기농 괴산 가요제 · 2026-09-05",
-    "details": {
-      "title": "유기농 괴산 가요제",
-      "program": "유기농 괴산 가요제",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-05"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1786345730792_94f3c1cb",
     "type": "production-schedule",
     "uploadedAt": "2026-08-10T07:08:50.793Z",
