@@ -1,5 +1,51 @@
 [
   {
+    "id": "ps_1786592890543_b8691281",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-13T03:48:10.544Z",
+    "memo": "",
+    "summary": "2020년 9월 1일 충북 시사토론 창 프로그램 녹화는 4층 뉴스룸에서 오후 3시부터 4시 30분까지 진행되며, 주간 핫 이슈로 청주가정법원, 햇빛 소득마을, 청주 특례시 관련 내용을 다룹니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-09-01",
+          "time": "15:00-16:30",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철",
+          "note": "전체 녹화 일정. 패널 4명 출연, 총 3회 녹화.",
+          "sourceLabel": "녹화일시"
+        },
+        {
+          "date": "2026-09-01",
+          "time": "15:00",
+          "place": "4층 뉴스룸",
+          "person": "1명",
+          "note": "주간 핫 이슈: 청주가정법원",
+          "sourceLabel": "녹화일시"
+        },
+        {
+          "date": "2026-09-01",
+          "time": "15:30",
+          "place": "4층 뉴스룸",
+          "person": "2명",
+          "note": "주간 핫 이슈: 햇빛 소득마을",
+          "sourceLabel": "녹화일시"
+        },
+        {
+          "date": "2026-09-01",
+          "time": "16:10",
+          "place": "4층 뉴스룸",
+          "person": null,
+          "note": "주간 핫 이슈: 청주 특례시",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1786588403338_4382e816",
     "type": "production-schedule",
     "uploadedAt": "2026-08-13T02:33:23.340Z",
