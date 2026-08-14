@@ -1,24 +1,5 @@
 [
   {
-    "id": "vac_1786492907912_8a56f92e",
-    "type": "vacation",
-    "uploadedAt": "2026-08-12T00:01:47.912Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-08-14",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-08-14 ~ 2026-08-14",
-      "entries": [
-        {
-          "date": "2026-08-14",
-          "person": "손호율",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
     "id": "vac_1786492906750_0705c4cd",
     "type": "vacation",
     "uploadedAt": "2026-08-12T00:01:46.750Z",
@@ -80,25 +61,6 @@
       "entries": [
         {
           "date": "2026-08-21",
-          "person": "손호율",
-          "reason": "구분: 휴가",
-          "note": "구분: 휴가"
-        }
-      ]
-    }
-  },
-  {
-    "id": "vac_1786062486255_d428af1a",
-    "type": "vacation",
-    "uploadedAt": "2026-08-07T00:28:06.256Z",
-    "memo": "구분: 휴가",
-    "summary": "손호율 · 2026-08-14",
-    "details": {
-      "vacationKind": "office",
-      "period": "2026-08-14 ~ 2026-08-14",
-      "entries": [
-        {
-          "date": "2026-08-14",
           "person": "손호율",
           "reason": "구분: 휴가",
           "note": "구분: 휴가"
