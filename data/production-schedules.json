@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1786697171717_5cabc9fe",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-14T08:46:11.748Z",
+    "memo": "",
+    "summary": "프라임 인터뷰 · 2026-08-26 14:20",
+    "details": {
+      "title": "프라임 인터뷰",
+      "program": "프라임 인터뷰",
+      "entries": [
+        {
+          "date": "2026-08-26",
+          "time": "14:20",
+          "place": "4층 스튜디오",
+          "person": "담당PD 민수빈",
+          "note": "스튜디오 / 방송: 2026-09-12 10:30"
+        }
+      ],
+      "external_id": "65878675-a12f-47fd-b983-a04e2aeaa697"
+    },
+    "external_id": "65878675-a12f-47fd-b983-a04e2aeaa697"
+  },
+  {
     "id": "ps_1786696937428_25665910",
     "type": "production-schedule",
     "uploadedAt": "2026-08-14T08:42:17.429Z",
