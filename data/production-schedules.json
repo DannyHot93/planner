@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1786678344745_6e51ddeb",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-14T03:32:24.746Z",
+    "memo": "",
+    "summary": "제22회 제천국제음악영화제 개막식 중계 준비 회의 및 생방송 일정",
+    "details": {
+      "period": null,
+      "title": "제22회 제천국제음악영화제 개막식",
+      "entries": [
+        {
+          "date": "2026-09-03",
+          "time": "18:40",
+          "place": "제천 여름광장 (예술의 전당 앞 광장)",
+          "person": null,
+          "note": "제22회 제천국제음악영화제 개막식 중계 (레드카펫, 개막식 등)",
+          "sourceLabel": "생방송"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1786667962900_353440e8",
     "type": "production-schedule",
     "uploadedAt": "2026-08-14T00:39:22.901Z",
