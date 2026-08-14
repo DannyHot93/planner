@@ -1,5 +1,24 @@
 [
   {
+    "id": "ps_1786697548187_58b39f02",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-14T08:52:28.188Z",
+    "memo": "제천국제음악영화제 개막식 준비 회의 · 2026-08-18",
+    "summary": "제천국제음악영화제 개막식 준비 회의 · 2026-08-18 14:00",
+    "details": {
+      "title": "제천국제음악영화제 개막식 준비 회의",
+      "program": "제천국제음악영화제 개막식 준비 회의",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-08-18",
+          "time": "14:00",
+          "place": "제춘국제음악영화제 제천사무국"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1786697171717_5cabc9fe",
     "type": "production-schedule",
     "uploadedAt": "2026-08-14T08:46:11.748Z",
