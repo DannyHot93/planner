@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1786665608399_2c2666ac",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-14T00:00:08.400Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 9월 1일 녹화 일정표입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-09-01",
+          "time": "15:00-16:30",
+          "place": "4층 뉴스룸",
+          "person": "설경철 (PD), 패널 4명",
+          "note": "녹화내용: 주간 핫 이슈 (15:00 청주가정법원 1명 출연, 15:30 햇빛 소득마을 2명 출연, 16:10 청주 특례시). 3회 녹화.",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1786609162020_647d9d0a",
     "type": "production-schedule",
     "uploadedAt": "2026-08-13T08:19:22.044Z",
