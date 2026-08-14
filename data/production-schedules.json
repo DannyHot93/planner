@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1786699329835_d5c0b98c",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-14T09:22:09.836Z",
+    "memo": "(불방)뉴스투데이/930뉴스 · 2026-08-17",
+    "summary": "(불방)뉴스투데이/930뉴스 · 2026-08-17",
+    "details": {
+      "title": "(불방)뉴스투데이/930뉴스",
+      "program": "(불방)뉴스투데이/930뉴스",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-08-17"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1786697548187_58b39f02",
     "type": "production-schedule",
     "uploadedAt": "2026-08-14T08:52:28.188Z",
