@@ -463,50 +463,6 @@
     }
   },
   {
-    "id": "ps_1785399811945_2c84e9cf",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-30T08:23:31.945Z",
-    "memo": "",
-    "summary": "이 문서는 '전국시대' 프로그램의 녹화 의뢰서로, 8월 11일 오전 10시 30분부터 11시 30분까지 공개홀에서 녹화가 진행됩니다.",
-    "details": {
-      "period": null,
-      "title": "전국시대",
-      "entries": [
-        {
-          "date": "2026-08-11",
-          "time": "10:30-11:30",
-          "place": "공개홀",
-          "person": "장세일",
-          "note": null,
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1785139476006_5675dbe8",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-27T08:04:36.007Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 부동산 정책 녹화 일정입니다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-08-13",
-          "time": "14:30-15:40",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철. 출연: 패널 4명 (좌 2명, 우 2명)",
-          "note": "녹화 내용: 부동산 정책. 스튜디오 사용.",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1784704720268_317eccdc",
     "type": "production-schedule",
     "uploadedAt": "2026-07-22T07:18:40.268Z",
@@ -516,14 +472,6 @@
       "period": "2026-08-10 ~ 2026-08-19",
       "title": "프라임 인터뷰",
       "entries": [
-        {
-          "date": "2026-08-10",
-          "time": "15:00-16:00",
-          "place": "4층 스튜디오",
-          "person": "민수빈 (담당PD), 황규철 옥천군수",
-          "note": "방송: 2026-08-22, 녹화 시간 수정, 특기사항: 차담 시 녹화 시작 시간 딜레이",
-          "sourceLabel": "녹화일시"
-        },
         {
           "date": "2026-08-19",
           "time": "14:20-15:20",
@@ -549,23 +497,6 @@
       "entries": [
         {
           "date": "2026-08-30"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1784281711664_63c24ed3",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-17T09:48:31.693Z",
-    "memo": "김보성/양윤길 · 2026-08-16",
-    "summary": "김보성/양윤길 · 2026-08-16",
-    "details": {
-      "title": "김보성/양윤길",
-      "program": "김보성/양윤길",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-08-16"
         }
       ]
     }
