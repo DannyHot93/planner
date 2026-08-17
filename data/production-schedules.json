@@ -128,25 +128,6 @@
     "external_id": "8dc692c9-85c8-4c6c-b7d3-956115b4fb87"
   },
   {
-    "id": "ps_1786678578018_af78e561",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-14T03:36:18.019Z",
-    "memo": "제천영화제 준비 회의 (제천사무국) · 2026-08-18",
-    "summary": "제천영화제 준비 회의 (제천사무국) · 2026-08-18 14:00",
-    "details": {
-      "title": "제천영화제 준비 회의 (제천사무국)",
-      "program": "제천영화제 준비 회의 (제천사무국)",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-08-18",
-          "time": "14:00",
-          "place": "제천사무국"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1786678344745_6e51ddeb",
     "type": "production-schedule",
     "uploadedAt": "2026-08-14T03:32:24.746Z",
