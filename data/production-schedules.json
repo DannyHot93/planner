@@ -169,28 +169,6 @@
     }
   },
   {
-    "id": "ps_1786667962900_353440e8",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-14T00:39:22.901Z",
-    "memo": "",
-    "summary": "전국시대 · 2026-08-25 10:30",
-    "details": {
-      "title": "전국시대",
-      "program": "전국시대",
-      "entries": [
-        {
-          "date": "2026-08-25",
-          "time": "10:30",
-          "place": "공개홀",
-          "person": "담당PD 장세일",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "51b85146-b740-4366-bb92-1a24133a8788"
-    },
-    "external_id": "51b85146-b740-4366-bb92-1a24133a8788"
-  },
-  {
     "id": "ps_1786667615745_53a76d71",
     "type": "production-schedule",
     "uploadedAt": "2026-08-14T00:33:35.747Z",
