@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1787116434479_6fd9a1df",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-19T05:13:54.480Z",
+    "memo": "",
+    "summary": "2026발달장애인핸드볼리그 All Win Peak 결승전 및 폐막식 유튜브 중계 협조 요청에 대한 제작 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "2026발달장애인핸드볼리그 All Win Peak",
+      "entries": [
+        {
+          "date": "2026-09-08",
+          "time": "10:00-15:00",
+          "place": "진천종합스포츠타운 다목적체육관B",
+          "person": "김상훈",
+          "note": "행사 내용: 결승전 및 폐막식. 협조 사항: 영상디자인국(촬영 감독 및 장비 지원), 기술국(중계차 및 유튜브 라이브 기술 지원).",
+          "sourceLabel": "행사 일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1786963527984_40b33652",
     "type": "production-schedule",
     "uploadedAt": "2026-08-17T10:45:27.985Z",
