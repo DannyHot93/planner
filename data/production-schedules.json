@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1787192865729_61b6a4c4",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-20T02:27:45.729Z",
+    "memo": "",
+    "summary": "MBC충북 청주연주소 공개홀 대관 및 업무 협조를 요청하는 일정표입니다.",
+    "details": {
+      "period": null,
+      "title": "충청북도교육도서관 강연 <통섭의 광장>",
+      "entries": [
+        {
+          "date": "2026-08-27",
+          "time": "19:00-22:00",
+          "place": "공개홀, 로비",
+          "person": null,
+          "note": "강연 시작 19:30. 협조사항: 음향 엔지니어 1명 지원, 음향 및 조명 세팅, 공개홀 카메라 이동 (노래교실 세팅과 동일), 강연 환경 조성.",
+          "sourceLabel": "대관일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1787116434479_6fd9a1df",
     "type": "production-schedule",
     "uploadedAt": "2026-08-19T05:13:54.480Z",
