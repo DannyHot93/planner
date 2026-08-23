@@ -44,24 +44,6 @@
     }
   },
   {
-    "id": "ps_1786963527984_40b33652",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-17T10:45:27.985Z",
-    "memo": "더빙 · 2026-08-18",
-    "summary": "더빙 · 2026-08-18 10:00",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-08-18",
-          "time": "10:00"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1786715877998_7575f965",
     "type": "production-schedule",
     "uploadedAt": "2026-08-14T13:57:57.999Z",
@@ -89,42 +71,6 @@
         }
       ],
       "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1786699329835_d5c0b98c",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-14T09:22:09.836Z",
-    "memo": "(불방)뉴스투데이/930뉴스 · 2026-08-17",
-    "summary": "(불방)뉴스투데이/930뉴스 · 2026-08-17",
-    "details": {
-      "title": "(불방)뉴스투데이/930뉴스",
-      "program": "(불방)뉴스투데이/930뉴스",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-08-17"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1786697548187_58b39f02",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-14T08:52:28.188Z",
-    "memo": "제천국제음악영화제 개막식 준비 회의 · 2026-08-18",
-    "summary": "제천국제음악영화제 개막식 준비 회의 · 2026-08-18 14:00",
-    "details": {
-      "title": "제천국제음악영화제 개막식 준비 회의",
-      "program": "제천국제음악영화제 개막식 준비 회의",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-08-18",
-          "time": "14:00",
-          "place": "제춘국제음악영화제 제천사무국"
-        }
-      ]
     }
   },
   {
@@ -192,45 +138,6 @@
       ],
       "scheduleType": "production"
     }
-  },
-  {
-    "id": "ps_1786609162020_647d9d0a",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-13T08:19:22.044Z",
-    "memo": "김보성/안대현 · 2026-08-23",
-    "summary": "김보성/안대현 · 2026-08-23",
-    "details": {
-      "title": "김보성/안대현",
-      "program": "김보성/안대현",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-08-23"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1786588403338_4382e816",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-13T02:33:23.340Z",
-    "memo": "",
-    "summary": "제4회 유기농 가요제 프로필 촬영 · 2026-08-22 12:30",
-    "details": {
-      "title": "제4회 유기농 가요제 프로필 촬영",
-      "program": "제4회 유기농 가요제 프로필 촬영",
-      "entries": [
-        {
-          "date": "2026-08-22",
-          "time": "12:30",
-          "place": "4층 뉴스룸 / 4층 라디오 A 스튜디오",
-          "person": "담당PD 설경철",
-          "note": "ENG, AUDIO"
-        }
-      ],
-      "external_id": "6fa7d127-6bd0-4a1d-b0bf-9f0ca5415516"
-    },
-    "external_id": "6fa7d127-6bd0-4a1d-b0bf-9f0ca5415516"
   },
   {
     "id": "ps_1786583896750_11090d61",
@@ -396,28 +303,6 @@
     }
   },
   {
-    "id": "ps_1786345685753_9d0b175c",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-10T07:08:05.753Z",
-    "memo": "",
-    "summary": "이 문서는 2024년 8월 19일 10시 30분부터 11시 40분까지 4층 뉴스룸에서 '충북 시사토론 창' 프로그램의 '초선의원에게 듣는다' 내용을 녹화하기 위한 의뢰서입니다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-08-19",
-          "time": "10:30-11:40",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철",
-          "note": "녹화내용: 초선의원에게 듣는다; 중계차: 스튜디오; 출연 패널: 4명 (좌 2명, 우 2명)",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1785831148852_0c8cf300",
     "type": "production-schedule",
     "uploadedAt": "2026-08-04T08:12:28.852Z",
@@ -433,28 +318,6 @@
           "place": "진천종합스포츠타운 다목적홀B",
           "person": "김상훈",
           "note": "방송: 2026-08-26 10:00-15:00 (유튜브 라이브), 녹화내용: 2026 발달장애인핸드볼리그 AllWinPeak 정규-2R 4개팀 4경기 녹화중계, 카메라 3대, 촬영인원 2명, 기술국 유튜브 송출 지원",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1784704720268_317eccdc",
-    "type": "production-schedule",
-    "uploadedAt": "2026-07-22T07:18:40.268Z",
-    "memo": "",
-    "summary": "프라임 인터뷰 프로그램의 녹화 의뢰서로, 2026년 8월 10일과 8월 19일에 4층 스튜디오에서 황규철 옥천군수와 정영철 영동군수를 각각 인터뷰하는 내용이 포함되어 있습니다.",
-    "details": {
-      "period": "2026-08-10 ~ 2026-08-19",
-      "title": "프라임 인터뷰",
-      "entries": [
-        {
-          "date": "2026-08-19",
-          "time": "14:20-15:20",
-          "place": "4층 스튜디오",
-          "person": "민수빈 (담당PD), 정영철 영동군수",
-          "note": "방송: 2026-08-29, 특기사항: 차담 시 녹화 시작 시간 딜레이",
           "sourceLabel": "녹화일시"
         }
       ],
@@ -488,14 +351,6 @@
       "period": "2026-08-20 ~ 2026-08-24",
       "title": "26년 후반기 작계훈련(1차)",
       "entries": [
-        {
-          "date": "2026-08-20",
-          "time": "09:00-20:00",
-          "place": "공개홀, 주차장 등",
-          "person": null,
-          "note": "1일 소요. 훈련 당일 시설 개방 협조: 08:00부터.",
-          "sourceLabel": "협조(훈련) 기간"
-        },
         {
           "date": "2026-08-24",
           "time": "09:00-20:00",
