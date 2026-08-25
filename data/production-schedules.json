@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1787629323134_f8091546",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-25T03:42:03.135Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 녹화 일정으로, 9월 16일 4층 뉴스룸에서 청년의 날, 청년 정책에 대해 논의하며 담당PD는 설경철이고 패널 4명이 출연한다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-09-16",
+          "time": "14:00-15:10",
+          "place": "4층 뉴스룸",
+          "person": "담당PD: 설경철, 패널 4명 출연",
+          "note": "녹화내용: 청년의 날, 청년 정책; 특이사항: 좌 2명, 우 2명",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1787625151273_ba7dbabf",
     "type": "production-schedule",
     "uploadedAt": "2026-08-25T02:32:31.307Z",
