@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1787813060112_785fb291",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-27T06:44:20.139Z",
+    "memo": "오승민/사무실 · 2026-09-20",
+    "summary": "오승민/사무실 · 2026-09-20",
+    "details": {
+      "title": "오승민/사무실",
+      "program": "오승민/사무실",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-20"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1787813010206_c2a520b1",
     "type": "production-schedule",
     "uploadedAt": "2026-08-27T06:43:30.235Z",
