@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1788158830783_562b2b5b",
+    "type": "production-schedule",
+    "uploadedAt": "2026-08-31T06:47:10.784Z",
+    "memo": "오디오 녹음ㅡ사업국 · 2026-09-01",
+    "summary": "오디오 녹음ㅡ사업국 · 2026-09-01 18:40",
+    "details": {
+      "title": "오디오 녹음ㅡ사업국",
+      "program": "오디오 녹음ㅡ사업국",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-01",
+          "time": "18:40"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1788145910972_1757c66e",
     "type": "production-schedule",
     "uploadedAt": "2026-08-31T03:11:50.973Z",
