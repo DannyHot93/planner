@@ -77,12 +77,13 @@
     "memo": "오승민/사무실 · 2026-09-20",
     "summary": "오승민/사무실 · 2026-09-20",
     "details": {
-      "title": "오승민/사무실",
-      "program": "오승민/사무실",
+      "title": "이상훈/사무실",
+      "program": "이상훈/사무실",
       "scheduleType": "production",
       "entries": [
         {
-          "date": "2026-09-20"
+          "date": "2026-09-20",
+          "time": ""
         }
       ]
     }
