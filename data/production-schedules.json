@@ -1,59 +1,5 @@
 [
   {
-    "id": "ps_1788441841037_c77485e0",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-03T13:24:01.038Z",
-    "memo": "더빙 · 2026-09-04",
-    "summary": "더빙 · 2026-09-04 14:00",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-04",
-          "time": "14:00"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1788158830783_562b2b5b",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-31T06:47:10.784Z",
-    "memo": "오디오 녹음ㅡ사업국 · 2026-09-01",
-    "summary": "오디오 녹음ㅡ사업국 · 2026-09-01 18:40",
-    "details": {
-      "title": "오디오 녹음ㅡ사업국",
-      "program": "오디오 녹음ㅡ사업국",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-01",
-          "time": "18:40"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1788145910972_1757c66e",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-31T03:11:50.973Z",
-    "memo": "더빙 · 2026-08-31",
-    "summary": "더빙 · 2026-08-31 14:30~15:30",
-    "details": {
-      "title": "더빙",
-      "program": "더빙",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-08-31",
-          "time": "14:30~15:30"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1787813115861_bc8da1e3",
     "type": "production-schedule",
     "uploadedAt": "2026-08-27T06:45:15.889Z",
@@ -101,24 +47,6 @@
       "entries": [
         {
           "date": "2026-09-13",
-          "time": ""
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1787812942336_2a08eeb4",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-27T06:42:22.337Z",
-    "memo": "이상훈/양윤길 · 2026-09-06",
-    "summary": "이상훈/양윤길 · 2026-09-06",
-    "details": {
-      "title": "오승민/양윤길",
-      "program": "오승민/양윤길",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-06",
           "time": ""
         }
       ]
@@ -281,95 +209,6 @@
           "person": "김상훈",
           "note": "행사 내용: 결승전 및 폐막식. 협조 사항: 영상디자인국(촬영 감독 및 장비 지원), 기술국(중계차 및 유튜브 라이브 기술 지원).",
           "sourceLabel": "행사 일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1786678344745_6e51ddeb",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-14T03:32:24.746Z",
-    "memo": "",
-    "summary": "제22회 제천국제음악영화제 개막식 중계 준비 회의 및 생방송 일정",
-    "details": {
-      "period": null,
-      "title": "제22회 제천국제음악영화제 개막식",
-      "entries": [
-        {
-          "date": "2026-09-03",
-          "time": "18:40",
-          "place": "제천 여름광장 (예술의 전당 앞 광장)",
-          "person": null,
-          "note": "제22회 제천국제음악영화제 개막식 중계 (레드카펫, 개막식 등)",
-          "sourceLabel": "생방송"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1786665608399_2c2666ac",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-14T00:00:08.400Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 9월 1일 녹화 일정표입니다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-09-01",
-          "time": "15:00-16:30",
-          "place": "4층 뉴스룸",
-          "person": "설경철 (PD), 패널 4명",
-          "note": "녹화내용: 주간 핫 이슈 (15:00 청주가정법원 1명 출연, 15:30 햇빛 소득마을 2명 출연, 16:10 청주 특례시). 3회 녹화.",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1786522068584_378ec476",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-12T08:07:48.584Z",
-    "memo": "",
-    "summary": "제 4회 유기농 가요제 녹화 일정입니다.",
-    "details": {
-      "period": null,
-      "title": "제 4회 유기농 가요제 녹화",
-      "entries": [
-        {
-          "date": "2026-09-05",
-          "time": "19:00-22:00",
-          "place": "괴산 공설운동장",
-          "person": "설경철",
-          "note": "방송 예정: 2020-09-19 00:00. 특이사항: 차량 배차 및 출발시간은 차후 스탭회의에서 결정. 전 스탭 회의: 2020-09-01 13:30 / 5층 편성국 회의실.",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production",
-      "program": "제 4회 유기농 가요제 녹화"
-    }
-  },
-  {
-    "id": "ps_1786521927224_ed295d73",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-12T08:05:27.225Z",
-    "memo": "",
-    "summary": "제4회 유기농 가요제 사전답사를 위한 제작 일정표입니다.",
-    "details": {
-      "period": null,
-      "title": "제4회 유기농 가요제 사전답사",
-      "entries": [
-        {
-          "date": "2026-09-04",
-          "time": "17:00",
-          "place": "괴산 공설운동장",
-          "person": "설경철 (담당PD), 민수빈 (조연출)",
-          "note": "녹화는 2020-09-05 21:00까지 진행됩니다. 가요제 현장 사전 답사를 위한 차량 배차가 포함됩니다. 엔지니어 및 카메라 감독은 현장 확인 필요시 동행 가능하며, 동행 요청시 조연출 민수빈에게 연락 바랍니다. 방송: 2020-09-19 토요일 예정.",
-          "sourceLabel": "녹화일시"
         }
       ],
       "scheduleType": "production"
