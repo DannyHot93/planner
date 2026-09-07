@@ -148,15 +148,15 @@
     "id": "ps_1787624979499_8b1c27c5",
     "type": "production-schedule",
     "uploadedAt": "2026-08-25T02:29:39.500Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 · 2026-09-16 14:00",
+    "memo": "패널 4명 출연 / 좌 2명, 우 2명",
+    "summary": "충북 시사토론 창 \n9월 월간분석",
     "details": {
       "title": "충북 시사토론 창",
       "program": "충북 시사토론 창",
       "entries": [
         {
           "date": "2026-09-16",
-          "time": "14:00",
+          "time": "10:30-11:40",
           "place": "4층 뉴스룸",
           "person": "담당PD 설경철",
           "note": "스튜디오"
