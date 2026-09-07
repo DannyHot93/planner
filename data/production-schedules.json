@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1788761172184_a10e197c",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-07T06:06:12.185Z",
+    "memo": "더빙ㅡ이종열 작가 · 2026-09-10",
+    "summary": "더빙ㅡ이종열 작가 · 2026-09-10 15:00",
+    "details": {
+      "title": "더빙ㅡ이종열 작가",
+      "program": "더빙ㅡ이종열 작가",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-10",
+          "time": "15:00"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1788752880464_960da7f9",
     "type": "production-schedule",
     "uploadedAt": "2026-09-07T03:48:00.465Z",
