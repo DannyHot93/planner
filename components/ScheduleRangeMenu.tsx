@@ -19,8 +19,8 @@ export const SCHEDULE_RANGE_OPTIONS: {
   value: ScheduleRange;
   label: string;
 }[] = [
-  { value: "this-week", label: "이번 주 일정" },
   { value: "two-weeks", label: "2주간 일정" },
+  { value: "this-week", label: "이번 주 일정" },
   { value: "one-month", label: "이번 달 일정" },
   { value: "after-month", label: "다음 달 일정" },
 ];
