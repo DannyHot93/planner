@@ -168,8 +168,8 @@ export default function ScheduleListClient({
   const [scheduleRanges, setScheduleRanges] = useState<
     Record<"office-schedule" | "production-schedule", ScheduleRange>
   >({
-    "office-schedule": "this-week",
-    "production-schedule": "this-week",
+    "office-schedule": "two-weeks",
+    "production-schedule": "two-weeks",
   });
   const [editMode, setEditMode] = useState(false);
   /**
