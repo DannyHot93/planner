@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1789344996337_fa36804b",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-14T00:16:36.338Z",
+    "memo": "Kbs청주총국 견학 · 2026-09-14",
+    "summary": "Kbs청주총국 견학 · 2026-09-14 13:00",
+    "details": {
+      "title": "Kbs청주총국 견학",
+      "program": "Kbs청주총국 견학",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-14",
+          "time": "13:00"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1787813115861_bc8da1e3",
     "type": "production-schedule",
     "uploadedAt": "2026-08-27T06:45:15.889Z",
