@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1789388271653_7a43b841",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-14T12:17:51.653Z",
+    "memo": "",
+    "summary": "전국시대 프로그램의 10월 6일 스튜디오 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-10-06",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": "녹화내용: 전국시대 스튜디오 녹화",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1789369883602_8101a7c2",
     "type": "production-schedule",
     "uploadedAt": "2026-09-14T07:11:23.603Z",
