@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1789438242631_f099453a",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-15T02:10:42.632Z",
+    "memo": "프라임 인터뷰 · 2026-09-15",
+    "summary": "프라임 인터뷰 · 2026-09-15 14:00",
+    "details": {
+      "title": "프라임 인터뷰",
+      "program": "프라임 인터뷰",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-15",
+          "time": "14:00"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1789388271653_7a43b841",
     "type": "production-schedule",
     "uploadedAt": "2026-09-14T12:17:51.653Z",
