@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "id": "os_1789520517782_973801d8",
+    "type": "office-schedule",
+    "uploadedAt": "2026-09-16T01:01:57.783Z",
+    "memo": "통섭의 광장 · 2026-09-17",
+    "summary": "통섭의 광장 · 2026-09-17 19:30",
+    "details": {
+      "title": "통섭의 광장",
+      "program": "통섭의 광장",
+      "scheduleType": "office",
+      "entries": [
+        {
+          "date": "2026-09-17",
+          "time": "19:30",
+          "place": "공개홀"
+        }
+      ]
+    }
+  }
+]
