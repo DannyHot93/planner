@@ -1,23 +1,5 @@
 [
   {
-    "id": "ps_1789438242631_f099453a",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-15T02:10:42.632Z",
-    "memo": "프라임 인터뷰 · 2026-09-15",
-    "summary": "프라임 인터뷰 · 2026-09-15 14:00",
-    "details": {
-      "title": "프라임 인터뷰",
-      "program": "프라임 인터뷰",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-15",
-          "time": "14:00"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1789388271653_7a43b841",
     "type": "production-schedule",
     "uploadedAt": "2026-09-14T12:17:51.653Z",
@@ -62,24 +44,6 @@
     }
   },
   {
-    "id": "ps_1789344996337_fa36804b",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-14T00:16:36.338Z",
-    "memo": "Kbs청주총국 견학 · 2026-09-14",
-    "summary": "Kbs청주총국 견학 · 2026-09-14 13:00",
-    "details": {
-      "title": "Kbs청주총국 견학",
-      "program": "Kbs청주총국 견학",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-14",
-          "time": "13:00"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1787813115861_bc8da1e3",
     "type": "production-schedule",
     "uploadedAt": "2026-08-27T06:45:15.889Z",
@@ -95,68 +59,6 @@
         }
       ]
     }
-  },
-  {
-    "id": "ps_1787813060112_785fb291",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-27T06:44:20.139Z",
-    "memo": "오승민/사무실 · 2026-09-20",
-    "summary": "오승민/사무실 · 2026-09-20",
-    "details": {
-      "title": "이상훈/사무실",
-      "program": "이상훈/사무실",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-20",
-          "time": ""
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1787629323134_f8091546",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-25T03:42:03.135Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 녹화 일정으로, 9월 16일 4층 뉴스룸에서 청년의 날, 청년 정책에 대해 논의하며 담당PD는 설경철이고 패널 4명이 출연한다.",
-    "details": {
-      "period": null,
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-09-16",
-          "time": "14:00-15:10",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철, 패널 4명 출연",
-          "note": "녹화내용: 청년의 날, 청년 정책; 특이사항: 좌 2명, 우 2명",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1787624979499_8b1c27c5",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-25T02:29:39.500Z",
-    "memo": "패널 4명 출연 / 좌 2명, 우 2명",
-    "summary": "충북 시사토론 창 \n9월 월간분석",
-    "details": {
-      "title": "충북 시사토론 창",
-      "program": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-09-16",
-          "time": "10:30-11:40",
-          "place": "4층 뉴스룸",
-          "person": "담당PD 설경철",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "bbec27eb-c2db-474a-bf2d-656cf196e54d"
-    },
-    "external_id": "bbec27eb-c2db-474a-bf2d-656cf196e54d"
   },
   {
     "id": "ps_1786358085971_41fbfd14",
