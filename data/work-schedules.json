@@ -1,5 +1,20 @@
 [
   {
+    "id": "ws_1789976835491_efc846e8",
+    "type": "work-schedule",
+    "uploadedAt": "2026-09-21T07:47:15.492Z",
+    "memo": "추석연휴",
+    "summary": "추석연휴",
+    "details": {
+      "scheduleKind": "production",
+      "entries": [
+        {
+          "note": "추석연휴"
+        }
+      ]
+    }
+  },
+  {
     "id": "ws_1789378871480_b4f0c413",
     "type": "work-schedule",
     "uploadedAt": "2026-09-14T09:41:11.480Z",
