@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1789976948263_070a637e",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-21T07:49:08.291Z",
+    "memo": "추석 · 2026-09-25",
+    "summary": "추석 · 2026-09-25",
+    "details": {
+      "title": "추석",
+      "program": "추석",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-25"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1789976898200_8747ebd5",
     "type": "production-schedule",
     "uploadedAt": "2026-09-21T07:48:18.229Z",
