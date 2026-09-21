@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1789976898200_8747ebd5",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-21T07:48:18.229Z",
+    "memo": "추석연휴 · 2026-09-24",
+    "summary": "추석연휴 · 2026-09-24",
+    "details": {
+      "title": "추석연휴",
+      "program": "추석연휴",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-24"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1789388271653_7a43b841",
     "type": "production-schedule",
     "uploadedAt": "2026-09-14T12:17:51.653Z",
