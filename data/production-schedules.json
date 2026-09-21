@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1789977039812_8c61b8cd",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-21T07:50:39.840Z",
+    "memo": "김보성/ · 2026-09-24",
+    "summary": "김보성/ · 2026-09-24",
+    "details": {
+      "title": "김보성/",
+      "program": "김보성/",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-24"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1789976948263_070a637e",
     "type": "production-schedule",
     "uploadedAt": "2026-09-21T07:49:08.291Z",
