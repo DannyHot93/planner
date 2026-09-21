@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1789977061467_a8cd4df7",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-21T07:51:01.495Z",
+    "memo": "이상훈/ · 2026-09-25",
+    "summary": "이상훈/ · 2026-09-25",
+    "details": {
+      "title": "이상훈/",
+      "program": "이상훈/",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-25"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1789977039812_8c61b8cd",
     "type": "production-schedule",
     "uploadedAt": "2026-09-21T07:50:39.840Z",
