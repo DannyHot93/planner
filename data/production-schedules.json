@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1790062904942_08b290d6",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-22T07:41:44.944Z",
+    "memo": "방역업체 방문(18시) · 2026-09-23",
+    "summary": "방역업체 방문(18시) · 2026-09-23",
+    "details": {
+      "title": "방역업체 방문(18시)",
+      "program": "방역업체 방문(18시)",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-23"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1789977061467_a8cd4df7",
     "type": "production-schedule",
     "uploadedAt": "2026-09-21T07:51:01.495Z",
