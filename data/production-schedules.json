@@ -1,5 +1,24 @@
 [
   {
+    "id": "ps_1790549545720_b61f2a85",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-27T22:52:25.721Z",
+    "memo": "창사기념식 · 2026-09-30",
+    "summary": "창사기념식 · 2026-09-30 11:00",
+    "details": {
+      "title": "창사기념식",
+      "program": "창사기념식",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-09-30",
+          "time": "11:00",
+          "place": "공개홀"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1789388271653_7a43b841",
     "type": "production-schedule",
     "uploadedAt": "2026-09-14T12:17:51.653Z",
