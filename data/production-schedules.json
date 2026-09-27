@@ -1,93 +1,5 @@
 [
   {
-    "id": "ps_1790062904942_08b290d6",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-22T07:41:44.944Z",
-    "memo": "방역업체 방문(18시) · 2026-09-23",
-    "summary": "방역업체 방문(18시) · 2026-09-23",
-    "details": {
-      "title": "방역업체 방문(18시경) / 2,3,4층 방역 예정",
-      "program": "방역업체 방문(18시경) / 2,3,4층 방역 예정",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-23",
-          "time": ""
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1789977061467_a8cd4df7",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-21T07:51:01.495Z",
-    "memo": "이상훈/ · 2026-09-25",
-    "summary": "이상훈/ · 2026-09-25",
-    "details": {
-      "title": "이상훈/양윤길",
-      "program": "이상훈/양윤길",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-25",
-          "time": ""
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1789977039812_8c61b8cd",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-21T07:50:39.840Z",
-    "memo": "김보성/ · 2026-09-24",
-    "summary": "김보성/ · 2026-09-24",
-    "details": {
-      "title": "김보성/안대현",
-      "program": "김보성/안대현",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-24",
-          "time": ""
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1789976948263_070a637e",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-21T07:49:08.291Z",
-    "memo": "추석 · 2026-09-25",
-    "summary": "추석 · 2026-09-25",
-    "details": {
-      "title": "추석",
-      "program": "추석",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-25"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1789976898200_8747ebd5",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-21T07:48:18.229Z",
-    "memo": "추석연휴 · 2026-09-24",
-    "summary": "추석연휴 · 2026-09-24",
-    "details": {
-      "title": "추석연휴",
-      "program": "추석연휴",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-24"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1789388271653_7a43b841",
     "type": "production-schedule",
     "uploadedAt": "2026-09-14T12:17:51.653Z",
@@ -129,23 +41,6 @@
         }
       ],
       "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1787813115861_bc8da1e3",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-27T06:45:15.889Z",
-    "memo": "김보성/양윤길 · 2026-09-27",
-    "summary": "김보성/양윤길 · 2026-09-27",
-    "details": {
-      "title": "김보성/양윤길",
-      "program": "김보성/양윤길",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-27"
-        }
-      ]
     }
   },
   {
