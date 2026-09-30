@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1790804335831_38aa4622",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-30T21:38:55.862Z",
+    "memo": "대체휴공일(개천절) · 2026-10-05",
+    "summary": "대체휴공일(개천절) · 2026-10-05",
+    "details": {
+      "title": "대체휴공일(개천절)",
+      "program": "대체휴공일(개천절)",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-10-05"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1790804253156_1deb33d9",
     "type": "production-schedule",
     "uploadedAt": "2026-09-30T21:37:33.157Z",
