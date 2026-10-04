@@ -69,23 +69,6 @@
     }
   },
   {
-    "id": "ps_1790804253156_1deb33d9",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-30T21:37:33.157Z",
-    "memo": "창사기념 휴무 · 2026-10-01",
-    "summary": "창사기념 휴무 · 2026-10-01",
-    "details": {
-      "title": "창사기념 휴무",
-      "program": "창사기념 휴무",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-10-01"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1790559441710_14a2b63e",
     "type": "production-schedule",
     "uploadedAt": "2026-09-28T01:37:21.739Z",
@@ -132,42 +115,6 @@
       "entries": [
         {
           "date": "2026-10-11"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1790559351720_6b65a7ae",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-28T01:35:51.721Z",
-    "memo": "이상훈/안대현 · 2026-10-04",
-    "summary": "이상훈/안대현 · 2026-10-04",
-    "details": {
-      "title": "이상훈/안대현",
-      "program": "이상훈/안대현",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-10-04"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1790549545720_b61f2a85",
-    "type": "production-schedule",
-    "uploadedAt": "2026-09-27T22:52:25.721Z",
-    "memo": "창사기념식 · 2026-09-30",
-    "summary": "창사기념식 · 2026-09-30 11:00",
-    "details": {
-      "title": "창사기념식",
-      "program": "창사기념식",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-30",
-          "time": "11:00",
-          "place": "공개홀"
         }
       ]
     }
