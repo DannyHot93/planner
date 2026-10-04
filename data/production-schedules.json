@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1791107947795_fdc5b4e6",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-04T09:59:07.823Z",
+    "memo": "이상훈/양윤길 · 2026-10-09",
+    "summary": "이상훈/양윤길 · 2026-10-09",
+    "details": {
+      "title": "이상훈/양윤길",
+      "program": "이상훈/양윤길",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-10-09"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1791107924212_90c5d4ea",
     "type": "production-schedule",
     "uploadedAt": "2026-10-04T09:58:44.213Z",
