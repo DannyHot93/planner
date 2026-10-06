@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1791263504330_97358d09",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-06T05:11:44.331Z",
+    "memo": "",
+    "summary": "10월 22일 '통섭의 광장' 프로그램 녹화 의뢰서입니다.",
+    "details": {
+      "period": null,
+      "title": "통섭의 광장",
+      "entries": [
+        {
+          "date": "2026-10-22",
+          "time": "19:30-21:30",
+          "place": "지하1층 공개홀",
+          "person": "담당PD: 설경철, MC: 송민수",
+          "note": "녹화내용: 강연 (60~70분), MC 송민수의 Q&A (30분 내외). 특기사항: 카메라 6대 활용 (지미집 1대, 거치 카메라 2대 추가). 사전 스탭회의: 10월 19일주 중 (녹화 직전). 리허설: 10월 22일(목) 오후 7시~",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1791263447978_4aebcd2f",
     "type": "production-schedule",
     "uploadedAt": "2026-10-06T05:10:47.978Z",
