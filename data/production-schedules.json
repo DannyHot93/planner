@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1791263447978_4aebcd2f",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-06T05:10:47.978Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 '충청 U대회' 녹화는 2023년 10월 16일 오전 10시 30분부터 11시 40분까지 4층 뉴스룸에서 진행되며, 설경철 PD가 담당하고 4명의 패널이 출연합니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-10-16",
+          "time": "10:30-11:40",
+          "place": "4층 뉴스룸",
+          "person": "담당PD 설경철, 패널 4명 (좌 2명, 우 2명)",
+          "note": "녹화내용: 충청 U대회. 중계차: 스튜디오 선택.",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1791107947795_fdc5b4e6",
     "type": "production-schedule",
     "uploadedAt": "2026-10-04T09:59:07.823Z",
