@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1791784176480_8a48df81",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-12T05:49:36.481Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 프로그램의 10월 19일 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-10-19",
+          "time": "13:00-14:10",
+          "place": "4층 뉴스룸",
+          "person": "설경철 (담당PD), 패널 4명 (좌 2명, 우 2명)",
+          "note": "녹화내용: 의정비. 통섭 회의: 2020-10-19 12:40~",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1791784138672_f8c0d4d2",
     "type": "production-schedule",
     "uploadedAt": "2026-10-12T05:48:58.673Z",
