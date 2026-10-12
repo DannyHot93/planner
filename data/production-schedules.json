@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1791789688011_b18a9f00",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-12T07:21:28.012Z",
+    "memo": "회의ㅡ통섭의광장 · 2026-10-19",
+    "summary": "회의ㅡ통섭의광장 · 2026-10-19 12:40",
+    "details": {
+      "title": "회의ㅡ통섭의광장",
+      "program": "회의ㅡ통섭의광장",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-10-19",
+          "time": "12:40"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1791784946993_9db51e12",
     "type": "production-schedule",
     "uploadedAt": "2026-10-12T06:02:26.994Z",
