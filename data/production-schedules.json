@@ -18,24 +18,6 @@
     }
   },
   {
-    "id": "ps_1791784946993_9db51e12",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-12T06:02:26.994Z",
-    "memo": "삼아CDS 업체 내방 · 2026-10-14",
-    "summary": "삼아CDS 업체 내방 · 2026-10-14 13:00",
-    "details": {
-      "title": "삼아CDS 업체 내방",
-      "program": "삼아CDS 업체 내방",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-10-14",
-          "time": "13:00"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1791784176480_8a48df81",
     "type": "production-schedule",
     "uploadedAt": "2026-10-12T05:49:36.481Z",
