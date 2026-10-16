@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1792128292274_e454bdda",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-16T05:24:52.275Z",
+    "memo": "",
+    "summary": "겹침 일정2 · 2026-10-20 09:00",
+    "details": {
+      "title": "겹침 일정2",
+      "program": "겹침 일정2",
+      "entries": [
+        {
+          "date": "2026-10-20",
+          "time": "09:00",
+          "place": "테스트",
+          "person": "담당PD 설경철",
+          "note": "스튜디오"
+        }
+      ],
+      "external_id": "1d41d6ce-de01-4ba5-b977-e7802823fcd5"
+    },
+    "external_id": "1d41d6ce-de01-4ba5-b977-e7802823fcd5"
+  },
+  {
     "id": "ps_1791789688011_b18a9f00",
     "type": "production-schedule",
     "uploadedAt": "2026-10-12T07:21:28.012Z",
