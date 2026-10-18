@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1792360632354_257d47f0",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-18T21:57:12.354Z",
+    "memo": "",
+    "summary": "프로그램 '전국시대'의 스튜디오 녹화 의뢰 내역입니다.",
+    "details": {
+      "period": "2020-10-20 ~ 2020-10-20",
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-10-20",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": "전국시대 스튜디오 녹화",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1792141615037_56b9d1c2",
     "type": "production-schedule",
     "uploadedAt": "2026-10-16T09:06:55.065Z",
