@@ -11,7 +11,7 @@ function requireGeminiKey(): string {
 }
 
 function primaryModel(): string {
-  return process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
+  return process.env.GEMINI_MODEL?.trim() || "gemini-3-flash-preview";
 }
 
 function fallbackModel(): string {
@@ -36,12 +36,25 @@ interface GeminiResponse {
   error?: { message?: string; status?: string };
 }
 
+class GeminiRequestError extends Error {
+  constructor(public status: number) {
+    super(`Gemini request failed (${status})`);
+  }
+}
+
+function isTransient(error: unknown): boolean {
+  return error instanceof GeminiRequestError
+    ? [429, 500, 502, 503, 504].includes(error.status)
+    : error instanceof Error && ["TimeoutError", "AbortError", "TypeError"].includes(error.name);
+}
+
 async function callGeminiApi(
   apiKey: string,
   model: string,
-  parts: GeminiPart[]
+  parts: GeminiPart[],
+  timeoutMs: number
 ): Promise<string> {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
   const body = {
     contents: [{ parts }],
     generationConfig: {
@@ -52,16 +65,15 @@ async function callGeminiApi(
 
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
     body: JSON.stringify(body),
     next: { revalidate: 0 },
+    signal: AbortSignal.timeout(timeoutMs),
   });
 
   if (!res.ok) {
-    const errText = await res.text().catch(() => "");
-    throw new Error(
-      `Gemini API 오류 (${model}) ${res.status}: ${errText.slice(0, 200)}`
-    );
+    await res.body?.cancel();
+    throw new GeminiRequestError(res.status);
   }
 
   const data = (await res.json()) as GeminiResponse;
@@ -70,7 +82,7 @@ async function callGeminiApi(
     throw new Error(`Gemini API 오류: ${data.error.message}`);
   }
 
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? "";
+  const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text ?? "").join("").trim() ?? "";
   const finishReason = data.candidates?.[0]?.finishReason;
 
   if (!text) {
@@ -87,7 +99,7 @@ async function callGeminiApi(
 
 /**
  * 1) primary 모델 시도
- * 2) 예외 또는 JSON 파싱 실패 시 fallback 모델 한 번 더
+ * 2) 일시적 오류는 모델별 최대 한 번 재시도하고, 실패 시 fallback 사용
  */
 async function generateJsonWithFallback(
   parts: GeminiPart[],
@@ -97,17 +109,39 @@ async function generateJsonWithFallback(
   const secondary = fallbackModel();
   const models = primary === secondary ? [primary] : [primary, secondary];
   let lastError: Error | null = null;
+  // Leave time for validation, image storage and GitHub persistence within the 60s route.
+  const deadline = Date.now() + 45_000;
 
   for (const model of models) {
-    try {
-      const text = await callGeminiApi(apiKey, model, parts);
-      JSON.parse(text);
-      return text;
-    } catch (e) {
-      lastError = e instanceof Error ? e : new Error(String(e));
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) break;
+      try {
+        const reservedForFallback = attempt === 2 && model !== models[models.length - 1] ? 20_000 : 0;
+        const text = await callGeminiApi(apiKey, model, parts, Math.min(20_000, remaining - reservedForFallback));
+        JSON.parse(text);
+        console.info("Gemini analysis succeeded", { model, attempt });
+        return text;
+      } catch (e) {
+        lastError = e instanceof Error ? e : new Error(String(e));
+        console.warn("Gemini analysis failed", {
+          model, attempt,
+          status: e instanceof GeminiRequestError ? e.status : lastError.name,
+        });
+        // Reserve 20s for the fallback rather than spending the entire budget retrying primary.
+        const reserve = model !== models[models.length - 1] ? 20_000 : 0;
+        if (attempt === 2 || !isTransient(e) || deadline - Date.now() < reserve + 10_000) break;
+        await new Promise((resolve) => setTimeout(resolve, 1_000));
+      }
     }
   }
 
+  if (isTransient(lastError)) {
+    throw new Error("AI 서버가 혼잡하거나 응답이 지연되어 재시도 후에도 분석하지 못했습니다. 잠시 후 다시 시도해 주세요.");
+  }
+  if (lastError instanceof GeminiRequestError) {
+    throw new Error("AI 서비스 설정 오류로 분석하지 못했습니다. 관리자에게 문의해 주세요.");
+  }
   const msg = lastError?.message ?? "AI API에서 응답을 받지 못했습니다.";
   const isJson =
     lastError instanceof SyntaxError ||
