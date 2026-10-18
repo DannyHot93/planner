@@ -1,109 +1,55 @@
 [
   {
-    "id": "ps_1788762367521_a297d29d",
+    "id": "ps_1792141615037_56b9d1c2",
     "type": "production-schedule",
-    "uploadedAt": "2026-09-07T06:26:07.522Z",
-    "memo": "더빙 · 2026-09-10",
-    "summary": "더빙 · 2026-09-10 15:00",
+    "uploadedAt": "2026-10-16T09:06:55.065Z",
+    "memo": "오전조 - 통섭 녹화 · 2026-10-22",
+    "summary": "오전조 - 통섭 녹화 · 2026-10-22",
     "details": {
-      "title": "더빙",
-      "program": "더빙",
+      "title": "오전조 - 통섭 녹화",
+      "program": "오전조 - 통섭 녹화",
       "scheduleType": "production",
       "entries": [
         {
-          "date": "2026-09-10",
-          "time": "15:00"
+          "date": "2026-10-22"
         }
       ]
     }
   },
   {
-    "id": "ps_1788752880464_960da7f9",
+    "id": "ps_1791789688011_b18a9f00",
     "type": "production-schedule",
-    "uploadedAt": "2026-09-07T03:48:00.465Z",
-    "memo": "더빙 · 2026-09-07",
-    "summary": "더빙 · 2026-09-07 15:00",
+    "uploadedAt": "2026-10-12T07:21:28.012Z",
+    "memo": "회의ㅡ통섭의광장 · 2026-10-19",
+    "summary": "회의ㅡ통섭의광장 · 2026-10-19 12:40",
     "details": {
-      "title": "더빙",
-      "program": "더빙",
+      "title": "회의ㅡ통섭의광장",
+      "program": "회의ㅡ통섭의광장",
       "scheduleType": "production",
       "entries": [
         {
-          "date": "2026-09-07",
-          "time": "15:30"
+          "date": "2026-10-19",
+          "time": "12:40"
         }
       ]
     }
   },
   {
-    "id": "ps_1787813115861_bc8da1e3",
+    "id": "ps_1791784176480_8a48df81",
     "type": "production-schedule",
-    "uploadedAt": "2026-08-27T06:45:15.889Z",
-    "memo": "김보성/양윤길 · 2026-09-27",
-    "summary": "김보성/양윤길 · 2026-09-27",
-    "details": {
-      "title": "김보성/양윤길",
-      "program": "김보성/양윤길",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-27"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1787813060112_785fb291",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-27T06:44:20.139Z",
-    "memo": "오승민/사무실 · 2026-09-20",
-    "summary": "오승민/사무실 · 2026-09-20",
-    "details": {
-      "title": "이상훈/사무실",
-      "program": "이상훈/사무실",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-20",
-          "time": ""
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1787813010206_c2a520b1",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-27T06:43:30.235Z",
-    "memo": "이상훈/안대현 · 2026-09-13",
-    "summary": "이상훈/안대현 · 2026-09-13",
-    "details": {
-      "title": "이상훈/양윤길",
-      "program": "이상훈/양윤길",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-09-13",
-          "time": ""
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1787645034762_b640926b",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-25T08:03:54.763Z",
+    "uploadedAt": "2026-10-12T05:49:36.481Z",
     "memo": "",
-    "summary": "전국시대 프로그램의 녹화 의뢰서로, 2020년 9월 10일 목요일 10시 30분부터 11시 30분까지 공개홀에서 스튜디오 녹화가 진행될 예정입니다.",
+    "summary": "충북 시사토론 창 프로그램의 10월 19일 녹화 일정입니다.",
     "details": {
       "period": null,
-      "title": "전국시대",
+      "title": "충북 시사토론 창",
       "entries": [
         {
-          "date": "2026-09-10",
-          "time": "10:30-11:30",
-          "place": "공개홀",
-          "person": "장세일",
-          "note": "전국시대 스튜디오 녹화",
+          "date": "2026-10-19",
+          "time": "13:00-14:10",
+          "place": "4층 뉴스룸",
+          "person": "설경철 (담당PD), 패널 4명 (좌 2명, 우 2명)",
+          "note": "녹화내용: 의정비. 통섭 회의: 2020-10-19 12:40~",
           "sourceLabel": "녹화일시"
         }
       ],
@@ -111,51 +57,21 @@
     }
   },
   {
-    "id": "ps_1787629363383_7c1a356b",
+    "id": "ps_1791784138672_f8c0d4d2",
     "type": "production-schedule",
-    "uploadedAt": "2026-08-25T03:42:43.384Z",
+    "uploadedAt": "2026-10-12T05:48:58.673Z",
     "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 9월 8일 도지사 대담과 9월 11일 이연희 국회의원 및 이두영 위원장 녹화 일정입니다.",
-    "details": {
-      "period": "2024-09-08 ~ 2024-09-11",
-      "title": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-09-08",
-          "time": "10:30-11:00",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철, 출연: 도지사",
-          "note": "패널 1명 출연 / 8일 녹화",
-          "sourceLabel": "녹화일시"
-        },
-        {
-          "date": "2026-09-11",
-          "time": "10:30-11:00",
-          "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철, 출연: 이연희 국회의원, 이두영 범도민협의회 운영위원장",
-          "note": "패널 2명 출연 / 11일 녹화",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
-    "id": "ps_1787629323134_f8091546",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-25T03:42:03.135Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 프로그램의 녹화 일정으로, 9월 16일 4층 뉴스룸에서 청년의 날, 청년 정책에 대해 논의하며 담당PD는 설경철이고 패널 4명이 출연한다.",
+    "summary": "10월 28일 4층 뉴스룸에서 '충북 시사토론 창' 프로그램의 '10월 월간뉴스분석' 코너가 녹화되며, 설경철 PD가 담당하고 4명의 패널이 출연합니다.",
     "details": {
       "period": null,
       "title": "충북 시사토론 창",
       "entries": [
         {
-          "date": "2026-09-16",
+          "date": "2026-10-28",
           "time": "14:00-15:10",
           "place": "4층 뉴스룸",
-          "person": "담당PD: 설경철, 패널 4명 출연",
-          "note": "녹화내용: 청년의 날, 청년 정책; 특이사항: 좌 2명, 우 2명",
+          "person": "담당PD: 설경철",
+          "note": "10월 월간뉴스분석. 패널 4명 출연 / 좌 2명, 우 2명.",
           "sourceLabel": "녹화일시"
         }
       ],
@@ -163,47 +79,42 @@
     }
   },
   {
-    "id": "ps_1787624979499_8b1c27c5",
+    "id": "ps_1791263504330_97358d09",
     "type": "production-schedule",
-    "uploadedAt": "2026-08-25T02:29:39.500Z",
-    "memo": "패널 4명 출연 / 좌 2명, 우 2명",
-    "summary": "충북 시사토론 창 \n9월 월간분석",
-    "details": {
-      "title": "충북 시사토론 창",
-      "program": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-09-16",
-          "time": "10:30-11:40",
-          "place": "4층 뉴스룸",
-          "person": "담당PD 설경철",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "bbec27eb-c2db-474a-bf2d-656cf196e54d"
-    },
-    "external_id": "bbec27eb-c2db-474a-bf2d-656cf196e54d"
-  },
-  {
-    "id": "ps_1787116434479_6fd9a1df",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-19T05:13:54.480Z",
+    "uploadedAt": "2026-10-06T05:11:44.331Z",
     "memo": "",
-    "summary": "2026발달장애인핸드볼리그 All Win Peak 결승전 및 폐막식 유튜브 중계 협조 요청에 대한 제작 일정입니다.",
+    "summary": "10월 22일 '통섭의 광장' 프로그램 녹화 의뢰서입니다.",
     "details": {
       "period": null,
-      "title": "2026발달장애인핸드볼리그 All Win Peak",
+      "title": "통섭의 광장",
       "entries": [
         {
-          "date": "2026-09-08",
-          "time": "10:00-15:00",
-          "place": "진천종합스포츠타운 다목적체육관B",
-          "person": "김상훈",
-          "note": "행사 내용: 결승전 및 폐막식. 협조 사항: 영상디자인국(촬영 감독 및 장비 지원), 기술국(중계차 및 유튜브 라이브 기술 지원).",
-          "sourceLabel": "행사 일시"
+          "date": "2026-10-22",
+          "time": "19:30-21:30",
+          "place": "지하1층 공개홀",
+          "person": "담당PD: 설경철, MC: 송민수",
+          "note": "녹화내용: 강연 (60~70분), MC 송민수의 Q&A (30분 내외). 특기사항: 카메라 6대 활용 (지미집 1대, 거치 카메라 2대 추가). 사전 스탭회의: 10월 19일주 중 (녹화 직전). 리허설: 10월 22일(목) 오후 7시~",
+          "sourceLabel": "녹화일시"
         }
       ],
       "scheduleType": "production"
+    }
+  },
+  {
+    "id": "ps_1790559441710_14a2b63e",
+    "type": "production-schedule",
+    "uploadedAt": "2026-09-28T01:37:21.739Z",
+    "memo": "이상훈/안대현 · 2026-10-25",
+    "summary": "이상훈/안대현 · 2026-10-25",
+    "details": {
+      "title": "이상훈/안대현",
+      "program": "이상훈/안대현",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-10-25"
+        }
+      ]
     }
   },
   {
