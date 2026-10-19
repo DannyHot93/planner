@@ -4,13 +4,13 @@
     "type": "production-schedule",
     "uploadedAt": "2026-10-19T08:24:48.786Z",
     "memo": "",
-    "summary": "일정 알림 테스트 · 2026-10-20 09:00",
+    "summary": "일정 알림 테스트 · 2026-10-21 09:00",
     "details": {
       "title": "일정 알림 테스트",
       "program": "일정 알림 테스트",
       "entries": [
         {
-          "date": "2026-10-20",
+          "date": "2026-10-21",
           "time": "09:00",
           "place": "기술사무실",
           "person": "담당PD 박현서",
