@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1792384119839_5c6301fd",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-19T04:28:39.840Z",
+    "memo": "",
+    "summary": "이메일 알림 테스트 · 2026-10-27 09:00",
+    "details": {
+      "title": "이메일 알림 테스트",
+      "program": "이메일 알림 테스트",
+      "entries": [
+        {
+          "date": "2026-10-27",
+          "time": "09:00",
+          "place": "녹화 장소는 가상의 세계",
+          "person": "담당PD 박현서",
+          "note": "스튜디오"
+        }
+      ],
+      "external_id": "97f5ffc4-07dc-4095-bd97-628a0e1b07b7"
+    },
+    "external_id": "97f5ffc4-07dc-4095-bd97-628a0e1b07b7"
+  },
+  {
     "id": "ps_1792382121476_6caef313",
     "type": "production-schedule",
     "uploadedAt": "2026-10-19T03:55:21.477Z",
