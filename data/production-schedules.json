@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1792398288785_5a0a40ab",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-19T08:24:48.786Z",
+    "memo": "",
+    "summary": "일정 알림 테스트 · 2026-10-20 09:00",
+    "details": {
+      "title": "일정 알림 테스트",
+      "program": "일정 알림 테스트",
+      "entries": [
+        {
+          "date": "2026-10-20",
+          "time": "09:00",
+          "place": "기술사무실",
+          "person": "담당PD 박현서",
+          "note": "스튜디오 / 방송: 2026-10-26 09:00"
+        }
+      ],
+      "external_id": "e63e9a30-2018-48dd-aa0f-7bfe95bc090e"
+    },
+    "external_id": "e63e9a30-2018-48dd-aa0f-7bfe95bc090e"
+  },
+  {
     "id": "ps_1792384119839_5c6301fd",
     "type": "production-schedule",
     "uploadedAt": "2026-10-19T04:28:39.840Z",
