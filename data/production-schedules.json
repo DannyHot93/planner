@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1792477609173_2549a628",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-20T06:26:49.174Z",
+    "memo": "",
+    "summary": "통섭의 광장 · 2026-10-22 19:30",
+    "details": {
+      "title": "통섭의 광장",
+      "program": "통섭의 광장",
+      "entries": [
+        {
+          "date": "2026-10-22",
+          "time": "19:30",
+          "place": "지하1층 공개홀",
+          "person": "담당PD 설경철",
+          "note": "스튜디오"
+        }
+      ],
+      "external_id": "f3bcc350-de56-49d6-bea9-d0f5f580964a"
+    },
+    "external_id": "f3bcc350-de56-49d6-bea9-d0f5f580964a"
+  },
+  {
     "id": "ps_1792477310497_23ad16da",
     "type": "production-schedule",
     "uploadedAt": "2026-10-20T06:21:50.498Z",
