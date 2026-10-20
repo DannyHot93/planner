@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1792477078761_9bde84c1",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-20T06:17:58.762Z",
+    "memo": "",
+    "summary": "전국시대 · 2026-10-20 10:30",
+    "details": {
+      "title": "전국시대",
+      "program": "전국시대",
+      "entries": [
+        {
+          "date": "2026-10-20",
+          "time": "10:30",
+          "place": "공개홀",
+          "person": "담당PD 장세일",
+          "note": "스튜디오"
+        }
+      ],
+      "external_id": "4e1422ce-a967-4092-b912-79bf4276c867"
+    },
+    "external_id": "4e1422ce-a967-4092-b912-79bf4276c867"
+  },
+  {
     "id": "ps_1792476984322_72450469",
     "type": "production-schedule",
     "uploadedAt": "2026-10-20T06:16:24.323Z",
