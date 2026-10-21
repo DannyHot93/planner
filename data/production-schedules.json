@@ -88,28 +88,6 @@
     "external_id": "fc9a34ad-c908-49f0-a77f-b60b61d2ce54"
   },
   {
-    "id": "ps_1792382121476_6caef313",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-19T03:55:21.477Z",
-    "memo": "",
-    "summary": "2026년 10월 20일에 진행되는 '프라임 인터뷰' 프로그램의 스튜디오 녹화 의뢰 내역입니다.",
-    "details": {
-      "period": "2026-10-20 ~ 2026-10-20",
-      "title": "프라임 인터뷰",
-      "entries": [
-        {
-          "date": "2026-10-20",
-          "time": "14:00-15:00",
-          "place": "4층 스튜디오",
-          "person": "민수빈, 정유리",
-          "note": "방송: 2026-10-31",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1792360632354_257d47f0",
     "type": "production-schedule",
     "uploadedAt": "2026-10-18T21:57:12.354Z",
