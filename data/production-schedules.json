@@ -110,28 +110,6 @@
     }
   },
   {
-    "id": "ps_1792375769686_7aa1e042",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-19T02:09:29.687Z",
-    "memo": "",
-    "summary": "이메일 알림 테스트 · 2026-10-26 09:00",
-    "details": {
-      "title": "이메일 알림 테스트",
-      "program": "이메일 알림 테스트",
-      "entries": [
-        {
-          "date": "2026-10-26",
-          "time": "09:00",
-          "place": "테스트",
-          "person": "담당PD 테스트맨",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "16cc3018-2f6c-487f-b1c5-6307e0ea095c"
-    },
-    "external_id": "16cc3018-2f6c-487f-b1c5-6307e0ea095c"
-  },
-  {
     "id": "ps_1792360632354_257d47f0",
     "type": "production-schedule",
     "uploadedAt": "2026-10-18T21:57:12.354Z",
