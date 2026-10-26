@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1792982667741_0b1c8bbc",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-26T02:44:27.742Z",
+    "memo": "",
+    "summary": "2020년 11월 10일에 진행되는 '충북 시사토론 창' 프로그램의 '농어촌 기본소득' 관련 녹화 의뢰서입니다.",
+    "details": {
+      "period": "2020-11-10 ~ 2020-11-10",
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-11-10",
+          "time": "15:00-16:10",
+          "place": "4층 뉴스룸 (스튜디오)",
+          "person": "설경철 (담당PD)",
+          "note": "녹화내용: 농어촌 기본소득, 특기사항: 패널 4명 출연 / 좌 2명, 우 2명, 방송: 정보 없음",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1792982611585_e8056062",
     "type": "production-schedule",
     "uploadedAt": "2026-10-26T02:43:31.586Z",
