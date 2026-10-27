@@ -35,28 +35,6 @@
     }
   },
   {
-    "id": "ps_1792982852520_ccae7d68",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-26T02:47:32.521Z",
-    "memo": "",
-    "summary": "2026년 10월 31일 속리산 특설무대에서 진행되는 '굿바이 속리산 단풍 가요제' 녹화 의뢰 일정입니다.",
-    "details": {
-      "period": null,
-      "title": "굿바이 속리산 단풍 가요제",
-      "entries": [
-        {
-          "date": "2026-10-31",
-          "time": "17:00 ~",
-          "place": "속리산 특설무대 (중계차)",
-          "person": "담당PD: 김영수, 출연: 임창정, 정연호, 경서, 송민경, 지세희, 하이량, 최향",
-          "note": "속리산 가요제 콘서트 녹화 / 방송: 2026-11",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1792982667741_0b1c8bbc",
     "type": "production-schedule",
     "uploadedAt": "2026-10-26T02:44:27.742Z",
