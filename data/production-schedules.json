@@ -1,5 +1,23 @@
 [
   {
+    "id": "ps_1793076222433_5ad9a36b",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-27T04:43:42.434Z",
+    "memo": "4.5일 · 2026-10-30",
+    "summary": "4.5일 · 2026-10-30 11",
+    "details": {
+      "title": "4.5일",
+      "program": "4.5일",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-10-30",
+          "time": "11"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1792982852520_ccae7d68",
     "type": "production-schedule",
     "uploadedAt": "2026-10-26T02:47:32.521Z",
