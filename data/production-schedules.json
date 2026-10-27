@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1793145451015_c79e72a4",
+    "type": "production-schedule",
+    "uploadedAt": "2026-10-27T23:57:31.049Z",
+    "memo": "김보성/양윤길 · 2026-11-08",
+    "summary": "김보성/양윤길 · 2026-11-08",
+    "details": {
+      "title": "김보성/양윤길",
+      "program": "김보성/양윤길",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-11-08"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1793145381780_1eb45068",
     "type": "production-schedule",
     "uploadedAt": "2026-10-27T23:56:21.808Z",
