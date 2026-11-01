@@ -164,23 +164,6 @@
     }
   },
   {
-    "id": "ps_1793145211006_3fce548f",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-27T23:53:31.036Z",
-    "memo": "오승민/사무실 · 2026-11-01",
-    "summary": "오승민/사무실 · 2026-11-01",
-    "details": {
-      "title": "오승민/사무실",
-      "program": "오승민/사무실",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-11-01"
-        }
-      ]
-    }
-  },
-  {
     "id": "ps_1793137028328_79e2fdc6",
     "type": "production-schedule",
     "uploadedAt": "2026-10-27T21:37:08.330Z",
@@ -193,24 +176,6 @@
       "entries": [
         {
           "date": "2026-11-19"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1793076222433_5ad9a36b",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-27T04:43:42.434Z",
-    "memo": "4.5일 · 2026-10-30",
-    "summary": "4.5일 · 2026-10-30 11",
-    "details": {
-      "title": "4.5일",
-      "program": "4.5일",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-10-30",
-          "time": ""
         }
       ]
     }
@@ -282,28 +247,6 @@
     }
   },
   {
-    "id": "ps_1792477310497_23ad16da",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-20T06:21:50.498Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 · 2026-10-28 14:00",
-    "details": {
-      "title": "충북 시사토론 창",
-      "program": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-10-28",
-          "time": "14:00",
-          "place": "4층 뉴스룸",
-          "person": "담당PD 설경철",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "4be878d3-91cb-4438-8229-483ab2fea537"
-    },
-    "external_id": "4be878d3-91cb-4438-8229-483ab2fea537"
-  },
-  {
     "id": "ps_1786358085971_41fbfd14",
     "type": "production-schedule",
     "uploadedAt": "2026-08-10T10:34:45.999Z",
@@ -316,23 +259,6 @@
       "entries": [
         {
           "date": "2026-11-05"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1786358057645_0e59191e",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-10T10:34:17.674Z",
-    "memo": "속리산 단풍가요제 · 2026-10-31",
-    "summary": "속리산 단풍가요제 · 2026-10-31",
-    "details": {
-      "title": "속리산 단풍가요제",
-      "program": "속리산 단풍가요제",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-10-31"
         }
       ]
     }
