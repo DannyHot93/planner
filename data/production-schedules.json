@@ -88,28 +88,6 @@
     }
   },
   {
-    "id": "ps_1793678764954_fe7170e1",
-    "type": "production-schedule",
-    "uploadedAt": "2026-11-03T04:06:04.955Z",
-    "memo": "",
-    "summary": "전국시대 프로그램의 스튜디오 녹화 의뢰 일정입니다.",
-    "details": {
-      "period": "2020-11-17 ~ 2020-11-17",
-      "title": "전국시대",
-      "entries": [
-        {
-          "date": "2026-11-17",
-          "time": "10:30-11:30",
-          "place": "공개홀",
-          "person": "장세일 PD",
-          "note": "전국시대 스튜디오 녹화 (스튜디오 타입)",
-          "sourceLabel": "녹화일시"
-        }
-      ],
-      "scheduleType": "production"
-    }
-  },
-  {
     "id": "ps_1793261949968_dc0d7f33",
     "type": "production-schedule",
     "uploadedAt": "2026-10-29T08:19:09.999Z",
