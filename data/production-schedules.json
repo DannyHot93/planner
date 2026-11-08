@@ -110,50 +110,6 @@
     }
   },
   {
-    "id": "ps_1793261949968_dc0d7f33",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-29T08:19:09.999Z",
-    "memo": "",
-    "summary": "전국시대 · 2026-11-03 10:30",
-    "details": {
-      "title": "전국시대",
-      "program": "전국시대",
-      "entries": [
-        {
-          "date": "2026-11-03",
-          "time": "10:30",
-          "place": "공개홀",
-          "person": "담당PD 장세일",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "920b2d70-3a48-4140-8ec2-34424feb5cfe"
-    },
-    "external_id": "920b2d70-3a48-4140-8ec2-34424feb5cfe"
-  },
-  {
-    "id": "ps_1793261886128_eee81df1",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-29T08:18:06.137Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 · 2026-11-06 10:00",
-    "details": {
-      "title": "충북 시사토론 창",
-      "program": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-11-06",
-          "time": "10:00",
-          "place": "4층 뉴스룸",
-          "person": "담당PD 설경철",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "f5bd98b5-ab6b-45cd-8d3d-4ac3034f3c06"
-    },
-    "external_id": "f5bd98b5-ab6b-45cd-8d3d-4ac3034f3c06"
-  },
-  {
     "id": "ps_1793261838418_e33ac0a0",
     "type": "production-schedule",
     "uploadedAt": "2026-10-29T08:17:18.419Z",
@@ -174,24 +130,6 @@
       "external_id": "55f8a069-9785-4486-8446-c8289dc7c2e6"
     },
     "external_id": "55f8a069-9785-4486-8446-c8289dc7c2e6"
-  },
-  {
-    "id": "ps_1793145451015_c79e72a4",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-27T23:57:31.049Z",
-    "memo": "김보성/양윤길 · 2026-11-08",
-    "summary": "김보성/양윤길 · 2026-11-08",
-    "details": {
-      "title": "김보성/안대현",
-      "program": "김보성/안대현",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-11-08",
-          "time": ""
-        }
-      ]
-    }
   },
   {
     "id": "ps_1793145381780_1eb45068",
@@ -258,23 +196,6 @@
       "entries": [
         {
           "date": "2026-11-19"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1786358085971_41fbfd14",
-    "type": "production-schedule",
-    "uploadedAt": "2026-08-10T10:34:45.999Z",
-    "memo": "음식 경연대회 · 2026-11-05",
-    "summary": "음식 경연대회 · 2026-11-05",
-    "details": {
-      "title": "음식 경연대회",
-      "program": "음식 경연대회",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-11-05"
         }
       ]
     }
