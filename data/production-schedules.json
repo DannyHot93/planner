@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1794174876890_1149ac24",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-08T21:54:36.891Z",
+    "memo": "이상훈/안대현 · 2026-12-06",
+    "summary": "이상훈/안대현 · 2026-12-06",
+    "details": {
+      "title": "이상훈/안대현",
+      "program": "이상훈/안대현",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-12-06"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1793690695693_67381331",
     "type": "production-schedule",
     "uploadedAt": "2026-11-03T07:24:55.694Z",
