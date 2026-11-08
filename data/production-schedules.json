@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1794174917852_edac602a",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-08T21:55:17.880Z",
+    "memo": "박현서/사무실 · 2026-12-13",
+    "summary": "박현서/사무실 · 2026-12-13",
+    "details": {
+      "title": "박현서/사무실",
+      "program": "박현서/사무실",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-12-13"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1794174876890_1149ac24",
     "type": "production-schedule",
     "uploadedAt": "2026-11-08T21:54:36.891Z",
