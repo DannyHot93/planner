@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1794204071266_a7997031",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-09T06:01:11.303Z",
+    "memo": "",
+    "summary": "충북 시사토론 창 · 2026-11-17 11:00",
+    "details": {
+      "title": "충북 시사토론 창",
+      "program": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-11-17",
+          "time": "11:00",
+          "place": "4층 뉴스룸",
+          "person": "담당PD 설경철",
+          "note": "스튜디오"
+        }
+      ],
+      "external_id": "cc8d3d4d-3429-46f1-9116-6ed89cbb9373"
+    },
+    "external_id": "cc8d3d4d-3429-46f1-9116-6ed89cbb9373"
+  },
+  {
     "id": "ps_1794204013496_198f12f2",
     "type": "production-schedule",
     "uploadedAt": "2026-11-09T06:00:13.497Z",
