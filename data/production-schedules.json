@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1794209934763_d3a4c8b7",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-09T07:38:54.764Z",
+    "memo": "",
+    "summary": "옴부즈맨 프로그램 <볼수록 더 좋은 TV>의 뉴스 스튜디오 녹화의뢰서 일정입니다.",
+    "details": {
+      "period": "2020-12-01 ~ 2020-12-01",
+      "title": "옴부즈맨 프로그램 <볼수록 더 좋은 TV>",
+      "entries": [
+        {
+          "date": "2026-12-01",
+          "time": "14:20-16:00",
+          "place": "뉴스 스튜디오",
+          "person": "장세일(PD), 이황주, 박서영, 신동일, 이혜정, 김현희, 강창묵, 김영수",
+          "note": "하반기 녹화방송. 리허설 14:00~14:20. MC + 패널 2명 고정, 출연자 1명씩 IN & OUT, 스튜디오 총 5명 출연.",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1794204693449_4cf9a829",
     "type": "production-schedule",
     "uploadedAt": "2026-11-09T06:11:33.450Z",
