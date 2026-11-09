@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1794204013496_198f12f2",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-09T06:00:13.497Z",
+    "memo": "",
+    "summary": "충북 음식문화 페스타 · 2026-11-05 09:00",
+    "details": {
+      "title": "충북 음식문화 페스타",
+      "program": "충북 음식문화 페스타",
+      "entries": [
+        {
+          "date": "2026-11-05",
+          "time": "09:00",
+          "place": "청주 오스코",
+          "person": "담당PD 김영수",
+          "note": "중계차"
+        }
+      ],
+      "external_id": "99846b21-628d-45aa-942a-e0055b0a0fc5"
+    },
+    "external_id": "99846b21-628d-45aa-942a-e0055b0a0fc5"
+  },
+  {
     "id": "ps_1794174993018_7fb91671",
     "type": "production-schedule",
     "uploadedAt": "2026-11-08T21:56:33.044Z",
