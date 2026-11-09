@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1794204693449_4cf9a829",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-09T06:11:33.450Z",
+    "memo": "",
+    "summary": "옴부즈맨 프로그램 <볼수록 더 좋은 TV> · 2026-12-01 14:20",
+    "details": {
+      "title": "옴부즈맨 프로그램 <볼수록 더 좋은 TV>",
+      "program": "옴부즈맨 프로그램 <볼수록 더 좋은 TV>",
+      "entries": [
+        {
+          "date": "2026-12-01",
+          "time": "14:20",
+          "place": "뉴스 스튜디오",
+          "person": "담당PD 장세일",
+          "note": "스튜디오"
+        }
+      ],
+      "external_id": "4468ef1a-1d3f-46b1-b3a6-222231ec8684"
+    },
+    "external_id": "4468ef1a-1d3f-46b1-b3a6-222231ec8684"
+  },
+  {
     "id": "ps_1794204238006_4e45baa2",
     "type": "production-schedule",
     "uploadedAt": "2026-11-09T06:03:58.007Z",
