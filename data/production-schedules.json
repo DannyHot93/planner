@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1794301786534_1ef58ba7",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-10T09:09:46.563Z",
+    "memo": "",
+    "summary": "프라임인터뷰 · 2026-11-20 14:00",
+    "details": {
+      "title": "프라임인터뷰",
+      "program": "프라임인터뷰",
+      "entries": [
+        {
+          "date": "2026-11-20",
+          "time": "14:00",
+          "place": "4층 스튜디오",
+          "person": "담당PD 민수빈",
+          "note": "스튜디오"
+        }
+      ],
+      "external_id": "75dd1e2c-f6b3-4f92-93a1-01cb4c24bbfd"
+    },
+    "external_id": "75dd1e2c-f6b3-4f92-93a1-01cb4c24bbfd"
+  },
+  {
     "id": "ps_1794301747229_ab4285d4",
     "type": "production-schedule",
     "uploadedAt": "2026-11-10T09:09:07.230Z",
