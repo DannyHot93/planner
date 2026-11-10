@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1794307990862_22d84e43",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-10T10:53:10.862Z",
+    "memo": "",
+    "summary": "프라임인터뷰 프로그램의 김혜숙 본부장 출연분 녹화 의뢰 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "프라임인터뷰",
+      "entries": [
+        {
+          "date": "2026-11-26",
+          "time": "14:00-15:00",
+          "place": "4층 스튜디오",
+          "person": "김혜숙 대외전략총괄본부장",
+          "note": "방송: 2026-12-12, 내용: 스마트경영포럼 김혜숙 대외전략총괄본부장, 담당PD: 민수빈",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1794307958741_d668a915",
     "type": "production-schedule",
     "uploadedAt": "2026-11-10T10:52:38.741Z",
