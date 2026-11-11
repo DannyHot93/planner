@@ -1,5 +1,22 @@
 [
   {
+    "id": "ps_1794379239771_65021134",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-11T06:40:39.798Z",
+    "memo": "통섭 녹화(오전조) · 2026-11-26",
+    "summary": "통섭 녹화(오전조) · 2026-11-26",
+    "details": {
+      "title": "통섭 녹화(오전조)",
+      "program": "통섭 녹화(오전조)",
+      "scheduleType": "production",
+      "entries": [
+        {
+          "date": "2026-11-26"
+        }
+      ]
+    }
+  },
+  {
     "id": "ps_1794301786534_1ef58ba7",
     "type": "production-schedule",
     "uploadedAt": "2026-11-10T09:09:46.563Z",
