@@ -6,12 +6,13 @@
     "memo": "통섭 녹화(오전조) · 2026-11-26",
     "summary": "통섭 녹화(오전조) · 2026-11-26",
     "details": {
-      "title": "통섭 녹화(오전조)",
-      "program": "통섭 녹화(오전조)",
+      "title": "통섭",
+      "program": "통섭",
       "scheduleType": "production",
       "entries": [
         {
-          "date": "2026-11-26"
+          "date": "2026-11-26",
+          "time": ""
         }
       ]
     }
