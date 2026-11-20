@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1795168960483_8fe7b6ae",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-20T10:02:40.484Z",
+    "memo": "",
+    "summary": "전국시대 프로그램의 2020년 12월 2일 공개홀 스튜디오 녹화 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "전국시대",
+      "entries": [
+        {
+          "date": "2026-12-02",
+          "time": "10:30-11:30",
+          "place": "공개홀",
+          "person": "장세일",
+          "note": "스튜디오 녹화",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1794379239771_65021134",
     "type": "production-schedule",
     "uploadedAt": "2026-11-11T06:40:39.798Z",
