@@ -40,28 +40,6 @@
     }
   },
   {
-    "id": "ps_1794301786534_1ef58ba7",
-    "type": "production-schedule",
-    "uploadedAt": "2026-11-10T09:09:46.563Z",
-    "memo": "",
-    "summary": "프라임인터뷰 · 2026-11-20 14:00",
-    "details": {
-      "title": "프라임인터뷰",
-      "program": "프라임인터뷰",
-      "entries": [
-        {
-          "date": "2026-11-20",
-          "time": "14:00",
-          "place": "4층 스튜디오",
-          "person": "담당PD 민수빈",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "75dd1e2c-f6b3-4f92-93a1-01cb4c24bbfd"
-    },
-    "external_id": "75dd1e2c-f6b3-4f92-93a1-01cb4c24bbfd"
-  },
-  {
     "id": "ps_1794301747229_ab4285d4",
     "type": "production-schedule",
     "uploadedAt": "2026-11-10T09:09:07.230Z",
@@ -126,50 +104,6 @@
       "external_id": "4468ef1a-1d3f-46b1-b3a6-222231ec8684"
     },
     "external_id": "4468ef1a-1d3f-46b1-b3a6-222231ec8684"
-  },
-  {
-    "id": "ps_1794204238006_4e45baa2",
-    "type": "production-schedule",
-    "uploadedAt": "2026-11-09T06:03:58.007Z",
-    "memo": "",
-    "summary": "전국시대 · 2026-11-18 10:30",
-    "details": {
-      "title": "전국시대",
-      "program": "전국시대",
-      "entries": [
-        {
-          "date": "2026-11-18",
-          "time": "10:30",
-          "place": "공개홀",
-          "person": "담당PD 장세일",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "f023d909-d489-49f9-a82e-87550812289e"
-    },
-    "external_id": "f023d909-d489-49f9-a82e-87550812289e"
-  },
-  {
-    "id": "ps_1794204071266_a7997031",
-    "type": "production-schedule",
-    "uploadedAt": "2026-11-09T06:01:11.303Z",
-    "memo": "",
-    "summary": "충북 시사토론 창 · 2026-11-17 11:00",
-    "details": {
-      "title": "충북 시사토론 창",
-      "program": "충북 시사토론 창",
-      "entries": [
-        {
-          "date": "2026-11-17",
-          "time": "11:00",
-          "place": "4층 뉴스룸",
-          "person": "담당PD 설경철",
-          "note": "스튜디오"
-        }
-      ],
-      "external_id": "cc8d3d4d-3429-46f1-9116-6ed89cbb9373"
-    },
-    "external_id": "cc8d3d4d-3429-46f1-9116-6ed89cbb9373"
   },
   {
     "id": "ps_1794174993018_7fb91671",
@@ -275,40 +209,6 @@
         {
           "date": "2026-11-29",
           "time": ""
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1793145342166_46b3bc53",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-27T23:55:42.167Z",
-    "memo": "오승민/사무실 · 2026-11-22",
-    "summary": "오승민/사무실 · 2026-11-22",
-    "details": {
-      "title": "오승민/사무실",
-      "program": "오승민/사무실",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-11-22"
-        }
-      ]
-    }
-  },
-  {
-    "id": "ps_1793137028328_79e2fdc6",
-    "type": "production-schedule",
-    "uploadedAt": "2026-10-27T21:37:08.330Z",
-    "memo": "수능 · 2026-11-19",
-    "summary": "수능 · 2026-11-19",
-    "details": {
-      "title": "수능",
-      "program": "수능",
-      "scheduleType": "production",
-      "entries": [
-        {
-          "date": "2026-11-19"
         }
       ]
     }
