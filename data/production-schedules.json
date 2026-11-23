@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1795412407170_cf66b1cd",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-23T05:40:07.171Z",
+    "memo": "",
+    "summary": "‘충북 시사토론 창’ 프로그램의 ‘2차 공공기관 이전’ 관련 녹화 의뢰 일정입니다.",
+    "details": {
+      "period": null,
+      "title": "충북 시사토론 창",
+      "entries": [
+        {
+          "date": "2026-12-04",
+          "time": "10:30-11:40",
+          "place": "4층 뉴스룸 (스튜디오)",
+          "person": "담당PD: 설경철, 패널 3명",
+          "note": "녹화내용: 2차 공공기관 이전 / 특기사항: 패널 좌 1명, 우 2명",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1795405666624_2215360f",
     "type": "production-schedule",
     "uploadedAt": "2026-11-23T03:47:46.625Z",
