@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1795405666624_2215360f",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-23T03:47:46.625Z",
+    "memo": "",
+    "summary": "2026년 12월 9일에 진행되는 프라임인터뷰 프로그램의 녹화 의뢰서입니다.",
+    "details": {
+      "period": null,
+      "title": "프라임인터뷰",
+      "entries": [
+        {
+          "date": "2026-12-09",
+          "time": "14:00-15:00",
+          "place": "4층 스튜디오",
+          "person": "이혜연 지휘자, 민수빈(PD)",
+          "note": "방송: 2026-12-26",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1795168960483_8fe7b6ae",
     "type": "production-schedule",
     "uploadedAt": "2026-11-20T10:02:40.484Z",
