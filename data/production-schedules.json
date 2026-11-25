@@ -1,5 +1,27 @@
 [
   {
+    "id": "ps_1795590039887_fdb983f2",
+    "type": "production-schedule",
+    "uploadedAt": "2026-11-25T07:00:39.888Z",
+    "memo": "",
+    "summary": "2026년 12월 8일 4층 스튜디오에서 진행되는 '프라임인터뷰' 프로그램의 녹화 의뢰서입니다.",
+    "details": {
+      "period": "2026-12-08",
+      "title": "프라임인터뷰",
+      "entries": [
+        {
+          "date": "2026-12-08",
+          "time": "14:00-15:00",
+          "place": "4층 스튜디오",
+          "person": "민수빈(담당PD), 김혜숙(스마트경영포럼 대외전략총괄본부장)",
+          "note": "방송: 2026-12-19. 특기사항: *11월 26일(목) 예정되어있던 녹화 연기",
+          "sourceLabel": "녹화일시"
+        }
+      ],
+      "scheduleType": "production"
+    }
+  },
+  {
     "id": "ps_1795422942449_323edb5c",
     "type": "production-schedule",
     "uploadedAt": "2026-11-23T08:35:42.450Z",
